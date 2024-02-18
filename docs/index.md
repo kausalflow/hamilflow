@@ -17,3 +17,12 @@ poetry install --with test
 ```
 
 to install the base environment and test environment for development.
+
+
+If this is the first you clone the repo and committing code, run
+
+```sh
+pre-commit install
+```
+
+first.
