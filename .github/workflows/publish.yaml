@@ -27,7 +27,7 @@ jobs:
         run: poetry install --with docs,test
       - name: Build coverage file
         run: |
-          pytest --cache-clear --cov=app tests/ > pytest-coverage.txt
+          pytest --cache-clear --cov=hamiltonian_flow tests/ > pytest-coverage.txt
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
   build-n-publish:
