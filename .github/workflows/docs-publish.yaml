@@ -9,7 +9,7 @@ on:
         description: 'Build docs'
         default: 'build it now'
         required: false
-    
+
 
 jobs:
   pre-commit:
