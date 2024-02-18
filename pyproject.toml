@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "hamiltonian_flow"
+version = "0.0.1"
+description = "Dataset of simple physical systems."
+authors = ["LM <hi@leima.is>", ""]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "hamiltonian_flow"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+numpy = "^1.26.3"
+pandas = ">=2.0.0,<=2.2.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.1"
+
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = "^9.5.9"
+mkdocs-autorefs = "^0.5.0"
+mkdocstrings = {version = "^0.24.0", extras = ["python"]}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

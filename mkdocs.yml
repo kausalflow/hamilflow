@@ -1,0 +1,81 @@
+# mkdocs.yml
+site_name: "Hamiltonian Flow"
+site_author: ""
+site_description: "Dataset of simple physical systems."
+site_url: "https://kausalflow.github.io/hamiltonian_flow"
+repo_url: "https://github.com/kausalflow/hamiltonian_flow"
+edit_uri: "blob/main/docs/"
+repo_name: "kausalflow/hamiltonian_flow"
+
+
+theme:
+  name: "material"
+  # Don't include MkDocs' JavaScript
+  include_search_page: false
+  search_index_only: true
+
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  features:
+    # - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  # favicon: assets/logo.png
+  # logo: assets/logo_transparent.png
+
+
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.magiclink
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: "¤"
+
+plugins:
+  - autorefs
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          selection:
+            docstring_style: sphinx
+      watch:
+        - docs
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - "Home": index.md
+  - "Tutorials":
+    - "Introduction": tutorials/index.md
+  - References:
+    - "Introduction": references/index.md
+  - "Changelog": changelog.md
