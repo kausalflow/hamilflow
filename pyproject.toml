@@ -2,7 +2,7 @@
 name = "hamiltonian_flow"
 version = "0.0.1"
 description = "Dataset of simple physical systems."
-authors = ["LM <hi@leima.is>", ""]
+authors = ["LM <hi@leima.is>", "cmp0xff <cmp0xff@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "hamiltonian_flow"}]
