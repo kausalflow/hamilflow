@@ -19,7 +19,7 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: [3.9, "3.10"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -37,6 +37,6 @@ jobs:
         run: poetry install --with docs
       - name: Build coverage file
         run: |
-          poetry run pytest --cache-clear --cov=app tests/ > pytest-coverage.txt
+          poetry run pytest --cache-clear --cov=hamiltonian_flow tests/ > pytest-coverage.txt
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
