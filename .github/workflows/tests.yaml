@@ -1,0 +1,42 @@
+name: Test Code with Pip
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!gh-pages"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Test It'
+        required: false
+        default: 'I Just wanna test it'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.9, "3.10"]
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.3.2
+      - name: Install Packages
+        run: poetry install --with docs
+      - name: Build coverage file
+        run: |
+          poetry run pytest --cache-clear --cov=app tests/ > pytest-coverage.txt
+      - name: Comment coverage
+        uses: coroo/pytest-coverage-commentator@v1.0.2
