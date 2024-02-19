@@ -78,4 +78,6 @@ nav:
     - "Introduction": tutorials/index.md
   - References:
     - "Introduction": references/index.md
+    - "Models":
+      - "Harmonic Oscillator": references/models/harmonic_oscillator.md
   - "Changelog": changelog.md
