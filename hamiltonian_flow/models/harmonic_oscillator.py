@@ -59,7 +59,7 @@ class HarmonicOscillatorIC(BaseModel):
 class HarmonicOscillator:
     r"""Generate time series data for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
-    The equation for a general un-driven harmonic oscillator is[^wiki_ho]
+    The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]
 
     $$
     \frac{\mathrm d x^2}{\mathrm d t^2} + 2\zeta \omega \frac{\mathrm d x}{\mathrm dt} + \omega^2 x = 0,
@@ -71,6 +71,10 @@ class HarmonicOscillator:
     [^wiki_ho]: Contributors to Wikimedia projects. Harmonic oscillator.
                 In: Wikipedia [Internet]. 18 Feb 2024 [cited 20 Feb 2024].
                 Available: https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
+
+    [^libretext_ho]: Libretexts. 5.3: General Solution for the Damped Harmonic Oscillator. Libretexts. 13 Apr 2021.
+                    Available: https://t.ly/cWTIo. Accessed 20 Feb 2024.
+
 
     The solution to the above harmonic oscillator is
 
@@ -120,7 +124,8 @@ class HarmonicOscillator:
 
     `df` will be a pandas dataframe with two columns: `t` and `x`.
 
-    :param params: all the params that defines the harmonic oscillator.
+    :param system: all the params that defines the harmonic oscillator.
+    :param initial_condition: the initial condition of the harmonic oscillator.
     """
 
     def __init__(
