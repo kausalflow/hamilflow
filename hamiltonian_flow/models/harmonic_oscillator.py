@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Dict, List, Literal, Optional, Union
+from typing import Dict, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
