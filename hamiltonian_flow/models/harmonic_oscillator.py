@@ -24,7 +24,7 @@ class HarmonicOscillatorParams(BaseModel):
         return 1 / self.period
 
 
-class HarmonicOscillators:
+class HarmonicOscillator:
     r"""Generate time series data for a harmonic oscillator.
 
     !!! example "A Simple Harmonic Oscillator"
@@ -63,16 +63,16 @@ class HarmonicOscillators:
         return self.params.amplitude * np.cos(self.params.omega * t + self.params.phi)
 
     def __call__(
-        self, num_periods: int, num_samples_per_period: int
+        self, n_periods: int, n_samples_per_period: int
     ) -> Dict[str, List[float]]:
         """Generate time series data for the harmonic oscillator.
 
         Returns a list of floats representing the displacement at each time step.
 
-        :param num_periods: Number of periods to generate.
-        :param num_samples_per_period: Number of samples per period.
+        :param n_periods: Number of periods to generate.
+        :param n_samples_per_period: Number of samples per period.
         """
-        time_step = self.params.period / num_samples_per_period
-        time_steps = np.arange(0, num_periods * num_samples_per_period) * time_step
+        time_step = self.params.period / n_samples_per_period
+        time_steps = np.arange(0, n_periods * n_samples_per_period) * time_step
 
         return pd.DataFrame({"t": time_steps, "x": self._x(time_steps)})
