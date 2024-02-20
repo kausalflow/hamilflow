@@ -27,8 +27,8 @@ def omega():
         ]
     ],
 )
-def test_harmonic_oscillator(omega, expected):
-    ho = HarmonicOscillator(params={"omega": omega})
+def test_simple_harmonic_oscillator(omega, expected):
+    ho = HarmonicOscillator(system={"omega": omega})
 
     df = ho(n_periods=1, n_samples_per_period=10)
 
