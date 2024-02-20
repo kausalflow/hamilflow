@@ -7,7 +7,12 @@ from pydantic import BaseModel, computed_field
 
 
 class HarmonicOscillatorParams(BaseModel):
-    """The params for the harmonic oscillator"""
+    """The params for the harmonic oscillator
+
+    :param omega: angular frequency of the harmonic oscillator
+    :param amplitude: the amplitude of the oscillation
+    :param phi: initial phase
+    """
 
     omega: float
     amplitude: float = 1.0
@@ -16,11 +21,13 @@ class HarmonicOscillatorParams(BaseModel):
     @computed_field  # type: ignore[misc]
     @cached_property
     def period(self) -> float:
+        """period of the oscillator"""
         return 2 * np.pi / self.omega
 
     @computed_field  # type: ignore[misc]
     @cached_property
     def frequency(self) -> float:
+        """frequency of the oscillator"""
         return 1 / self.period
 
 
