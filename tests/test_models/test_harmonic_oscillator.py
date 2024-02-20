@@ -104,3 +104,32 @@ def test_overdamped_harmonic_oscillator(omega, zeta, expected):
     df = ho(n_periods=1, n_samples_per_period=10)
 
     pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
+
+
+@pytest.mark.parametrize(
+    "omega,zeta,expected",
+    [
+        (
+            0.5,
+            1.0,
+            [
+                {"t": 0.0, "x": 1.0},
+                {"t": 1.2566370614359172, "x": 0.5334880910911033},
+                {"t": 2.5132741228718345, "x": 0.2846095433360293},
+                {"t": 3.7699111843077517, "x": 0.1518358019806489},
+                {"t": 5.026548245743669, "x": 0.08100259215794314},
+                {"t": 6.283185307179586, "x": 0.04321391826377226},
+                {"t": 7.5398223686155035, "x": 0.023054110763106823},
+                {"t": 8.79645943005142, "x": 0.012299093542812717},
+                {"t": 10.053096491487338, "x": 0.006561419936306071},
+                {"t": 11.309733552923255, "x": 0.003500439396667034},
+            ],
+        ),
+    ],
+)
+def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
+    ho = HarmonicOscillator(system={"omega": omega, "zeta": zeta})
+
+    df = ho(n_periods=1, n_samples_per_period=10)
+
+    pd.testing.assert_frame_equal(df, pd.DataFrame(expected))

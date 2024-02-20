@@ -178,8 +178,28 @@ class HarmonicOscillator:
             * np.sin(omega_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
+    def _x_critical_damped(
+        self, t: Union[float, np.ndarray]
+    ) -> Union[float, np.ndarray]:
+        r"""Solution to critical damped harmonic oscillators:
+
+        $$
+        x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
+        e^{-\zeta \omega t},
+        $$
+
+        where
+
+        $$
+        \Omega = \omega\sqrt{ 1 - \zeta^2}.
+        $$
+        """
+        return self.initial_condition.x0 * np.exp(
+            -self.system.zeta * self.system.omega * t
+        )
+
     def _x_over_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-        r"""Solution to under over harmonic oscillators:
+        r"""Solution to over harmonic oscillators:
 
         $$
         x(t) = \left( x_0 \cosh(\Gamma t) + \frac{\zeta \omega x_0 + v_0}{\Gamma} \sinh(\Gamma t) \right)
@@ -222,7 +242,7 @@ class HarmonicOscillator:
         elif self.system.type == "over_damped":
             data = self._x_over_damped(time_steps)
         elif self.system.type == "critical_damped":
-            data = self._x_under_damped(time_steps)
+            data = self._x_critical_damped(time_steps)
         else:
             raise ValueError(f"system type is not defined: {self.system.type}")
 
