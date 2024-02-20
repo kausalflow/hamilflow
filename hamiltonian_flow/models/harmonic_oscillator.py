@@ -75,6 +75,14 @@ class HarmonicOscillator:
     The solution to the above harmonic oscillator is
 
     $$
+    x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
+        e^{-\zeta \omega t},
+    $$
+
+    where
+
+    $$
+    \Omega = \omega\sqrt{ 1 - \zeta^2}.
     $$
 
 
