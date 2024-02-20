@@ -11,6 +11,7 @@ packages = [{include = "hamiltonian_flow"}]
 python = ">=3.9,<3.13"
 numpy = "^1.26.3"
 pandas = ">=2.0.0,<=2.2.0"
+pydantic = "^2.6.1"
 
 
 [tool.poetry.group.test.dependencies]

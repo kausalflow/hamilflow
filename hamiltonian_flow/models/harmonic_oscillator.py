@@ -1,50 +1,78 @@
-import math
 from functools import cached_property
-from typing import Dict, List
+from typing import Dict, List, Union
+
+import numpy as np
+import pandas as pd
+from pydantic import BaseModel, computed_field
+
+
+class HarmonicOscillatorParams(BaseModel):
+    """The params for the harmonic oscillator"""
+
+    omega: float
+    amplitude: float = 1.0
+    phi: float = 0.0
+
+    @computed_field  # type: ignore[misc]
+    @cached_property
+    def period(self) -> float:
+        return 2 * np.pi / self.omega
+
+    @computed_field  # type: ignore[misc]
+    @cached_property
+    def frequency(self) -> float:
+        return 1 / self.period
 
 
 class HarmonicOscillators:
-    """Class for generating time series data for a harmonic oscillator,
+    r"""Generate time series data for a harmonic oscillator.
+
+    !!! example "A Simple Harmonic Oscillator"
+
+        In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
+
+        $$
+        \begin{align}
+        F &= - k x \\
+        F &= m a
+        \end{align}
+        $$
+
+        The mass behaves like a simple harmonic oscillator.
+
+    In general, the solution to a simple harmonic oscillator is
 
     $$
-    \mathbf F = - k\mathbf x
+    x(t) = A \cos(\omega t + \phi),
     $$
 
+    where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
 
-
-    :param length: Length of the pendulum.
-    :param gravity: Acceleration due to gravity.
+    :param params: all the params that defines the harmonic oscillator.
     """
 
-    def __init__(self, length: float, gravity: float = 9.81) -> None:
-        self.length = length
-        self.gravity = gravity
+    def __init__(self, params: Dict[str, float]):
+        self.params = HarmonicOscillatorParams.model_validate(params)
 
     @cached_property
-    def period(self) -> float:
-        """Calculate the period of the pendulum."""
-        return 2 * math.pi * math.sqrt(self.length / self.gravity)
+    def model_params(self) -> Dict[str, float]:
+        """model params defined as a dictionary."""
+        return self.params.model_dump()
+
+    def _x(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+        return self.params.amplitude * np.cos(self.params.omega * t + self.params.phi)
 
     def __call__(
-        self, num_periods: int, num_samples_per_period: int, initial_angle: float = 0.1
+        self, num_periods: int, num_samples_per_period: int
     ) -> Dict[str, List[float]]:
-        """Generate time series data for the pendulum.
+        """Generate time series data for the harmonic oscillator.
 
-        Returns a list of floats representing the angle
-        of the pendulum at each time step.
+        Returns a list of floats representing the displacement at each time step.
 
         :param num_periods: Number of periods to generate.
         :param num_samples_per_period: Number of samples per period.
-        :param initial_angle: Initial angle of the pendulum.
         """
-        time_step = self.period / num_samples_per_period
-        steps = []
-        time_series = []
-        for i in range(num_periods * num_samples_per_period):
-            t = i * time_step
-            # angle = self.length * math.cos(2 * math.pi * t / self.period)
-            angle = initial_angle * math.cos(2 * math.pi * t / self.period)
-            steps.append(t)
-            time_series.append(angle)
+        time_step = self.params.period / num_samples_per_period
+        time_steps = np.arange(0, num_periods * num_samples_per_period) * time_step
 
-        return {"t": steps, "theta": time_series}
+        return pd.DataFrame({"t": time_steps, "x": self._x(time_steps)})
