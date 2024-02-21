@@ -26,10 +26,11 @@ repos:
       - id: isort
         name: isort (python)
         args: ["--multi-line", "3", "--profile", "black", "--treat-comment-as-code", "# %%", "--float-to-top"]
-  # - repo: https://github.com/mwouts/jupytext
-  #   rev: v1.16.1
-  #   hooks:
-  #   - id: jupytext
-  #     args: [--sync, --pipe, black]
-  #     additional_dependencies:
-  #       - black==24.2.0
+  - repo: https://github.com/mwouts/jupytext
+    rev: v1.16.1
+    hooks:
+    - id: jupytext
+      args: [--sync, --pipe, black]
+      files: ^docs/tutorials/(.*\.py|.*\.ipynb)$
+      additional_dependencies:
+        - black==24.2.0
