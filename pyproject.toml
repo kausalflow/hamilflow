@@ -13,6 +13,7 @@ numpy = "^1.26.3"
 pandas = ">=2.0.0,<=2.2.0"
 pydantic = "^2.6.1"
 loguru = "^0.7.2"
+matplotlib = "^3.8.3"
 
 
 [tool.poetry.group.test.dependencies]
@@ -24,6 +25,7 @@ pytest-cov = "^4.1.0"
 mkdocs-material = "^9.5.9"
 mkdocs-autorefs = "^0.5.0"
 mkdocstrings = {version = "^0.24.0", extras = ["python"]}
+mkdocs-jupyter = "^0.24.6"
 
 
 [build-system]
