@@ -1,8 +1,22 @@
-# + [markdown] magic_args="[markdown]"
+# ---
+# jupyter:
+#   jupytext:
+#     formats: ipynb,py:percent
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.1
+#   kernelspec:
+#     display_name: .venv
+#     language: python
+#     name: python3
+# ---
+
+# %% [markdown]
 # # Harmonic Oscillators
 #
 # In this tutorial, we demo how to generate data of harmonic oscillators.
-# -
 
 # %%
 import matplotlib.pyplot as plt
@@ -15,9 +29,8 @@ from hamiltonian_flow.models.harmonic_oscillator import HarmonicOscillator
 n_periods = 3
 n_samples_per_period = 200
 
-# + [markdown] magic_args="[markdown]"
+# %% [markdown]
 # ## Simple Harmonic Oscillator
-# -
 
 # %%
 sho_omega = 0.5
@@ -37,9 +50,8 @@ ax.set_title(rf"Simple Harmonic Oscillator ($\omega = {sho_omega}$)")
 ax.set_ylabel(r"Displacement $x(t)$")
 ax.set_xlabel(r"$t$")
 
-# + [markdown] magic_args="[markdown]"
+# %% [markdown]
 # ## Damped Harmonic Oscillator
-# -
 
 # %%
 dho_systems = {
