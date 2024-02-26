@@ -19,7 +19,8 @@
 # In this tutorial, we demo how to generate data of harmonic oscillators.
 
 # %%
-import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.express as px
 
 from hamiltonian_flow.models.harmonic_oscillator import HarmonicOscillator
 
@@ -40,13 +41,16 @@ df_sho = sho(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
 df_sho.head()
 
 # %%
-fig, ax = plt.subplots(figsize=(10, 6.18))
-
-df_sho.plot(x="t", y="x", marker=".", ax=ax)
-
-ax.set_title(rf"Simple Harmonic Oscillator ($\omega = {sho_omega}$)")
-ax.set_ylabel(r"Displacement $x(t)$")
-ax.set_xlabel(r"$t$")
+px.line(
+    df_sho,
+    x="t",
+    y="x",
+    title=rf"Simple Harmonic Oscillator (omega = {sho_omega})",
+    labels={
+        "x": r"Displacement $x(t)$",
+        "t": r"$t$",
+    },
+)
 
 # %% [markdown]
 # ## Damped Harmonic Oscillator
@@ -61,17 +65,27 @@ dho_systems = {
     },
 }
 
+dfs_dho = []
 
 for s_name, s in dho_systems.items():
-    fig, ax = plt.subplots(figsize=(10, 6.18))
 
-    HarmonicOscillator(system=s)(
-        n_periods=n_periods, n_samples_per_period=n_samples_per_period
-    ).plot(x="t", y="x", marker=".", ax=ax)
-
-    ax.set_title(
-        rf"{s_name} Harmonic Oscillator ($\omega = {s.get('omega')}$, $\zeta = {s.get('zeta')}$)"
+    dfs_dho.append(
+        HarmonicOscillator(system=s)(
+            n_periods=n_periods, n_samples_per_period=n_samples_per_period
+        ).assign(system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})")
     )
-    ax.set_ylabel(r"Displacement $x(t)$")
-    ax.set_xlabel(r"$t$")
-    plt.show()
+
+fig = px.line(
+    pd.concat(dfs_dho),
+    x="t",
+    y="x",
+    color="system",
+    title=rf"Damped Harmonic Oscillator",
+    labels={
+        "x": r"Displacement $x(t)$",
+        "t": r"$t$",
+    },
+)
+fig.update_layout(legend={"yanchor": "top", "y": -0.2, "xanchor": "left", "x": 0})
+
+# %%
