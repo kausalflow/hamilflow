@@ -82,7 +82,7 @@ nav:
   - "Home": index.md
   - "Tutorials":
     - "Introduction": tutorials/index.md
-    - "Harmonic Oscillators": tutorials/harmonic_oscillators.py
+    - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
   - References:
     - "Introduction": references/index.md
     - "Models":
