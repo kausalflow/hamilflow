@@ -72,6 +72,7 @@ plugins:
   - mkdocs-jupyter:
       execute: True
       allow_errors: false
+      include_requirejs: true
 
 extra_javascript:
   - javascripts/mathjax.js

@@ -24,8 +24,6 @@ import matplotlib.pyplot as plt
 from hamiltonian_flow.models.harmonic_oscillator import HarmonicOscillator
 
 # %%
-
-# %%
 n_periods = 3
 n_samples_per_period = 200
 
