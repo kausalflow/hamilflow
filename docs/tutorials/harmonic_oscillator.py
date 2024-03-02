@@ -22,7 +22,7 @@
 import pandas as pd
 import plotly.express as px
 
-from hamiltonian_flow.models.harmonic_oscillator import HarmonicOscillator
+from hamilflow.models.harmonic_oscillator import HarmonicOscillator
 
 # %%
 n_periods = 3

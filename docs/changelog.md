@@ -1,4 +1,4 @@
-# hamiltonian_flow Changelog
+# hamilflow Changelog
 
 ## 2024-02-18, 0.0.1
 
