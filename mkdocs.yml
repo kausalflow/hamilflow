@@ -69,6 +69,10 @@ plugins:
       watch:
         - docs
         - hamiltonian_flow
+  - mkdocs-jupyter:
+      execute: True
+      allow_errors: false
+      include_requirejs: true
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -79,6 +83,7 @@ nav:
   - "Home": index.md
   - "Tutorials":
     - "Introduction": tutorials/index.md
+    - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
   - References:
     - "Introduction": references/index.md
     - "Models":
