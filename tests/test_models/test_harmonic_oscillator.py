@@ -1,7 +1,19 @@
 import pandas as pd
 import pytest
 
-from hamiltonian_flow.models.harmonic_oscillator import HarmonicOscillator
+from hamiltonian_flow.models.harmonic_oscillator import (
+    HarmonicOscillator,
+    HarmonicOscillatorSystem,
+)
+
+
+@pytest.mark.parametrize("zeta", [(-0.5), (-2.0)])
+def test_harmonic_oscillator_system_zeta(zeta):
+    with pytest.raises(ValueError):
+        HarmonicOscillatorSystem(omega=1, zeta=zeta)
+
+    with pytest.raises(ValueError):
+        HarmonicOscillator(system={"omega": 1, "zeta": zeta})
 
 
 @pytest.mark.parametrize(

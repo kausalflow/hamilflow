@@ -3,15 +3,14 @@ from typing import Dict, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, computed_field
+from pydantic import BaseModel, computed_field, field_validator
 
 
 class HarmonicOscillatorSystem(BaseModel):
     """The params for the harmonic oscillator
 
     :param omega: angular frequency of the harmonic oscillator
-    :param amplitude: the amplitude of the oscillation
-    :param phi: initial phase
+    :param zeta: damping ratio
     """
 
     omega: float
@@ -43,6 +42,14 @@ class HarmonicOscillatorSystem(BaseModel):
             return "critical_damped"
         else:
             return "over_damped"
+
+    @field_validator("zeta")
+    @classmethod
+    def check_zeta_non_negative(cls, v: float) -> float:
+        if v < 0:
+            raise ValueError(f"Value of zeta should be possitive: {v=}")
+
+        return v
 
 
 class HarmonicOscillatorIC(BaseModel):
