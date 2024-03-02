@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from hamiltonian_flow.models.harmonic_oscillator import (
+from hamilflow.models.harmonic_oscillator import (
     HarmonicOscillator,
     HarmonicOscillatorSystem,
 )

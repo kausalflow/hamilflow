@@ -1,4 +1,4 @@
-# Documentation for `hamiltonian_flow`
+# Documentation for `hamilflow`
 
 Generating dataset for physical systems.
 

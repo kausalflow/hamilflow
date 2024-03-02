@@ -2,10 +2,10 @@
 site_name: "Hamiltonian Flow"
 site_author: ""
 site_description: "Dataset of simple physical systems."
-site_url: "https://kausalflow.github.io/hamiltonian_flow"
-repo_url: "https://github.com/kausalflow/hamiltonian_flow"
+site_url: "https://kausalflow.github.io/hamilflow"
+repo_url: "https://github.com/kausalflow/hamilflow"
 edit_uri: "blob/main/docs/"
-repo_name: "kausalflow/hamiltonian_flow"
+repo_name: "kausalflow/hamilflow"
 
 
 theme:
@@ -68,7 +68,7 @@ plugins:
             filters:
       watch:
         - docs
-        - hamiltonian_flow
+        - hamilflow
   - mkdocs-jupyter:
       execute: True
       allow_errors: false

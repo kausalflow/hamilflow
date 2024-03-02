@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "hamiltonian_flow"
+name = "hamilflow"
 version = "0.0.1"
 description = "Dataset of simple physical systems."
 authors = ["LM <hi@leima.is>", "cmp0xff <cmp0xff@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "hamiltonian_flow"}]
+packages = [{include = "hamilflow"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"

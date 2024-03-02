@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: mypy
         args: [--no-strict-optional, --ignore-missing-imports]
-        files: ^(hamiltonian_flow/|tests/)
+        files: ^(hamilflow/|tests/)
   - repo: https://github.com/ambv/black
     rev: 24.2.0
     hooks:

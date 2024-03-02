@@ -1,3 +1,3 @@
 # Harmonic Oscillator
 
-::: hamiltonian_flow.models.harmonic_oscillator
+::: hamilflow.models.harmonic_oscillator
