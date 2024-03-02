@@ -43,6 +43,7 @@ theme:
 
 markdown_extensions:
   - admonition
+  - footnotes
   - pymdownx.details
   - pymdownx.emoji
   - pymdownx.magiclink
@@ -62,10 +63,12 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          selection:
+          options:
             docstring_style: sphinx
+            filters:
       watch:
         - docs
+        - hamiltonian_flow
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -78,4 +81,6 @@ nav:
     - "Introduction": tutorials/index.md
   - References:
     - "Introduction": references/index.md
+    - "Models":
+      - "Harmonic Oscillator": references/models/harmonic_oscillator.md
   - "Changelog": changelog.md
