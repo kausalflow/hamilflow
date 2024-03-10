@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hamilflow"
-version = "0.0.1"
+version = "0.1.0"
 description = "Dataset of simple physical systems."
 authors = ["LM <hi@leima.is>", "cmp0xff <cmp0xff@gmail.com>"]
 license = "MIT"
