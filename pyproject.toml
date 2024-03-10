@@ -7,6 +7,7 @@ license = "MIT"
 readme = "README.md"
 packages = [{include = "hamilflow"}]
 
+
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
 numpy = "^1.26.3"
@@ -31,6 +32,20 @@ mkdocs-jupyter = "^0.24.6"
 
 [tool.poetry.group.tutorial.dependencies]
 plotly = "^5.19.0"
+
+
+[tool.poetry.group.dev.dependencies]
+commitizen = "^3.18.0"
+
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "poetry"
+update_changelog_on_bump = true
+major_version_zero = true
+
 
 [build-system]
 requires = ["poetry-core"]
