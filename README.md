@@ -7,7 +7,7 @@ Dataset of simple physical systems.
 - Squash merge all features to `main`
   - Use `feat(section): xxx`, `fix(section): yyy`, `chore(poetry): lock` etc as the squashed commit messages
 - Run `cz bump --dry` to determine the new version `X.Y.Z`. Or check out the [documentation](https://commitizen-tools.github.io/commitizen/bump/) for imposing a version
-- Run `git checkout release/X.Y.Z` (-b? not sure... I have always been using SourceTree )
+- Run `git checkout -b release/X.Y.Z`
 - Run `cz bump`. This will
   - Write `docs/changelog.md` from the commit messages; update the version in `pyproject.toml`
   - Commit `docs/changelog.md` and `pyproject.toml`
