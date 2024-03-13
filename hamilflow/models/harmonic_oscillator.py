@@ -47,7 +47,7 @@ class HarmonicOscillatorSystem(BaseModel):
     @classmethod
     def check_zeta_non_negative(cls, v: float) -> float:
         if v < 0:
-            raise ValueError(f"Value of zeta should be possitive: {v=}")
+            raise ValueError(f"Value of zeta should be positive: {v=}")
 
         return v
 
