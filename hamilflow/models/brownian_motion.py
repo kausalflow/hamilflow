@@ -29,7 +29,7 @@ class BrownianMotionSystem(BaseModel):
     @classmethod
     def check_sigma_delta_t_non_negative(cls, v: float) -> float:
         if v < 0:
-            raise ValueError(f"Value of sigma and delta_t should be possitive: {v=}")
+            raise ValueError(f"Value of sigma and delta_t should be positive: {v=}")
 
         return v
 
