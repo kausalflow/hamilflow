@@ -3,11 +3,12 @@ from typing import Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, Field, computed_field, field_validator
+import scipy as sp
+from pydantic import BaseModel, computed_field, field_validator
 
 
 class BrownianMotionSystem(BaseModel):
-    """Definition of the Brownian Motion system
+    r"""Definition of the Brownian Motion system
 
     For consistency, we always use
     $\mathbf x$ for displacement, and
@@ -96,6 +97,55 @@ class BrownianMotion:
     2. Contributors to Wikimedia projects. Brownian motion.
         In: Wikipedia [Internet]. 22 Jan 2024 [cited 13 Mar 2024].
         Available: https://en.wikipedia.org/wiki/Brownian_motion
+
+
+    !!! example "1D Brownian Motion"
+
+        The dimsion of our Brownian motion is specified by
+        the dimension of the initial condition.
+
+        To simulate a 1D Browian motion, we define the system and initial condition:
+
+        ```python
+        system = {
+            "sigma": 1,
+            "delta_t": 1,
+        }
+
+        initial_condition = {
+            "x0": 0
+        }
+        ```
+
+        The Brownian motion can be simulated using
+
+        ```python
+        bm = BrownianMotion(system=system, initial_condition=initial_condition)
+
+        bm(n_steps=100)
+        ```
+
+    !!! example "2D Brownian Motion"
+
+        To simulate a 2D Browian motion,
+
+        ```python
+        system = {
+            "sigma": 1,
+            "delta_t": 1,
+        }
+
+        initial_condition = {
+            "x0": [0, 0]
+        }
+
+        bm = BrownianMotion(system=system, initial_condition=initial_condition)
+
+        bm(n_steps=100)
+        ```
+
+    :param system: the Brownian motion system definition
+    :param initial_condition: the initial condition for the simulation
     """
 
     def __init__(
@@ -106,5 +156,50 @@ class BrownianMotion:
         self.system = BrownianMotionSystem.model_validate(system)
         self.initial_condition = BrownianMotionIC.model_validate(initial_condition)
 
-    def __call__(self, n_steps: float) -> pd.DataFrame:
-        self.initial_condition
+    @property
+    def dim(self) -> int:
+        """Dimension of the Brownian motion"""
+        return self.initial_condition.x0.size
+
+    @property
+    def _axis_names(self) -> List[str]:
+        return [f"y_{i}" for i in range(self.dim)]
+
+    def _trajectory(self, n_new_steps: float, seed: float) -> np.ndarray:
+        """The trajectory of the particle.
+
+        We first compute the delta displacement in each step.
+        With the displacement at each step, we perform a cumsum
+        including the initial coordinate to get the displacement at each step.
+
+        :param n_new_steps: number of new steps to simulate, excluding the initial step.
+        :param seed: seed for the random generator.
+        """
+        step_history = sp.stats.norm.rvs(
+            size=(n_new_steps, self.dim) if self.dim > 1 else n_new_steps,
+            scale=self.system.gaussian_scale,
+            random_state=np.random.RandomState(seed=seed),
+        )
+
+        step_history = np.concatenate(
+            (np.expand_dims(self.initial_condition.x0, axis=0), step_history)
+        )
+
+        trajectory = np.cumsum(step_history, axis=0)
+
+        return trajectory
+
+    def __call__(self, n_steps: float, seed: float = 42) -> pd.DataFrame:
+        """Simulate the coordinates of the particle
+
+        :param n_steps: total number of steps to be simulated, including the inital step.
+        :param seed: random generator seed for the stochastic process.
+            Use it to reproduce results.
+        """
+        trajectory = self._trajectory(n_new_steps=n_steps - 1, seed=seed)
+
+        df = pd.DataFrame(trajectory, columns=self._axis_names)
+
+        df["t"] = np.arange(0, n_steps) * self.system.delta_t
+
+        return df
