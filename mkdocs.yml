@@ -84,6 +84,7 @@ nav:
   - "Tutorials":
     - "Introduction": tutorials/index.md
     - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
+    - "Brownian Motion": tutorials/brownian_motion.py
   - References:
     - "Introduction": references/index.md
     - "Models":

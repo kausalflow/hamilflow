@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Union
+from typing import Dict, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -63,6 +63,7 @@ class BrownianMotion:
     $$
 
     References:
+
     1. Brownian motion and random walks. [cited 13 Mar 2024].
         Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html
     2. Contributors to Wikimedia projects. Brownian motion.
@@ -70,8 +71,13 @@ class BrownianMotion:
         Available: https://en.wikipedia.org/wiki/Brownian_motion
     """
 
-    def __init__(self):
-        pass
+    def __init__(
+        self,
+        system: Dict[str, float],
+        initial_condition: Optional[Dict[str, float]] = {},
+    ):
+        self.system = BrownianMotionSystem.model_validate(system)
+        self.initial_condition = BrownianMotionIC.model_validate(initial_condition)
 
     def __call__(self, n_steps: float, delta_t: float) -> pd.DataFrame:
         pass
