@@ -84,8 +84,10 @@ nav:
   - "Tutorials":
     - "Introduction": tutorials/index.md
     - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
+    - "Pendulum": tutorials/pendulum.py
   - References:
     - "Introduction": references/index.md
     - "Models":
       - "Harmonic Oscillator": references/models/harmonic_oscillator.md
+      - "Pendulum": references/models/pendulum.md
   - "Changelog": changelog.md
