@@ -9,18 +9,18 @@ from scipy.special import ellipj, ellipk
 
 
 class PendulumSystem(BaseModel):
-    """The params for the pendulum
+    r"""The params for the pendulum
 
-    :param omega0: frequency parameter in the action
+    :param omega0 (float): $\ometa_0$, frequency parameter in the action
     """
 
     omega0: float = Field(default=2 * math.pi, gt=0)
 
 
 class PendulumIC(BaseModel):
-    """The initial condition for a pendulum
+    r"""The initial condition for a pendulum
 
-    :param theta0: the initial angular displacement
+    :param theta0 (float): $\theta_0$, the initial angular displacement
     """
 
     theta0: float = Field(ge=-math.pi / 2, le=math.pi / 2)
@@ -28,15 +28,15 @@ class PendulumIC(BaseModel):
     @computed_field  # type: ignore[misc]
     @cached_property
     def k(self) -> float:
-        """sin(theta0 / 2)"""
+        r"""$k\coloneqq\sin(\theta_0 / 2)$"""
         return math.sin(self.theta0 / 2)
 
 
 class Pendulum(BaseModel):
     r"""Generate time series data for a pendulum.
 
-    # Action
-    The action for a pendulum is
+    # Lagrangian action
+    The Lagrangian action for a pendulum is
     $$
     S\[\theta(t)\] = \int_{0}^{t_0} \mathbb{d}t
     \left\\{\frac{1}{2} I \dot\theta^2 + U \cos\theta \right\\} \eqqcolon
@@ -89,26 +89,36 @@ class Pendulum(BaseModel):
 
     #     return super().model_post_init(__context)
 
-    @computed_field  # type: ignore[misc]
-    @cached_property
-    def k(self) -> float:
+    @property
+    def omega0(self) -> float:
+        return self.system.omega0
+
+    @property
+    def _k(self) -> float:
         return self.initial_condition.k
 
-    @computed_field  # type: ignore[misc]
-    @cached_property
-    def m(self) -> float:
-        return self.k**2
+    @property
+    def _math_m(self) -> float:
+        return self._k**2
 
     @computed_field  # type: ignore[misc]
     @cached_property
     def period(self) -> float:
-        return ellipk(self.m)
+        """$4K(k) / \omega_0$"""
+        return 4 * ellipk(self._math_m) / self.omega0
 
-    def theta(self, t: ArrayLike) -> ArrayLike:
-        u = self.system.omega0 * t
-        _, cn, dn, _ = ellipj(u, self.m)
+    def _math_u(self, t: ArrayLike) -> np.ndarray[float]:
+        return self.omega0 * np.asarray(t)
 
-        return 2 * np.arcsin(cn / dn * self.k)
+    def u(self, t: ArrayLike) -> np.ndarray:
+        _, _, _, ph = ellipj(self._math_u(t) + ellipk(self._math_m), self._math_m)
+
+        return ph
+
+    def theta(self, t: ArrayLike) -> np.ndarray:
+        _, cn, dn, _ = ellipj(self._math_u(t), self._math_m)
+
+        return 2 * np.arcsin(cn / dn * self._k)
 
     def __call__(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
         time_delta = self.period / n_samples_per_period
