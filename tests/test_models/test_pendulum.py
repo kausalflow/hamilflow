@@ -6,7 +6,7 @@ from hamilflow.models.pendulum import Pendulum, PendulumIC, PendulumSystem
 class TestPendulumSystem:
     def test_omega_range(self) -> None:
         with pytest.raises(ValueError):
-            PendulumSystem(omega=-1)
+            PendulumSystem(omega0=-1)
 
 
 class TestPendulumIC:
