@@ -58,7 +58,7 @@ class BrownianMotionIC(BaseModel):
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(cls, v: Union[float, int, list]) -> float:
+    def check_x0_types(cls, v: Union[float, int, list]) -> np.ndarray:
         if not isinstance(v, (float, int, list)):
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
 
