@@ -22,7 +22,7 @@
 #
 # $$
 # \begin{align}
-# \mathbf x(t + \mathrm dt) &= \mathrm x(t) + \mathcal{N}(\mu=0, \sigma=\sigma \sqrt{\mathrm d t})
+# \mathbf x(t + \mathrm dt) &= \mathbf x(t) + \mathcal{N}(\mu=0, \sigma=\sigma \sqrt{\mathrm d t})
 # \end{align}
 # $$
 #

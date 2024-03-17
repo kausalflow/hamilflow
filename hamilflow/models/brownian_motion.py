@@ -16,7 +16,7 @@ class BrownianMotionSystem(BaseModel):
 
     $$
     \begin{align}
-    \mathbf x(t + \mathrm dt) &= \mathrm x(t) +
+    \mathbf x(t + \mathrm dt) &= \mathbf x(t) +
     \mathcal{N}(\mu=0, \sigma=\sigma \sqrt{\mathrm d t})
     \end{align}
     $$
@@ -77,7 +77,7 @@ class BrownianMotion:
 
     $$
     \begin{align}
-    \mathbf x(t + \mathrm dt) &= \mathrm x(t) +
+    \mathbf x(t + \mathrm dt) &= \mathbf x(t) +
     \mathcal{N}(\mu=0, \sigma=\sigma \sqrt{\mathrm d t})
     \end{align}
     $$
