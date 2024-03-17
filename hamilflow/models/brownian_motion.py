@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 import scipy as sp
-from pydantic import BaseModel, computed_field, field_validator
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class BrownianMotionSystem(BaseModel):
@@ -34,8 +34,8 @@ class BrownianMotionSystem(BaseModel):
     :param delta_t: time granunality of the motion
     """
 
-    sigma: float
-    delta_t: float = 1
+    sigma: float = Field(ge=0)
+    delta_t: float = Field(ge=0, default=1.0)
 
     @computed_field  # type: ignore[misc]
     @cached_property
@@ -44,14 +44,6 @@ class BrownianMotionSystem(BaseModel):
         in Brownian motion
         """
         return self.sigma**2 * self.delta_t
-
-    @field_validator("sigma", "delta_t")
-    @classmethod
-    def check_sigma_delta_t_non_negative(cls, v: float) -> float:
-        if v < 0:
-            raise ValueError(f"Value of sigma and delta_t should be positive: {v=}")
-
-        return v
 
 
 class BrownianMotionIC(BaseModel):
