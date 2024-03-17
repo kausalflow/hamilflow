@@ -157,7 +157,7 @@ class BrownianMotion:
     def _axis_names(self) -> List[str]:
         return [f"y_{i}" for i in range(self.dim)]
 
-    def _trajectory(self, n_new_steps: float, seed: float) -> np.ndarray:
+    def _trajectory(self, n_new_steps: int, seed: int) -> np.ndarray:
         """The trajectory of the particle.
 
         We first compute the delta displacement in each step.
@@ -181,7 +181,7 @@ class BrownianMotion:
 
         return trajectory
 
-    def __call__(self, n_steps: float, seed: float = 42) -> pd.DataFrame:
+    def __call__(self, n_steps: int, seed: int = 42) -> pd.DataFrame:
         """Simulate the coordinates of the particle
 
         :param n_steps: total number of steps to be simulated, including the inital step.
