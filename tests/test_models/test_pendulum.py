@@ -16,14 +16,20 @@ class TestPendulumSystem:
     @pytest.mark.parametrize("omega0", [-1.0, 0])
     def test_omega0_range(self, omega0: float) -> None:
         with pytest.raises(ValueError):
-            PendulumSystem(omega0=omega0)
+            _ = PendulumSystem(omega0=omega0)
+
+    def test_init(self) -> None:
+        _ = PendulumSystem(1)
 
 
 class TestPendulumIC:
     @pytest.mark.parametrize("theta0", [-2.0, 2.0])
     def test_theta0_range(self, theta0: float) -> None:
         with pytest.raises(ValueError):
-            PendulumIC(theta0=theta0)
+            _ = PendulumIC(theta0=theta0)
+
+    def test_init(self) -> None:
+        _ = PendulumIC(1)
 
     @pytest.mark.parametrize("theta0", _LIS_THETA0)
     def test_k(self, theta0: float) -> None:
@@ -37,22 +43,18 @@ class TestPendulum:
         [(2 * math.pi, math.pi / 3, 1.0731820071493643751)],
     )
     def test_period_static(self, omega0: float, theta0: float, period: float) -> None:
-        ps = PendulumSystem(omega0=omega0)
-        ic = PendulumIC(theta0=theta0)
-        p = Pendulum(system=ps, initial_condition=ic)
+        p = Pendulum(omega0, theta0)
         assert pytest.approx(p.period) == period
 
     @pytest.mark.parametrize("omega0", _LIS_OMEGA0)
     @pytest.mark.parametrize("theta0", _LIS_THETA0)
     @pytest.mark.parametrize("times", _LIS_LIS_TIMES)
     def test_transf(self, omega0: float, theta0: float, times: List[float]) -> None:
-        ps = PendulumSystem(omega0=omega0)
-        ic = PendulumIC(theta0=theta0)
-        p = Pendulum(system=ps, initial_condition=ic)
+        p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)
 
         sin_u = np.sin(p.u(arr_times))
-        theta_terms = np.sin(p.theta(arr_times) / 2) / ic.k
+        theta_terms = np.sin(p.theta(arr_times) / 2) / p._k
         assert_array_almost_equal(theta_terms, sin_u)
         assert_array_almost_equal_nulp(theta_terms, sin_u, 32)
 
@@ -62,9 +64,7 @@ class TestPendulum:
     def test_period_dynamic_theta(
         self, omega0: float, theta0: float, times: List[float]
     ) -> None:
-        ps = PendulumSystem(omega0=omega0)
-        ic = PendulumIC(theta0=theta0)
-        p = Pendulum(system=ps, initial_condition=ic)
+        p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)
         arr_times_1 = arr_times + p.period
 
