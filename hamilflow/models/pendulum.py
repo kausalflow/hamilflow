@@ -92,12 +92,12 @@ class Pendulum:
 
     def __init__(
         self,
-        system: Union[float, Dict[str, float]],
-        initial_condition: Union[float, Dict[str, float]],
+        system: Union[int, float, Dict[str, Union[int, float]]],
+        initial_condition: Union[int, float, Dict[str, Union[int, float]]],
     ) -> None:
-        if isinstance(system, Union[float, int]):
+        if isinstance(system, (float, int)):
             system = {"omega0": system}
-        if isinstance(initial_condition, Union[float, int]):
+        if isinstance(initial_condition, (float, int)):
             initial_condition = {"theta0": initial_condition}
         self.system = PendulumSystem.model_validate(system)
         self.initial_condition = PendulumIC.model_validate(initial_condition)
