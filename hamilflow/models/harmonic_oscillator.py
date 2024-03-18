@@ -9,8 +9,8 @@ from pydantic import BaseModel, computed_field, field_validator
 class HarmonicOscillatorSystem(BaseModel):
     """The params for the harmonic oscillator
 
-    :param omega: angular frequency of the harmonic oscillator
-    :param zeta: damping ratio
+    :cvar omega: angular frequency of the harmonic oscillator
+    :cvar zeta: damping ratio
     """
 
     omega: float
@@ -55,8 +55,8 @@ class HarmonicOscillatorSystem(BaseModel):
 class HarmonicOscillatorIC(BaseModel):
     """The initial condition for a harmonic oscillator
 
-    :param x0: the initial displacement
-    :param v0: the initial velocity
+    :cvar x0: the initial displacement
+    :cvar v0: the initial velocity
     """
 
     x0: float = 1.0
