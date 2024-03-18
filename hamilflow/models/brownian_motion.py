@@ -29,9 +29,9 @@ class BrownianMotionSystem(BaseModel):
         In: Wikipedia [Internet]. 22 Jan 2024 [cited 13 Mar 2024].
         Available: https://en.wikipedia.org/wiki/Brownian_motion
 
-    :param sigma: base standard deviation
+    :cvar sigma: base standard deviation
         to be used to compute the variance
-    :param delta_t: time granunality of the motion
+    :cvar delta_t: time granunality of the motion
     """
 
     sigma: float = Field(ge=0)
@@ -49,7 +49,7 @@ class BrownianMotionSystem(BaseModel):
 class BrownianMotionIC(BaseModel):
     """The initial condition for a Brownian motion
 
-    :param x0: initial displacement of the particle,
+    :cvar x0: initial displacement of the particle,
         the diminsion of this initial condition determines
         the dimension of the model too.
     """
