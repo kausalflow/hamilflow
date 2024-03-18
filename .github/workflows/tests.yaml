@@ -40,4 +40,4 @@ jobs:
           pytest-coverage-path: ./pytest-coverage.txt
           junitxml-path: ./pytest.xml
           create-new-comment: false
-          title: Coverage Report (${{ github.event.pull_request.head.sha || github.sha }}, ${{ github.event.repository.updated_at}})
+          title: Coverage Report (${{ github.event.pull_request.head.sha || github.sha }}, ${{ matrix.python-version }}, ${{ matrix.os }})
