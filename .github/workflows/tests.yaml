@@ -37,6 +37,11 @@ jobs:
         run: poetry install --with docs,tutorial
       - name: Build coverage file
         run: |
-          poetry run pytest --cache-clear --cov=hamilflow tests/ > pytest-coverage.txt
+          poetry run pytest --cache-clear --junitxml=pytest.xml --cov=hamilflow tests/ > pytest-coverage.txt
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@v1.1.51
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
