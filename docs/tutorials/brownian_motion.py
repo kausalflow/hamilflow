@@ -79,7 +79,7 @@ bm_2d = BrownianMotion(
 # We call the model to generate 1000 steps.
 
 # %%
-df_2d = bm_2d(n_steps=100)
+df_2d = bm_2d(n_steps=500)
 
 # %%
 (
@@ -87,7 +87,7 @@ df_2d = bm_2d(n_steps=100)
     .update_traces(
         mode="lines+markers",
         marker=dict(
-            size=2,
+            size=2.5,
         ),
         line=dict(width=1),
     )
