@@ -22,7 +22,7 @@ jobs:
       - name: Setup Poetry
         uses: abatilo/actions-poetry@v2
         with:
-          poetry-version: 1.3.2
+          poetry-version: 1.8.2
       - name: Install Packages
         run: poetry install --with docs,test,tutorial
       - name: Build coverage file
