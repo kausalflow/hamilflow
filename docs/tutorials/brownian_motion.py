@@ -79,18 +79,22 @@ bm_2d = BrownianMotion(
 # We call the model to generate 1000 steps.
 
 # %%
-df_2d = bm_2d(n_steps=1000)
+df_2d = bm_2d(n_steps=100)
 
 # %%
-fig = px.line(
-    df_2d,
-    x="y_0",
-    y="y_1",
-)
-
-fig.update_layout(
-    width=600,
-    height=600,
+(
+    px.scatter(df_2d, x="y_0", y="y_1", color="t")
+    .update_traces(
+        mode="lines+markers",
+        marker=dict(
+            size=2,
+        ),
+        line=dict(width=1),
+    )
+    .update_yaxes(
+        scaleanchor="x",
+        scaleratio=1,
+    )
 )
 
 # %%
