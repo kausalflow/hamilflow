@@ -454,6 +454,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Pendulum
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -463,6 +474,73 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical description
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mathematical description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lagrangian-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lagrangian action
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lagrangian action">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integral-of-motion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integral of motion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coordinate-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coordinate transformation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -673,6 +751,62 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical description
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mathematical description">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lagrangian-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lagrangian action
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lagrangian action">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integral-of-motion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integral of motion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coordinate-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coordinate transformation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1126,18 +1260,61 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1e830562">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e28604b9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="pendulum">Pendulum<a class="anchor-link" href="#pendulum">¶</a></h1><p>In this tutorial, we demo how to generate data of a pendulum.</p>
+<h1 id="pendulum">Pendulum<a class="anchor-link" href="#pendulum">¶</a></h1><h2 id="mathematical-description">Mathematical description<a class="anchor-link" href="#mathematical-description">¶</a></h2><h3 id="lagrangian-action">Lagrangian action<a class="anchor-link" href="#lagrangian-action">¶</a></h3><p>We describe a generic pendulum system by the Lagrangian action
+$$
+S_L[\theta] \equiv \int_{0}^{t_0} \mathbb{d}t\,L(\theta, \dot\theta)
+\eqqcolon I \int_{0}^{t_0} \mathbb{d}t
+\left\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\}\,,
+$$
+where $L$ is the Lagrangian;
+$\theta$ is the angular displacement from the vertical to the
+pendulum as the generalised position;
+$I$ is the <em>inertia parameter</em>,
+$\omega_0$ the <em>frequency parameter</em>, and finally
+$U \coloneqq I\omega_0^2$ is the <em>potential parameter</em>.</p>
+<p>This setup contains both the single and the physical pendula. For a single
+pendulum,
+$$
+I = m l^2\,,\qquad U = mgl\,,
+$$
+where $m$ is the mass of the pendulum, $l$ is the length of the rod or cord,
+and $g$ is the gravitational acceleration.</p>
+<h4 id="integral-of-motion">Integral of motion<a class="anchor-link" href="#integral-of-motion">¶</a></h4><p>The Lagrangian action does not contain time $t$ explicitly.
+As a result, the system is invariant under a variation of time,
+or $\mathbb{\delta}S / \mathbb{\delta}{t} = 0$.
+This gives an integral of motion
+$$
+\dot\theta\frac{\partial L}{\partial \dot\theta} - L
+\equiv E \eqqcolon U \cos\theta_0\,.
+$$
+Substitution gives
+$$
+\left(\frac{\mathbb{d}t}{\mathbb{d}\theta}\right)^2 = \frac{1}{2\omega_0^2}
+\frac{1}{\cos\theta - \cos\theta_0}\,.
+$$</p>
+<h4 id="coordinate-transformation">Coordinate transformation<a class="anchor-link" href="#coordinate-transformation">¶</a></h4><p>For convenience, iIntroduce the coordinate $u$ and the parameter $k$
+$$
+\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{k}\,,\qquad
+k \coloneqq \sin\frac{\theta_0}{2} \in [-1, 1]\,.
+$$
+One arrives at
+$$
+\left(\frac{\mathbb{d}t}{\mathbb{d}u}\right)^2 = \frac{1}{\omega_0^2}
+\frac{1}{1-k^2\sin^2 u}\,.
+$$
+The square root of the second factor on the right-hand side makes an elliptic
+integral.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6e88cacc">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4a98bee4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
