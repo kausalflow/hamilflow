@@ -28,8 +28,8 @@ from hamilflow.models.pendulum import Pendulum
 # %% [markdown]
 # ## Constants
 
-omega0 = 2*math.pi
-theta0 = math.pi/3
+omega0 = 2 * math.pi
+theta0 = math.pi / 3
 
 n_periods = 2**2
 n_samples_per_period = 2**8
@@ -53,10 +53,7 @@ px.line(
     x="t",
     y="x",
     title=r"Simple Harmonic Oscillator ($\omega_0 = {:.4f})$".format(omega0),
-    labels=dict(
-        x=r"Angle $\theta(t)$",
-        t=r"Time $t$"
-    ),
+    labels=dict(x=r"Angle $\theta(t)$", t=r"Time $t$"),
 )
 
 # %% [markdown]
