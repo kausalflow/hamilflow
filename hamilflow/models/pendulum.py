@@ -47,48 +47,18 @@ class PendulumIC(BaseModel):
 class Pendulum:
     r"""Generate time series data for a pendulum.
 
-    # Lagrangian action
-    The Lagrangian action for a pendulum is
+    We describe a generic pendulum system by the Lagrangian action
     $$
-    S\[\theta(t)\] = \int_{0}^{t_0} \mathbb{d}t
-    \left\\{\frac{1}{2} I \dot\theta^2 + U \cos\theta \right\\} \eqqcolon
-    \int_{0}^{t_0} \mathbb{d}t\,L_\text{P}(\theta, \dot\theta)\,,
+    S_L\[\theta\] = I \int_{0}^{t_0} \mathbb{d}t
+    \left\\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\\}\,,
     $$
     where $\theta$ is the angular displacement from the vertical to the
-    pendulum; $I$ is an _inertial parameter_, $U$ is a potential parameter;
-    $L_\text{P}$ is the Lagrangian.
+    pendulum;
+    $I$ is the _inertia parameter_ introduced for dimensional reasons,
+    and $\omega_0$ the _frequency parameter_.
 
-    This setup contains both the single and the physical pendula. For a single
-    pendulum,
-    $$
-    I = m l^2\,,\qquad U = mgl\,,
-    $$
-    where $m$ is the mass of the pendulum, $l$ is the length of the rod or cord,
-    and $g$ is the gravitational acceleration.
+    Details are collected in the tutorial.
     """
-
-    # # Integral of motion
-    # $\mathbb{\delta}S / \mathbb{\delta}{t} = 0$
-    # $$
-    # \dot\theta\frac{\partial L_\text{P}}{\partial \dot\theta} - L_\text{P}
-    # \equiv E = U \cos\theta_0
-    # $$
-
-    # $$
-    # \left(\frac{\mathbb{d}t}{\mathbb{d}\theta}\right)^2 = \frac{1}{2\omega_0^2}
-    # \frac{1}{\cos\theta - \cos\theta_0}
-    # $$
-    # $\omega_0 \coloneqq \sqrt{\frac{U}{I}}$
-
-    # ## Coordinate transformation
-    # $$
-    # \sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}
-    # $$
-
-    # $$
-    # \left(\frac{\mathbb{d}t}{\mathbb{d}u}\right)^2 = \frac{1}{\omega_0^2}
-    # \frac{1}{1-k^2\sin^2 u}
-    # $$
 
     def __init__(
         self,
@@ -163,7 +133,7 @@ class Pendulum:
 
         :param ArrayLike t: time
         :return np.ndarray: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where
-        $\operatorname{cd}{z, k}$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)
+        $\operatorname{cd}{(z, k)}$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)
         """
         _, cn, dn, _ = ellipj(self._math_u(t), self._math_m)
 
