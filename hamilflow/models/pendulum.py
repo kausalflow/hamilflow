@@ -26,7 +26,7 @@ class PendulumIC(BaseModel):
     r"""The initial condition for a pendulum
 
     :param float theta0: $-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}$, the
-    initial angular displacement
+    initial angle
     """
 
     theta0: float = Field(ge=-math.pi / 2, le=math.pi / 2)
@@ -49,11 +49,10 @@ class Pendulum:
 
     We describe a generic pendulum system by the Lagrangian action
     $$
-    S_L\[\theta\] = I \int_{0}^{t_0} \mathbb{d}t
+    S_L\[\theta\] = I \int_{t_0}^{t_1} \mathbb{d}t
     \left\\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\\}\,,
     $$
-    where $\theta$ is the angular displacement from the vertical to the
-    pendulum;
+    where $\theta$ is the _angle_ from the vertical to the pendulum;
     $I$ is the _inertia parameter_ introduced for dimensional reasons,
     and $\omega_0$ the _frequency parameter_.
 
@@ -129,7 +128,7 @@ class Pendulum:
         return ph
 
     def theta(self, t: ArrayLike) -> np.ndarray:
-        r"""Angular coordinate $\theta$.
+        r"""Angle $\theta$.
 
         :param ArrayLike t: time
         :return np.ndarray: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where
