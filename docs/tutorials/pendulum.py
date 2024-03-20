@@ -44,7 +44,7 @@ df_pen = pen(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
 df_pen.head()
 
 # %%
-df_pen.describe()
+# df_pen.describe()
 
 # %% [markdown]
 # ## Plot
