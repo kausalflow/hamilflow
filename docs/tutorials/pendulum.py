@@ -15,21 +15,73 @@
 
 # %% [markdown]
 # # Pendulum
+#
+# In this tutorial, we demonstrate how to generate data of a pendulum, and
+# introduce the mathematics of a pendulum.
 
-# ## Mathematical description
+import math
+
+import plotly.express as px
+
+from hamilflow.models.pendulum import Pendulum
+
+# %% [markdown]
+# ## Constants
+
+omega0 = 2*math.pi
+theta0 = math.pi/3
+
+n_periods = 2**2
+n_samples_per_period = 2**8
+
+# %% [markdown]
+# ## A pendulum
+pen = Pendulum(system=omega0, initial_condition=theta0)
+
+# %% [markdown]
+# ## Data
+df_pen = pen(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
+df_pen.head()
+
+# %%
+df_pen.describe()
+
+# %% [markdown]
+# ## Plot
+px.line(
+    df_pen,
+    x="t",
+    y="x",
+    title=r"Simple Harmonic Oscillator ($\omega_0 = {:.4f})$".format(omega0),
+    labels=dict(
+        x=r"Angle $\theta(t)$",
+        t=r"Time $t$"
+    ),
+)
+
+# %% [markdown]
+# ## TODO
+# - Compare with a harmonic oscillator in terms of frequency and profile
+# - Animate the plot as a single pendulum
+# - Add references to the derivation
+# - Complete the derivation
+
+
+# %% [markdown]
+# ## Mathematical-physical description
 # ### Lagrangian action
 # We describe a generic pendulum system by the Lagrangian action
 # $$
-# S_L[\theta] \equiv \int_{0}^{t_0} \mathbb{d}t\,L(\theta, \dot\theta)
-# \eqqcolon I \int_{0}^{t_0} \mathbb{d}t
+# S_L[\theta] \equiv \int_{t_0}^{t_1} \mathbb{d}t\,L(\theta, \dot\theta)
+# \eqqcolon I \int_{t_0}^{t_1} \mathbb{d}t
 # \left\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\}\,,
 # $$
-# where $L$ is the Lagrangian;
-# $\theta$ is the angular displacement from the vertical to the
-# pendulum as the generalised position;
+# where $L$ is the _Lagrangian_;
+# $\theta$ is the _angle_ from the vertical to the pendulum as the generalised
+# position;
 # $I$ is the _inertia parameter_,
-# $\omega_0$ the _frequency parameter_, and finally
-# $U \coloneqq I\omega_0^2$ is the _potential parameter_.
+# $\omega_0$ the _frequency parameter_,
+# and we also call $U \coloneqq I\omega_0^2$ the _potential parameter_.
 #
 # This setup contains both the single and the physical pendula. For a single
 # pendulum,
@@ -43,18 +95,20 @@
 # The Lagrangian action does not contain time $t$ explicitly.
 # As a result, the system is invariant under a variation of time,
 # or $\mathbb{\delta}S / \mathbb{\delta}{t} = 0$.
-# This gives an integral of motion
+# This gives an _integral of motion_
 # $$
 # \dot\theta\frac{\partial L}{\partial \dot\theta} - L
-# \equiv E \eqqcolon U \cos\theta_0\,.
+# \equiv E \eqqcolon U \cos\theta_0\,,
 # $$
+# where $\theta_0$ is the _initial angle_.
+#
 # Substitution gives
 # $$
 # \left(\frac{\mathbb{d}t}{\mathbb{d}\theta}\right)^2 = \frac{1}{2\omega_0^2}
 # \frac{1}{\cos\theta - \cos\theta_0}\,.
 # $$
 # #### Coordinate transformation
-# For convenience, iIntroduce the coordinate $u$ and the parameter $k$
+# For convenience, introduce the coordinate $u$ and the parameter $k$
 # $$
 # \sin u \coloneqq \frac{\sin\frac{\theta}{2}}{k}\,,\qquad
 # k \coloneqq \sin\frac{\theta_0}{2} \in [-1, 1]\,.
