@@ -975,11 +975,10 @@
       <p>Generate time series data for a pendulum.</p>
 <p>We describe a generic pendulum system by the Lagrangian action
 $$
-S_L[\theta] = I \int_{0}^{t_0} \mathbb{d}t
+S_L[\theta] = I \int_{t_0}^{t_1} \mathbb{d}t
 \left\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\}\,,
 $$
-where <span class="arithmatex">\(\theta\)</span> is the angular displacement from the vertical to the
-pendulum;
+where <span class="arithmatex">\(\theta\)</span> is the <em>angle</em> from the vertical to the pendulum;
 <span class="arithmatex">\(I\)</span> is the <em>inertia parameter</em> introduced for dimensional reasons,
 and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em>.</p>
 <p>Details are collected in the tutorial.</p>
@@ -1085,17 +1084,15 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pendulum</span><span class="p">:</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Pendulum</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a pendulum.</span>
 
 <span class="sd">    We describe a generic pendulum system by the Lagrangian action</span>
 <span class="sd">    $$</span>
-<span class="sd">    S_L\[\theta\] = I \int_{0}^{t_0} \mathbb{d}t</span>
+<span class="sd">    S_L\[\theta\] = I \int_{t_0}^{t_1} \mathbb{d}t</span>
 <span class="sd">    \left\\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\\}\,,</span>
 <span class="sd">    $$</span>
-<span class="sd">    where $\theta$ is the angular displacement from the vertical to the</span>
-<span class="sd">    pendulum;</span>
+<span class="sd">    where $\theta$ is the _angle_ from the vertical to the pendulum;</span>
 <span class="sd">    $I$ is the _inertia parameter_ introduced for dimensional reasons,</span>
 <span class="sd">    and $\omega_0$ the _frequency parameter_.</span>
 
@@ -1171,7 +1168,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
         <span class="k">return</span> <span class="n">ph</span>
 
     <span class="k">def</span> <span class="nf">theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Angular coordinate $\theta$.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Angle $\theta$.</span>
 
 <span class="sd">        :param ArrayLike t: time</span>
 <span class="sd">        :return np.ndarray: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where</span>
@@ -1329,7 +1326,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 
   <div class="doc doc-contents ">
   
-      <p>Angular coordinate <span class="arithmatex">\(\theta\)</span>.</p>
+      <p>Angle <span class="arithmatex">\(\theta\)</span>.</p>
 
 
 
@@ -1387,7 +1384,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/pendulum.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
+<span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
@@ -1395,9 +1393,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Angular coordinate $\theta$.</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Angle $\theta$.</span>
 
 <span class="sd">    :param ArrayLike t: time</span>
 <span class="sd">    :return np.ndarray: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where</span>
@@ -1483,7 +1480,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/pendulum.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
+<span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
@@ -1492,8 +1490,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The convenient generalised coordinate $u$.</span>
 
 <span class="sd">    :param ArrayLike t: time</span>
@@ -1557,7 +1554,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
           </td>
           <td>
             <div class="doc-md-description">
-              <p><span class="arithmatex">\(-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}\)</span>, the initial angular displacement</p>
+              <p><span class="arithmatex">\(-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}\)</span>, the initial angle</p>
             </div>
           </td>
           <td>
@@ -1592,7 +1589,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The initial condition for a pendulum</span>
 
 <span class="sd">    :param float theta0: $-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}$, the</span>
-<span class="sd">    initial angular displacement</span>
+<span class="sd">    initial angle</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">theta0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=-</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>

@@ -491,13 +491,58 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#mathematical-description" class="md-nav__link">
+  <a href="#constants" class="md-nav__link">
     <span class="md-ellipsis">
-      Mathematical description
+      Constants
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Mathematical description">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-pendulum" class="md-nav__link">
+    <span class="md-ellipsis">
+      A pendulum
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plot
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#todo" class="md-nav__link">
+    <span class="md-ellipsis">
+      TODO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-physical-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical-physical description
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mathematical-physical description">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -759,13 +804,58 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#mathematical-description" class="md-nav__link">
+  <a href="#constants" class="md-nav__link">
     <span class="md-ellipsis">
-      Mathematical description
+      Constants
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Mathematical description">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-pendulum" class="md-nav__link">
+    <span class="md-ellipsis">
+      A pendulum
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plot
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#todo" class="md-nav__link">
+    <span class="md-ellipsis">
+      TODO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-physical-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical-physical description
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mathematical-physical description">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1260,24 +1350,136 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e28604b9">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e7b63852">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="pendulum">Pendulum<a class="anchor-link" href="#pendulum">¶</a></h1><h2 id="mathematical-description">Mathematical description<a class="anchor-link" href="#mathematical-description">¶</a></h2><h3 id="lagrangian-action">Lagrangian action<a class="anchor-link" href="#lagrangian-action">¶</a></h3><p>We describe a generic pendulum system by the Lagrangian action
+<h1 id="pendulum">Pendulum<a class="anchor-link" href="#pendulum">¶</a></h1><p>In this tutorial, we demonstrate how to generate data of a pendulum, and
+introduce the mathematics of a pendulum.</p>
+<p>import math</p>
+<p>import plotly.express as px</p>
+<p>from hamilflow.models.pendulum import Pendulum</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=115e58a1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="constants">Constants<a class="anchor-link" href="#constants">¶</a></h2><p>omega0 = 2 * math.pi
+theta0 = math.pi / 3</p>
+<p>n_periods = 2<strong>2
+n_samples_per_period = 2</strong>8</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=892d8c29">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="a-pendulum">A pendulum<a class="anchor-link" href="#a-pendulum">¶</a></h2><p>pen = Pendulum(system=omega0, initial_condition=theta0)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a8a828ac">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="data">Data<a class="anchor-link" href="#data">¶</a></h2><p>df_pen = pen(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
+df_pen.head()</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=25f3bdda">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy for="cell-1">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># df_pen.describe()</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-1"># df_pen.describe()</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5f19dd10">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="plot">Plot<a class="anchor-link" href="#plot">¶</a></h2><p>px.line(
+df_pen,
+x="t",
+y="x",
+title=r"Simple Harmonic Oscillator ($\omega_0 = {:.4f})$".format(omega0),
+labels=dict(x=r"Angle $\theta(t)$", t=r"Time $t$"),
+)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a3b416b2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="todo">TODO<a class="anchor-link" href="#todo">¶</a></h2><ul>
+<li>Compare with a harmonic oscillator in terms of frequency and profile</li>
+<li>Animate the plot as a single pendulum</li>
+<li>Add references to the derivation</li>
+<li>Complete the derivation</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b4913ca0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="mathematical-physical-description">Mathematical-physical description<a class="anchor-link" href="#mathematical-physical-description">¶</a></h2><h3 id="lagrangian-action">Lagrangian action<a class="anchor-link" href="#lagrangian-action">¶</a></h3><p>We describe a generic pendulum system by the Lagrangian action
 $$
-S_L[\theta] \equiv \int_{0}^{t_0} \mathbb{d}t\,L(\theta, \dot\theta)
-\eqqcolon I \int_{0}^{t_0} \mathbb{d}t
+S_L[\theta] \equiv \int_{t_0}^{t_1} \mathbb{d}t\,L(\theta, \dot\theta)
+\eqqcolon I \int_{t_0}^{t_1} \mathbb{d}t
 \left\{\frac{1}{2} \dot\theta^2 + \omega_0^2 \cos\theta \right\}\,,
 $$
-where $L$ is the Lagrangian;
-$\theta$ is the angular displacement from the vertical to the
-pendulum as the generalised position;
+where $L$ is the <em>Lagrangian</em>;
+$\theta$ is the <em>angle</em> from the vertical to the pendulum as the generalised
+position;
 $I$ is the <em>inertia parameter</em>,
-$\omega_0$ the <em>frequency parameter</em>, and finally
-$U \coloneqq I\omega_0^2$ is the <em>potential parameter</em>.</p>
+$\omega_0$ the <em>frequency parameter</em>,
+and we also call $U \coloneqq I\omega_0^2$ the <em>potential parameter</em>.</p>
 <p>This setup contains both the single and the physical pendula. For a single
 pendulum,
 $$
@@ -1288,17 +1490,18 @@ and $g$ is the gravitational acceleration.</p>
 <h4 id="integral-of-motion">Integral of motion<a class="anchor-link" href="#integral-of-motion">¶</a></h4><p>The Lagrangian action does not contain time $t$ explicitly.
 As a result, the system is invariant under a variation of time,
 or $\mathbb{\delta}S / \mathbb{\delta}{t} = 0$.
-This gives an integral of motion
+This gives an <em>integral of motion</em>
 $$
 \dot\theta\frac{\partial L}{\partial \dot\theta} - L
-\equiv E \eqqcolon U \cos\theta_0\,.
+\equiv E \eqqcolon U \cos\theta_0\,,
 $$
-Substitution gives
+where $\theta_0$ is the <em>initial angle</em>.</p>
+<p>Substitution gives
 $$
 \left(\frac{\mathbb{d}t}{\mathbb{d}\theta}\right)^2 = \frac{1}{2\omega_0^2}
 \frac{1}{\cos\theta - \cos\theta_0}\,.
 $$</p>
-<h4 id="coordinate-transformation">Coordinate transformation<a class="anchor-link" href="#coordinate-transformation">¶</a></h4><p>For convenience, iIntroduce the coordinate $u$ and the parameter $k$
+<h4 id="coordinate-transformation">Coordinate transformation<a class="anchor-link" href="#coordinate-transformation">¶</a></h4><p>For convenience, introduce the coordinate $u$ and the parameter $k$
 $$
 \sin u \coloneqq \frac{\sin\frac{\theta}{2}}{k}\,,\qquad
 k \coloneqq \sin\frac{\theta_0}{2} \in [-1, 1]\,.
@@ -1314,7 +1517,7 @@ integral.</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4a98bee4">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4cf34b0f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
