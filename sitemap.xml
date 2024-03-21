@@ -16,12 +16,22 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/brownian_motion/</loc>
+         <lastmod>2024-03-21</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kausalflow.github.io/hamilflow/references/models/harmonic_oscillator/</loc>
          <lastmod>2024-03-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://kausalflow.github.io/hamilflow/tutorials/</loc>
+         <lastmod>2024-03-21</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kausalflow.github.io/hamilflow/tutorials/brownian_motion/</loc>
          <lastmod>2024-03-21</lastmod>
          <changefreq>daily</changefreq>
     </url>
