@@ -114,9 +114,9 @@ class Pendulum:
     def _math_u(self, t: ArrayLike) -> np.ndarray[float]:
         return self.omega0 * np.asarray(t)
 
-    # defined by $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$
     def u(self, t: ArrayLike) -> np.ndarray:
-        r"""The convenient generalised coordinate $u$.
+        r"""The convenient generalised coordinate $u$,
+        $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
         :param t: time
         :return: $u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}$, where
