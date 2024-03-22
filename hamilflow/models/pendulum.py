@@ -1,6 +1,6 @@
 import math
 from functools import cached_property
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Union
 
 import numpy as np
 import pandas as pd
@@ -16,7 +16,7 @@ class PendulumSystem(BaseModel):
     parameter
     """
 
-    omega0: float = Field(gt=0)
+    omega0: float = Field(gt=0, frozen=True)
 
     def __init__(self, omega0: float, **kwargs: Any) -> None:
         return super().__init__(omega0=omega0, **kwargs)
@@ -29,7 +29,7 @@ class PendulumIC(BaseModel):
     initial angle
     """
 
-    theta0: float = Field(ge=-math.pi / 2, le=math.pi / 2)
+    theta0: float = Field(ge=-math.pi / 2, le=math.pi / 2, frozen=True)
 
     def __init__(self, theta0: float, **kwargs: Any) -> None:
         return super().__init__(theta0=theta0, **kwargs)
