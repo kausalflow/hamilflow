@@ -12,7 +12,7 @@ from scipy.special import ellipj, ellipk
 class PendulumSystem(BaseModel):
     r"""The params for the pendulum
 
-    :param float omega0: $\omega_0 \coloneqq \sqrt{\frac{U}{I}} > 0$, frequency
+    :param omega0: $\omega_0 \coloneqq \sqrt{\frac{U}{I}} > 0$, frequency
     parameter
     """
 
@@ -25,7 +25,7 @@ class PendulumSystem(BaseModel):
 class PendulumIC(BaseModel):
     r"""The initial condition for a pendulum
 
-    :param float theta0: $-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}$, the
+    :param theta0: $-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}$, the
     initial angle
     """
 
@@ -39,7 +39,7 @@ class PendulumIC(BaseModel):
     def k(self) -> float:
         r"""A convenient number
 
-        :return float: $\sin\frac{\theta_0}{2}$
+        :return: $\sin\frac{\theta_0}{2}$
         """
         return math.sin(self.theta0 / 2)
 
@@ -96,7 +96,7 @@ class Pendulum:
     def freq(self) -> float:
         r"""Frequency.
 
-        :return float: $\frac{\pi}{2K(k^2)}\omega_0$, where
+        :return: $\frac{\pi}{2K(k^2)}\omega_0$, where
         $K(m)$ is [Legendre's complete elliptic integral of the first kind](https://dlmf.nist.gov/19.2#E8)
         """
         return math.pi * self.omega0 / (2 * ellipk(self._math_m))
@@ -106,7 +106,7 @@ class Pendulum:
     def period(self) -> float:
         r"""Period.
 
-        :return float: $\frac{4K(k^2)}{\omega_0}$, where
+        :return: $\frac{4K(k^2)}{\omega_0}$, where
         $K(m)$ is [Legendre's complete elliptic integral of the first kind](https://dlmf.nist.gov/19.2#E8)
         """
         return 4 * ellipk(self._math_m) / self.omega0
@@ -118,8 +118,8 @@ class Pendulum:
     def u(self, t: ArrayLike) -> np.ndarray:
         r"""The convenient generalised coordinate $u$.
 
-        :param ArrayLike t: time
-        :return np.ndarray: $u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}$, where
+        :param t: time
+        :return: $u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}$, where
         $\operatorname{am}{x, k}$ is [Jacobi's amplitude function](https://dlmf.nist.gov/22.16#E1),
         $K(m)$ is [Legendre's complete elliptic integral of the first kind](https://dlmf.nist.gov/19.2#E8)
         """
@@ -130,8 +130,8 @@ class Pendulum:
     def theta(self, t: ArrayLike) -> np.ndarray:
         r"""Angle $\theta$.
 
-        :param ArrayLike t: time
-        :return np.ndarray: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where
+        :param t: time
+        :return: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where
         $\operatorname{cd}{(z, k)}$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)
         """
         _, cn, dn, _ = ellipj(self._math_u(t), self._math_m)
