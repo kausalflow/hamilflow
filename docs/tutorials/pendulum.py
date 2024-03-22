@@ -19,6 +19,7 @@
 # In this tutorial, we demonstrate how to generate data of a pendulum, and
 # introduce the mathematics of a pendulum.
 
+# %%
 import math
 
 import plotly.express as px
@@ -28,6 +29,7 @@ from hamilflow.models.pendulum import Pendulum
 # %% [markdown]
 # ## Constants
 
+# %%
 omega0 = 2 * math.pi
 theta0 = math.pi / 3
 
@@ -36,18 +38,24 @@ n_samples_per_period = 2**8
 
 # %% [markdown]
 # ## A pendulum
+
+# %%
 pen = Pendulum(system=omega0, initial_condition=theta0)
 
 # %% [markdown]
 # ## Data
+
+# %%
 df_pen = pen(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
 df_pen.head()
 
 # %%
-# df_pen.describe()
+df_pen.describe()
 
 # %% [markdown]
 # ## Plot
+
+# %%
 px.line(
     df_pen,
     x="t",
@@ -119,4 +127,4 @@ px.line(
 # integral.
 
 # %% [markdown]
-# End of Notebook
+# # End of Notebook
