@@ -141,6 +141,8 @@ class Pendulum:
     def __call__(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
         time_delta = self.period / n_samples_per_period
         time_steps = np.arange(0, n_periods * n_samples_per_period) * time_delta
-        thetas = self.theta(time_steps)
 
-        return pd.DataFrame({"t": time_steps, "x": thetas})
+        thetas = self.theta(time_steps)
+        us = self.u(time_steps)
+
+        return pd.DataFrame(dict(t=time_steps, x=thetas, u=us))
