@@ -10,7 +10,7 @@ from scipy.special import ellipj, ellipk
 
 
 class PendulumSystem(BaseModel):
-    r"""The params for the pendulum
+    r"""The params for the pendulum.
 
     :param omega0: $\omega_0 \coloneqq \sqrt{\frac{U}{I}} > 0$, frequency
     parameter
@@ -23,7 +23,7 @@ class PendulumSystem(BaseModel):
 
 
 class PendulumIC(BaseModel):
-    r"""The initial condition for a pendulum
+    r"""The initial condition for a pendulum.
 
     :param theta0: $-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}$, the
     initial angle
@@ -37,7 +37,7 @@ class PendulumIC(BaseModel):
     @computed_field  # type: ignore[misc]
     @cached_property
     def k(self) -> float:
-        r"""A convenient number
+        r"""A convenient number for elliptic functions.
 
         :return: $\sin\frac{\theta_0}{2}$
         """
@@ -119,8 +119,8 @@ class Pendulum:
         $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
         :param t: time
-        :return: $u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}$, where
-        $\operatorname{am}{x, k}$ is [Jacobi's amplitude function](https://dlmf.nist.gov/22.16#E1),
+        :return: $u(t) = \mathrm{am}\!\big(\omega_0 t + K(k^2), k^2\big)$, where
+        $\mathrm{am}(x, k)$ is [Jacobi's amplitude function](https://dlmf.nist.gov/22.16#E1),
         $K(m)$ is [Legendre's complete elliptic integral of the first kind](https://dlmf.nist.gov/19.2#E8)
         """
         _, _, _, ph = ellipj(self._math_u(t) + ellipk(self._math_m), self._math_m)
@@ -131,8 +131,8 @@ class Pendulum:
         r"""Angle $\theta$.
 
         :param t: time
-        :return: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where
-        $\operatorname{cd}{(z, k)}$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)
+        :return: $\theta(t) = 2\arcsin\!\big(k\cdot\mathrm{cd}(\omega_0 t, k^2)\big)$, where
+        $\mathrm{cd}(z, k)$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)
         """
         _, cn, dn, _ = ellipj(self._math_u(t), self._math_m)
 
