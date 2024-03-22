@@ -66,9 +66,6 @@ plugins:
           options:
             docstring_style: sphinx
             filters:
-      watch:
-        - docs
-        - hamilflow
   - mkdocs-jupyter:
       execute: True
       allow_errors: false
@@ -84,10 +81,12 @@ nav:
   - "Tutorials":
     - "Introduction": tutorials/index.md
     - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
+    - "Brownian Motion": tutorials/brownian_motion.py
     - "Pendulum": tutorials/pendulum.py
   - References:
     - "Introduction": references/index.md
     - "Models":
       - "Harmonic Oscillator": references/models/harmonic_oscillator.md
+      - "Brownian Motion": references/models/brownian_motion.md
       - "Pendulum": references/models/pendulum.md
   - "Changelog": changelog.md
