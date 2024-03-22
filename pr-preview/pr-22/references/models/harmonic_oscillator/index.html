@@ -16,11 +16,11 @@
         <link rel="prev" href="../../">
       
       
-        <link rel="next" href="../pendulum/">
+        <link rel="next" href="../brownian_motion/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.13">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.10ba22f1.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -440,6 +440,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../tutorials/brownian_motion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Brownian Motion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../tutorials/pendulum/" class="md-nav__link">
         
   
@@ -757,6 +778,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brownian_motion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Brownian Motion
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1954,41 +1996,36 @@ e^{-\zeta \omega t},
 
 
 
-  <p><strong>Parameters:</strong></p>
+  <p><strong>Attributes:</strong></p>
   <table>
     <thead>
       <tr>
         <th>Name</th>
         <th>Type</th>
         <th>Description</th>
-        <th>Default</th>
       </tr>
     </thead>
     <tbody>
         <tr>
-          <td><code>x0</code></td>
+          <td><code><span title="hamilflow.models.harmonic_oscillator.HarmonicOscillatorIC.x0">x0</span></code></td>
           <td>
+                <code>float</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>the initial displacement</p>
             </div>
           </td>
-          <td>
-              <em>required</em>
-          </td>
         </tr>
         <tr>
-          <td><code>v0</code></td>
+          <td><code><span title="hamilflow.models.harmonic_oscillator.HarmonicOscillatorIC.v0">v0</span></code></td>
           <td>
+                <code>float</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>the initial velocity</p>
             </div>
-          </td>
-          <td>
-              <em>required</em>
           </td>
         </tr>
     </tbody>
@@ -2007,8 +2044,8 @@ e^{-\zeta \omega t},
 <span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The initial condition for a harmonic oscillator</span>
 
-<span class="sd">    :param x0: the initial displacement</span>
-<span class="sd">    :param v0: the initial velocity</span>
+<span class="sd">    :cvar x0: the initial displacement</span>
+<span class="sd">    :cvar v0: the initial velocity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -2057,41 +2094,36 @@ e^{-\zeta \omega t},
 
 
 
-  <p><strong>Parameters:</strong></p>
+  <p><strong>Attributes:</strong></p>
   <table>
     <thead>
       <tr>
         <th>Name</th>
         <th>Type</th>
         <th>Description</th>
-        <th>Default</th>
       </tr>
     </thead>
     <tbody>
         <tr>
-          <td><code>omega</code></td>
+          <td><code><span title="hamilflow.models.harmonic_oscillator.HarmonicOscillatorSystem.omega">omega</span></code></td>
           <td>
+                <code>float</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>angular frequency of the harmonic oscillator</p>
             </div>
           </td>
-          <td>
-              <em>required</em>
-          </td>
         </tr>
         <tr>
-          <td><code>zeta</code></td>
+          <td><code><span title="hamilflow.models.harmonic_oscillator.HarmonicOscillatorSystem.zeta">zeta</span></code></td>
           <td>
+                <code>float</code>
           </td>
           <td>
             <div class="doc-md-description">
               <p>damping ratio</p>
             </div>
-          </td>
-          <td>
-              <em>required</em>
           </td>
         </tr>
     </tbody>
@@ -2145,8 +2177,8 @@ e^{-\zeta \omega t},
 <span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The params for the harmonic oscillator</span>
 
-<span class="sd">    :param omega: angular frequency of the harmonic oscillator</span>
-<span class="sd">    :param zeta: damping ratio</span>
+<span class="sd">    :cvar omega: angular frequency of the harmonic oscillator</span>
+<span class="sd">    :cvar zeta: damping ratio</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span>
@@ -2333,7 +2365,7 @@ e^{-\zeta \omega t},
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>
       
         <script src="../../../javascripts/mathjax.js"></script>
       
