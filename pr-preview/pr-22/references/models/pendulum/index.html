@@ -1203,8 +1203,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="sd">        $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.</span>
 
 <span class="sd">        :param t: time</span>
-<span class="sd">        :return: $u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}$, where</span>
-<span class="sd">        $\operatorname{am}{x, k}$ is [Jacobi&#39;s amplitude function](https://dlmf.nist.gov/22.16#E1),</span>
+<span class="sd">        :return: $u(t) = \mathrm{am}\!\big(\omega_0 t + K(k^2), k^2\big)$, where</span>
+<span class="sd">        $\mathrm{am}(x, k)$ is [Jacobi&#39;s amplitude function](https://dlmf.nist.gov/22.16#E1),</span>
 <span class="sd">        $K(m)$ is [Legendre&#39;s complete elliptic integral of the first kind](https://dlmf.nist.gov/19.2#E8)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ph</span> <span class="o">=</span> <span class="n">ellipj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_math_u</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">ellipk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_math_m</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_math_m</span><span class="p">)</span>
@@ -1215,8 +1215,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Angle $\theta$.</span>
 
 <span class="sd">        :param t: time</span>
-<span class="sd">        :return: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where</span>
-<span class="sd">        $\operatorname{cd}{(z, k)}$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)</span>
+<span class="sd">        :return: $\theta(t) = 2\arcsin\!\big(k\cdot\mathrm{cd}(\omega_0 t, k^2)\big)$, where</span>
+<span class="sd">        $\mathrm{cd}(z, k)$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ellipj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_math_u</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_math_m</span><span class="p">)</span>
 
@@ -1421,7 +1421,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
           </td>
           <td>
             <div class="doc-md-description">
-              <p><span class="arithmatex">\(\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)\)</span>, where <span class="arithmatex">\(\operatorname{cd}{(z, k)}\)</span> is a <a href="https://dlmf.nist.gov/22.2#E8">Jacobian elliptic function</a></p>
+              <p><span class="arithmatex">\(\theta(t) = 2\arcsin\!\big(k\cdot\mathrm{cd}(\omega_0 t, k^2)\big)\)</span>, where <span class="arithmatex">\(\mathrm{cd}(z, k)\)</span> is a <a href="https://dlmf.nist.gov/22.2#E8">Jacobian elliptic function</a></p>
             </div>
           </td>
         </tr>
@@ -1443,8 +1443,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Angle $\theta$.</span>
 
 <span class="sd">    :param t: time</span>
-<span class="sd">    :return: $\theta(t) = 2\arcsin\big(k\cdot\operatorname{cd}{(\omega_0 t, k^2)}\big)$, where</span>
-<span class="sd">    $\operatorname{cd}{(z, k)}$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)</span>
+<span class="sd">    :return: $\theta(t) = 2\arcsin\!\big(k\cdot\mathrm{cd}(\omega_0 t, k^2)\big)$, where</span>
+<span class="sd">    $\mathrm{cd}(z, k)$ is a [Jacobian elliptic function](https://dlmf.nist.gov/22.2#E8)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ellipj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_math_u</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_math_m</span><span class="p">)</span>
 
@@ -1518,7 +1518,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
           </td>
           <td>
             <div class="doc-md-description">
-              <p><span class="arithmatex">\(u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}\)</span>, where <span class="arithmatex">\(\operatorname{am}{x, k}\)</span> is <a href="https://dlmf.nist.gov/22.16#E1">Jacobi's amplitude function</a>, <span class="arithmatex">\(K(m)\)</span> is <a href="https://dlmf.nist.gov/19.2#E8">Legendre's complete elliptic integral of the first kind</a></p>
+              <p><span class="arithmatex">\(u(t) = \mathrm{am}\!\big(\omega_0 t + K(k^2), k^2\big)\)</span>, where <span class="arithmatex">\(\mathrm{am}(x, k)\)</span> is <a href="https://dlmf.nist.gov/22.16#E1">Jacobi's amplitude function</a>, <span class="arithmatex">\(K(m)\)</span> is <a href="https://dlmf.nist.gov/19.2#E8">Legendre's complete elliptic integral of the first kind</a></p>
             </div>
           </td>
         </tr>
@@ -1543,8 +1543,8 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="sd">    $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.</span>
 
 <span class="sd">    :param t: time</span>
-<span class="sd">    :return: $u(t) = \operatorname{am}{\big(\omega_0 t + K(k^2), k^2\big)}$, where</span>
-<span class="sd">    $\operatorname{am}{x, k}$ is [Jacobi&#39;s amplitude function](https://dlmf.nist.gov/22.16#E1),</span>
+<span class="sd">    :return: $u(t) = \mathrm{am}\!\big(\omega_0 t + K(k^2), k^2\big)$, where</span>
+<span class="sd">    $\mathrm{am}(x, k)$ is [Jacobi&#39;s amplitude function](https://dlmf.nist.gov/22.16#E1),</span>
 <span class="sd">    $K(m)$ is [Legendre&#39;s complete elliptic integral of the first kind](https://dlmf.nist.gov/19.2#E8)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ph</span> <span class="o">=</span> <span class="n">ellipj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_math_u</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">ellipk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_math_m</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_math_m</span><span class="p">)</span>
@@ -1581,7 +1581,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
             Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
-      <p>The initial condition for a pendulum</p>
+      <p>The initial condition for a pendulum.</p>
 
 
 
@@ -1635,7 +1635,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PendulumIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The initial condition for a pendulum</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The initial condition for a pendulum.</span>
 
 <span class="sd">    :param theta0: $-\frac{\pi}{2} \le \theta_0 \le \frac{\pi}{2}$, the</span>
 <span class="sd">    initial angle</span>
@@ -1649,7 +1649,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
     <span class="nd">@computed_field</span>  <span class="c1"># type: ignore[misc]</span>
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">k</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A convenient number</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A convenient number for elliptic functions.</span>
 
 <span class="sd">        :return: $\sin\frac{\theta_0}{2}$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1684,7 +1684,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 
   <div class="doc doc-contents ">
   
-      <p>A convenient number</p>
+      <p>A convenient number for elliptic functions.</p>
 
 
 
@@ -1740,7 +1740,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
             Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
-      <p>The params for the pendulum</p>
+      <p>The params for the pendulum.</p>
 
 
 
@@ -1785,7 +1785,7 @@ and <span class="arithmatex">\(\omega_0\)</span> the <em>frequency parameter</em
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PendulumSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The params for the pendulum</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The params for the pendulum.</span>
 
 <span class="sd">    :param omega0: $\omega_0 \coloneqq \sqrt{\frac{U}{I}} &gt; 0$, frequency</span>
 <span class="sd">    parameter</span>
