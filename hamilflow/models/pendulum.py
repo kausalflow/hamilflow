@@ -1,6 +1,6 @@
 import math
 from functools import cached_property
-from typing import Any, Dict, Union
+from typing import Dict, Union
 
 import numpy as np
 import pandas as pd
@@ -85,7 +85,6 @@ class Pendulum:
     def _math_m(self) -> float:
         return self._k**2
 
-    @computed_field  # type: ignore[misc]
     @cached_property
     def freq(self) -> float:
         r"""Frequency.
@@ -95,7 +94,6 @@ class Pendulum:
         """
         return math.pi * self.omega0 / (2 * ellipk(self._math_m))
 
-    @computed_field  # type: ignore[misc]
     @cached_property
     def period(self) -> float:
         r"""Period.
@@ -108,7 +106,7 @@ class Pendulum:
     def _math_u(self, t: ArrayLike) -> np.ndarray[float]:
         return self.omega0 * np.asarray(t)
 
-    def u(self, t: ArrayLike) -> np.ndarray:
+    def u(self, t: ArrayLike) -> np.ndarray[float]:
         r"""The convenient generalised coordinate $u$,
         $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
@@ -121,7 +119,7 @@ class Pendulum:
 
         return ph
 
-    def theta(self, t: ArrayLike) -> np.ndarray:
+    def theta(self, t: ArrayLike) -> np.ndarray[float]:
         r"""Angle $\theta$.
 
         :param t: time
