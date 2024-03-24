@@ -26,6 +26,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/pendulum/</loc>
+         <lastmod>2024-03-24</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kausalflow.github.io/hamilflow/tutorials/</loc>
          <lastmod>2024-03-24</lastmod>
          <changefreq>daily</changefreq>
@@ -37,6 +42,11 @@
     </url>
     <url>
          <loc>https://kausalflow.github.io/hamilflow/tutorials/harmonic_oscillator/</loc>
+         <lastmod>2024-03-24</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kausalflow.github.io/hamilflow/tutorials/pendulum/</loc>
          <lastmod>2024-03-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
