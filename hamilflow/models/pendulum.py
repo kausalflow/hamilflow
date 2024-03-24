@@ -18,9 +18,6 @@ class PendulumSystem(BaseModel):
 
     omega0: float = Field(gt=0, frozen=True)
 
-    def __init__(self, omega0: float, **kwargs: Any) -> None:
-        return super().__init__(omega0=omega0, **kwargs)
-
 
 class PendulumIC(BaseModel):
     r"""The initial condition for a pendulum.
@@ -30,9 +27,6 @@ class PendulumIC(BaseModel):
     """
 
     theta0: float = Field(ge=-math.pi / 2, le=math.pi / 2, frozen=True)
-
-    def __init__(self, theta0: float, **kwargs: Any) -> None:
-        return super().__init__(theta0=theta0, **kwargs)
 
     @computed_field  # type: ignore[misc]
     @cached_property

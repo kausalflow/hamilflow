@@ -18,18 +18,12 @@ class TestPendulumSystem:
         with pytest.raises(ValueError):
             _ = PendulumSystem(omega0=omega0)
 
-    def test_init(self) -> None:
-        _ = PendulumSystem(1)
-
 
 class TestPendulumIC:
     @pytest.mark.parametrize("theta0", [-2.0, 2.0])
     def test_theta0_range(self, theta0: float) -> None:
         with pytest.raises(ValueError):
             _ = PendulumIC(theta0=theta0)
-
-    def test_init(self) -> None:
-        _ = PendulumIC(1)
 
     @pytest.mark.parametrize("theta0", _LIS_THETA0)
     def test_k(self, theta0: float) -> None:
