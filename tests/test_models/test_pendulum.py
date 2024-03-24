@@ -3,13 +3,25 @@ from typing import List
 
 import numpy as np
 import pytest
-from numpy.testing import assert_array_almost_equal, assert_array_almost_equal_nulp
+from _pytest.fixtures import SubRequest
+from numpy.testing import assert_array_almost_equal
 
 from hamilflow.models.pendulum import Pendulum, PendulumIC, PendulumSystem
 
-_LIS_OMEGA0 = [0.3, 0.6, 1.5]
-_LIS_THETA0 = [-1.5, -0.3, 0.2, 0.4, +1.4]
-_LIS_LIS_TIMES = [[-5.5, 0.0, 0.5, 1.0]]
+
+@pytest.fixture(params=[0.3, 0.6, 1.5])
+def omega0(request: SubRequest):
+    yield request.param
+
+
+@pytest.fixture(params=[-1.5, -0.3, 0.2, 0.4, +1.4])
+def theta0(request):
+    yield request.param
+
+
+@pytest.fixture(params=[[-5.5, 0.0, 0.5, 1.0]])
+def times(request):
+    yield request.param
 
 
 class TestPendulumSystem:
@@ -25,7 +37,6 @@ class TestPendulumIC:
         with pytest.raises(ValueError):
             _ = PendulumIC(theta0=theta0)
 
-    @pytest.mark.parametrize("theta0", _LIS_THETA0)
     def test_k(self, theta0: float) -> None:
         ic = PendulumIC(theta0=theta0)
         assert ic.k == np.sin(ic.theta0 / 2)
@@ -40,9 +51,6 @@ class TestPendulum:
         p = Pendulum(omega0, theta0)
         assert pytest.approx(p.period) == period
 
-    @pytest.mark.parametrize("omega0", _LIS_OMEGA0)
-    @pytest.mark.parametrize("theta0", _LIS_THETA0)
-    @pytest.mark.parametrize("times", _LIS_LIS_TIMES)
     def test_transf(self, omega0: float, theta0: float, times: List[float]) -> None:
         p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)
@@ -52,9 +60,6 @@ class TestPendulum:
         assert_array_almost_equal(theta_terms, sin_u)
         # assert_array_almost_equal_nulp(theta_terms, sin_u, 32)
 
-    @pytest.mark.parametrize("omega0", _LIS_OMEGA0)
-    @pytest.mark.parametrize("theta0", _LIS_THETA0)
-    @pytest.mark.parametrize("times", _LIS_LIS_TIMES)
     def test_period_dynamic_theta(
         self, omega0: float, theta0: float, times: List[float]
     ) -> None:
