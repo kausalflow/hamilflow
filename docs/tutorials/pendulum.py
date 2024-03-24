@@ -103,7 +103,7 @@ px.line(
 # This gives an _integral of motion_
 # $$
 # \dot\theta\frac{\partial L}{\partial \dot\theta} - L
-# \equiv E \eqqcolon U \cos\theta_0\,,
+# \equiv E \eqqcolon I \omega_0^2 \cos\theta_0\,,
 # $$
 # where $\theta_0$ is the _initial angle_.
 #
