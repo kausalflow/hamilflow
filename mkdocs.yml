@@ -1,5 +1,5 @@
 # mkdocs.yml
-site_name: "Hamiltonian Flow"
+site_name: "HamilFlow"
 site_author: ""
 site_description: "Dataset of simple physical systems."
 site_url: "https://kausalflow.github.io/hamilflow"
