@@ -14,18 +14,18 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-    - uses: pre-commit/action@v3.0.0
+    - uses: actions/checkout@v4.1.1
+    - uses: actions/setup-python@v5.0.0
+    - uses: pre-commit/action@v3.0.1
   deploy-preview:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.1.1
+      - uses: actions/setup-python@v5.0.0
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - name: Setup Poetry
-        uses: abatilo/actions-poetry@v3
+        uses: abatilo/actions-poetry@v3.0.0
         with:
           poetry-version: 1.8.2
       - name: Install Packages
@@ -34,6 +34,6 @@ jobs:
       - name: Build Docs
         run: poetry run mkdocs build
       - name: Deploy preview
-        uses: rossjrw/pr-preview-action@v1
+        uses: rossjrw/pr-preview-action@v1.4.7
         with:
           source-dir: ./site/
