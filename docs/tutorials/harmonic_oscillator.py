@@ -22,7 +22,10 @@
 import pandas as pd
 import plotly.express as px
 
-from hamilflow.models.harmonic_oscillator import HarmonicOscillator
+from hamilflow.models.harmonic_oscillator import (
+    DampedHarmonicOscillator,
+    SimpleHarmonicOscillator,
+)
 
 # %%
 n_periods = 3
@@ -34,7 +37,7 @@ n_samples_per_period = 200
 # %%
 sho_omega = 0.5
 
-sho = HarmonicOscillator(system={"omega": sho_omega})
+sho = SimpleHarmonicOscillator(system={"omega": sho_omega})
 
 # %%
 df_sho = sho(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
@@ -70,7 +73,7 @@ dfs_dho = []
 for s_name, s in dho_systems.items():
 
     dfs_dho.append(
-        HarmonicOscillator(system=s)(
+        DampedHarmonicOscillator(system=s)(
             n_periods=n_periods, n_samples_per_period=n_samples_per_period
         ).assign(system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})")
     )

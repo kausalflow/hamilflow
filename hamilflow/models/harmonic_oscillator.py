@@ -67,6 +67,9 @@ class HarmonicOscillatorIC(BaseModel):
 class HarmonicOscillatorBase(ABC):
     r"""Base class to generate time series data
     for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
+
+    :param system: all the params that defines the harmonic oscillator.
+    :param initial_condition: the initial condition of the harmonic oscillator.
     """
 
     def __init__(
@@ -107,59 +110,28 @@ class HarmonicOscillatorBase(ABC):
 
 
 class SimpleHarmonicOscillator(HarmonicOscillatorBase):
-    r"""Generate time series data for a [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
-
-    The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]
-
-    $$
-    \frac{\mathrm d x^2}{\mathrm d t^2} + 2\zeta \omega \frac{\mathrm d x}{\mathrm dt} + \omega^2 x = 0,
-    $$
-
-    where $x$ is the displacement, $\omega$ is the angular frequency of an undamped oscillator ($\zeta=0$),
-    and $\zeta$ is the damping ratio.
-
-    [^wiki_ho]: Contributors to Wikimedia projects. Harmonic oscillator.
-                In: Wikipedia [Internet]. 18 Feb 2024 [cited 20 Feb 2024].
-                Available: https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
-
-    [^libretext_ho]: Libretexts. 5.3: General Solution for the Damped Harmonic Oscillator. Libretexts. 13 Apr 2021.
-                    Available: https://t.ly/cWTIo. Accessed 20 Feb 2024.
+    r"""Generate time series data for a
+    [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
 
-    The solution to the above harmonic oscillator is
+    In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
 
     $$
-    x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
-        e^{-\zeta \omega t},
+    \begin{align}
+    F &= - k x \\
+    F &= m a
+    \end{align}
     $$
 
-    where
+    The mass behaves like a simple harmonic oscillator.
+
+    In general, the solution to a simple harmonic oscillator is
 
     $$
-    \Omega = \omega\sqrt{ 1 - \zeta^2}.
+    x(t) = A \cos(\omega t + \phi),
     $$
 
-
-    !!! example "A Simple Harmonic Oscillator ($\zeta=0$)"
-
-        In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
-
-        $$
-        \begin{align}
-        F &= - k x \\
-        F &= m a
-        \end{align}
-        $$
-
-        The mass behaves like a simple harmonic oscillator.
-
-        In general, the solution to a simple harmonic oscillator is
-
-        $$
-        x(t) = A \cos(\omega t + \phi),
-        $$
-
-        where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
+    where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
 
 
     To use this generator,
@@ -167,15 +139,12 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
     ```python
     params = {"omega": omega}
 
-    ho = HarmonicOscillator(params=params)
+    ho = SimpleHarmonicOscillator(params=params)
 
     df = ho(n_periods=1, n_samples_per_period=10)
     ```
 
     `df` will be a pandas dataframe with two columns: `t` and `x`.
-
-    :param system: all the params that defines the harmonic oscillator.
-    :param initial_condition: the initial condition of the harmonic oscillator.
     """
 
     def __init__(
@@ -232,35 +201,12 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
     \Omega = \omega\sqrt{ 1 - \zeta^2}.
     $$
 
-
-    !!! example "A Simple Harmonic Oscillator ($\zeta=0$)"
-
-        In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
-
-        $$
-        \begin{align}
-        F &= - k x \\
-        F &= m a
-        \end{align}
-        $$
-
-        The mass behaves like a simple harmonic oscillator.
-
-        In general, the solution to a simple harmonic oscillator is
-
-        $$
-        x(t) = A \cos(\omega t + \phi),
-        $$
-
-        where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
-
-
     To use this generator,
 
     ```python
-    params = {"omega": omega}
+    params = {"omega": omega, "zeta"=0.2}
 
-    ho = HarmonicOscillator(params=params)
+    ho = DampedHarmonicOscillator(params=params)
 
     df = ho(n_periods=1, n_samples_per_period=10)
     ```
@@ -270,6 +216,18 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
     :param system: all the params that defines the harmonic oscillator.
     :param initial_condition: the initial condition of the harmonic oscillator.
     """
+
+    def __init__(
+        self,
+        system: Dict[str, float],
+        initial_condition: Optional[Dict[str, float]] = {},
+    ):
+        super().__init__(system, initial_condition)
+        if self.system.type == "simple":
+            raise ValueError(
+                f"System is not a Damped Harmonic Oscillator: {self.system}\n"
+                f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`."
+            )
 
     def _x_under_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
         r"""Solution to under damped harmonic oscillators:
@@ -343,7 +301,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
     def _x(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-        r"""Solution to simple harmonic oscillators:"""
+        r"""Solution to damped harmonic oscillators."""
         if self.system.type == "under_damped":
             x = self._x_under_damped(t)
         elif self.system.type == "over_damped":
@@ -358,194 +316,194 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         return x
 
 
-class HarmonicOscillator:
-    r"""Generate time series data for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
+# class HarmonicOscillator:
+#     r"""Generate time series data for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
-    The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]
+#     The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]
 
-    $$
-    \frac{\mathrm d x^2}{\mathrm d t^2} + 2\zeta \omega \frac{\mathrm d x}{\mathrm dt} + \omega^2 x = 0,
-    $$
+#     $$
+#     \frac{\mathrm d x^2}{\mathrm d t^2} + 2\zeta \omega \frac{\mathrm d x}{\mathrm dt} + \omega^2 x = 0,
+#     $$
 
-    where $x$ is the displacement, $\omega$ is the angular frequency of an undamped oscillator ($\zeta=0$),
-    and $\zeta$ is the damping ratio.
+#     where $x$ is the displacement, $\omega$ is the angular frequency of an undamped oscillator ($\zeta=0$),
+#     and $\zeta$ is the damping ratio.
 
-    [^wiki_ho]: Contributors to Wikimedia projects. Harmonic oscillator.
-                In: Wikipedia [Internet]. 18 Feb 2024 [cited 20 Feb 2024].
-                Available: https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
+#     [^wiki_ho]: Contributors to Wikimedia projects. Harmonic oscillator.
+#                 In: Wikipedia [Internet]. 18 Feb 2024 [cited 20 Feb 2024].
+#                 Available: https://en.wikipedia.org/wiki/Harmonic_oscillator#Damped_harmonic_oscillator
 
-    [^libretext_ho]: Libretexts. 5.3: General Solution for the Damped Harmonic Oscillator. Libretexts. 13 Apr 2021.
-                    Available: https://t.ly/cWTIo. Accessed 20 Feb 2024.
-
-
-    The solution to the above harmonic oscillator is
-
-    $$
-    x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
-        e^{-\zeta \omega t},
-    $$
-
-    where
-
-    $$
-    \Omega = \omega\sqrt{ 1 - \zeta^2}.
-    $$
+#     [^libretext_ho]: Libretexts. 5.3: General Solution for the Damped Harmonic Oscillator. Libretexts. 13 Apr 2021.
+#                     Available: https://t.ly/cWTIo. Accessed 20 Feb 2024.
 
 
-    !!! example "A Simple Harmonic Oscillator ($\zeta=0$)"
+#     The solution to the above harmonic oscillator is
 
-        In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
+#     $$
+#     x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
+#         e^{-\zeta \omega t},
+#     $$
 
-        $$
-        \begin{align}
-        F &= - k x \\
-        F &= m a
-        \end{align}
-        $$
+#     where
 
-        The mass behaves like a simple harmonic oscillator.
-
-        In general, the solution to a simple harmonic oscillator is
-
-        $$
-        x(t) = A \cos(\omega t + \phi),
-        $$
-
-        where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
+#     $$
+#     \Omega = \omega\sqrt{ 1 - \zeta^2}.
+#     $$
 
 
-    To use this generator,
+#     !!! example "A Simple Harmonic Oscillator ($\zeta=0$)"
 
-    ```python
-    params = {"omega": omega}
+#         In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
 
-    ho = HarmonicOscillator(params=params)
+#         $$
+#         \begin{align}
+#         F &= - k x \\
+#         F &= m a
+#         \end{align}
+#         $$
 
-    df = ho(n_periods=1, n_samples_per_period=10)
-    ```
+#         The mass behaves like a simple harmonic oscillator.
 
-    `df` will be a pandas dataframe with two columns: `t` and `x`.
+#         In general, the solution to a simple harmonic oscillator is
 
-    :param system: all the params that defines the harmonic oscillator.
-    :param initial_condition: the initial condition of the harmonic oscillator.
-    """
+#         $$
+#         x(t) = A \cos(\omega t + \phi),
+#         $$
 
-    def __init__(
-        self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
-    ):
-        self.system = HarmonicOscillatorSystem.model_validate(system)
-        self.initial_condition = HarmonicOscillatorIC.model_validate(initial_condition)
+#         where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
 
-    @cached_property
-    def definition(self) -> Dict[str, float]:
-        """model params and initial conditions defined as a dictionary."""
-        return {
-            "system": self.system.model_dump(),
-            "initial_condition": self.initial_condition.model_dump(),
-        }
 
-    def _x_simple(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-        r"""Solution to simple harmonic oscillators:
+#     To use this generator,
 
-        $$
-        x(t) = x_0 \cos(\omega t).
-        $$
-        """
-        return self.initial_condition.x0 * np.cos(self.system.omega * t)
+#     ```python
+#     params = {"omega": omega}
 
-    def _x_under_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-        r"""Solution to under damped harmonic oscillators:
+#     ho = HarmonicOscillator(params=params)
 
-        $$
-        x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
-        e^{-\zeta \omega t},
-        $$
+#     df = ho(n_periods=1, n_samples_per_period=10)
+#     ```
 
-        where
+#     `df` will be a pandas dataframe with two columns: `t` and `x`.
 
-        $$
-        \Omega = \omega\sqrt{ 1 - \zeta^2}.
-        $$
-        """
-        omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
-        return (
-            self.initial_condition.x0 * np.cos(omega_damp * t)
-            + (
-                self.system.zeta * self.system.omega * self.initial_condition.x0
-                + self.initial_condition.v0
-            )
-            / omega_damp
-            * np.sin(omega_damp * t)
-        ) * np.exp(-self.system.zeta * self.system.omega * t)
+#     :param system: all the params that defines the harmonic oscillator.
+#     :param initial_condition: the initial condition of the harmonic oscillator.
+#     """
 
-    def _x_critical_damped(
-        self, t: Union[float, np.ndarray]
-    ) -> Union[float, np.ndarray]:
-        r"""Solution to critical damped harmonic oscillators:
+#     def __init__(
+#         self,
+#         system: Dict[str, float],
+#         initial_condition: Optional[Dict[str, float]] = {},
+#     ):
+#         self.system = HarmonicOscillatorSystem.model_validate(system)
+#         self.initial_condition = HarmonicOscillatorIC.model_validate(initial_condition)
 
-        $$
-        x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
-        e^{-\zeta \omega t},
-        $$
+#     @cached_property
+#     def definition(self) -> Dict[str, float]:
+#         """model params and initial conditions defined as a dictionary."""
+#         return {
+#             "system": self.system.model_dump(),
+#             "initial_condition": self.initial_condition.model_dump(),
+#         }
 
-        where
+#     def _x_simple(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+#         r"""Solution to simple harmonic oscillators:
 
-        $$
-        \Omega = \omega\sqrt{ 1 - \zeta^2}.
-        $$
-        """
-        return self.initial_condition.x0 * np.exp(
-            -self.system.zeta * self.system.omega * t
-        )
+#         $$
+#         x(t) = x_0 \cos(\omega t).
+#         $$
+#         """
+#         return self.initial_condition.x0 * np.cos(self.system.omega * t)
 
-    def _x_over_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-        r"""Solution to over harmonic oscillators:
+#     def _x_under_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+#         r"""Solution to under damped harmonic oscillators:
 
-        $$
-        x(t) = \left( x_0 \cosh(\Gamma t) + \frac{\zeta \omega x_0 + v_0}{\Gamma} \sinh(\Gamma t) \right)
-        e^{-\zeta \omega t},
-        $$
+#         $$
+#         x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
+#         e^{-\zeta \omega t},
+#         $$
 
-        where
+#         where
 
-        $$
-        \Gamma = \omega\sqrt{ \zeta^2 - 1 }.
-        $$
-        """
-        gamma_damp = self.system.omega * np.sqrt(self.system.zeta - 1)
+#         $$
+#         \Omega = \omega\sqrt{ 1 - \zeta^2}.
+#         $$
+#         """
+#         omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
+#         return (
+#             self.initial_condition.x0 * np.cos(omega_damp * t)
+#             + (
+#                 self.system.zeta * self.system.omega * self.initial_condition.x0
+#                 + self.initial_condition.v0
+#             )
+#             / omega_damp
+#             * np.sin(omega_damp * t)
+#         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-        return (
-            self.initial_condition.x0 * np.cosh(gamma_damp * t)
-            + (
-                self.system.zeta * self.system.omega * self.initial_condition.x0
-                + self.initial_condition.v0
-            )
-            / gamma_damp
-            * np.sinh(gamma_damp * t)
-        ) * np.exp(-self.system.zeta * self.system.omega * t)
+#     def _x_critical_damped(
+#         self, t: Union[float, np.ndarray]
+#     ) -> Union[float, np.ndarray]:
+#         r"""Solution to critical damped harmonic oscillators:
 
-    def __call__(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
-        """Generate time series data for the harmonic oscillator.
+#         $$
+#         x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
+#         e^{-\zeta \omega t},
+#         $$
 
-        Returns a list of floats representing the displacement at each time step.
+#         where
 
-        :param n_periods: Number of periods to generate.
-        :param n_samples_per_period: Number of samples per period.
-        """
-        time_delta = self.system.period / n_samples_per_period
-        time_steps = np.arange(0, n_periods * n_samples_per_period) * time_delta
+#         $$
+#         \Omega = \omega\sqrt{ 1 - \zeta^2}.
+#         $$
+#         """
+#         return self.initial_condition.x0 * np.exp(
+#             -self.system.zeta * self.system.omega * t
+#         )
 
-        if self.system.type == "simple":
-            data = self._x_simple(time_steps)
-        elif self.system.type == "under_damped":
-            data = self._x_under_damped(time_steps)
-        elif self.system.type == "over_damped":
-            data = self._x_over_damped(time_steps)
-        elif self.system.type == "critical_damped":
-            data = self._x_critical_damped(time_steps)
-        else:
-            raise ValueError(f"system type is not defined: {self.system.type}")
+#     def _x_over_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+#         r"""Solution to over harmonic oscillators:
 
-        return pd.DataFrame({"t": time_steps, "x": data})
+#         $$
+#         x(t) = \left( x_0 \cosh(\Gamma t) + \frac{\zeta \omega x_0 + v_0}{\Gamma} \sinh(\Gamma t) \right)
+#         e^{-\zeta \omega t},
+#         $$
+
+#         where
+
+#         $$
+#         \Gamma = \omega\sqrt{ \zeta^2 - 1 }.
+#         $$
+#         """
+#         gamma_damp = self.system.omega * np.sqrt(self.system.zeta - 1)
+
+#         return (
+#             self.initial_condition.x0 * np.cosh(gamma_damp * t)
+#             + (
+#                 self.system.zeta * self.system.omega * self.initial_condition.x0
+#                 + self.initial_condition.v0
+#             )
+#             / gamma_damp
+#             * np.sinh(gamma_damp * t)
+#         ) * np.exp(-self.system.zeta * self.system.omega * t)
+
+#     def __call__(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
+#         """Generate time series data for the harmonic oscillator.
+
+#         Returns a list of floats representing the displacement at each time step.
+
+#         :param n_periods: Number of periods to generate.
+#         :param n_samples_per_period: Number of samples per period.
+#         """
+#         time_delta = self.system.period / n_samples_per_period
+#         time_steps = np.arange(0, n_periods * n_samples_per_period) * time_delta
+
+#         if self.system.type == "simple":
+#             data = self._x_simple(time_steps)
+#         elif self.system.type == "under_damped":
+#             data = self._x_under_damped(time_steps)
+#         elif self.system.type == "over_damped":
+#             data = self._x_over_damped(time_steps)
+#         elif self.system.type == "critical_damped":
+#             data = self._x_critical_damped(time_steps)
+#         else:
+#             raise ValueError(f"system type is not defined: {self.system.type}")
+
+#         return pd.DataFrame({"t": time_steps, "x": data})
