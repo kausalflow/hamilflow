@@ -4,6 +4,7 @@ from typing import Dict, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
+from numpy.typing import ArrayLike
 from pydantic import BaseModel, computed_field, field_validator
 
 
@@ -89,7 +90,7 @@ class HarmonicOscillatorBase(ABC):
         }
 
     @abstractmethod
-    def _x(self, t: np.typing.ArrayLike) -> np.typing.ArrayLike:
+    def _x(self, t: ArrayLike) -> ArrayLike:
         r"""Solution to simple harmonic oscillators."""
         ...
 
@@ -158,7 +159,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
                 f"System is not a Simple Harmonic Oscillator: {self.system}"
             )
 
-    def _x(self, t: np.typing.ArrayLike) -> np.typing.ArrayLike:
+    def _x(self, t: ArrayLike) -> ArrayLike:
         r"""Solution to simple harmonic oscillators:
 
         $$
