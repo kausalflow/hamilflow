@@ -1251,12 +1251,7 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
@@ -1396,7 +1391,12 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 <span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
-<span class="normal">316</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DampedHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DampedHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).</span>
 
 <span class="sd">    The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]</span>
@@ -1574,12 +1574,7 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
 <span class="normal">309</span>
 <span class="normal">310</span>
 <span class="normal">311</span>
@@ -1587,7 +1582,12 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 <span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
-<span class="normal">316</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to damped harmonic oscillators.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;under_damped&quot;</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_under_damped</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
@@ -1632,12 +1632,7 @@ e^{-\zeta \omega t},
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">262</span>
 <span class="normal">263</span>
 <span class="normal">264</span>
 <span class="normal">265</span>
@@ -1650,7 +1645,12 @@ e^{-\zeta \omega t},
 <span class="normal">272</span>
 <span class="normal">273</span>
 <span class="normal">274</span>
-<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x_critical_damped</span><span class="p">(</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x_critical_damped</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to critical damped harmonic oscillators:</span>
@@ -1700,12 +1700,7 @@ e^{-\zeta \omega t},
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
 <span class="normal">285</span>
@@ -1724,7 +1719,12 @@ e^{-\zeta \omega t},
 <span class="normal">298</span>
 <span class="normal">299</span>
 <span class="normal">300</span>
-<span class="normal">301</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x_over_damped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x_over_damped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to over harmonic oscillators:</span>
 
 <span class="sd">    $$</span>
@@ -1780,12 +1780,7 @@ e^{-\zeta \omega t},
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
@@ -1803,7 +1798,12 @@ e^{-\zeta \omega t},
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span>
-<span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x_under_damped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x_under_damped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to under damped harmonic oscillators:</span>
 
 <span class="sd">    $$</span>
@@ -1907,10 +1907,7 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 70</span>
 <span class="normal"> 71</span>
 <span class="normal"> 72</span>
 <span class="normal"> 73</span>
@@ -1949,7 +1946,10 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Base class to generate time series data</span>
 <span class="sd">    for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).</span>
 
@@ -1974,7 +1974,7 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
         <span class="p">}</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to simple harmonic oscillators.&quot;&quot;&quot;</span>
         <span class="o">...</span>
 
@@ -2091,10 +2091,7 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
@@ -2104,7 +2101,10 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_periods</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_samples_per_period</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_periods</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_samples_per_period</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate time series data for the harmonic oscillator.</span>
 
 <span class="sd">    Returns a list of floats representing the displacement at each time step.</span>
@@ -2145,11 +2145,11 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to simple harmonic oscillators.&quot;&quot;&quot;</span>
     <span class="o">...</span>
 </code></pre></div></td></tr></table></div>
@@ -2219,28 +2219,43 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
             </div>
           </td>
         </tr>
+        <tr>
+          <td><code><span title="hamilflow.models.harmonic_oscillator.HarmonicOscillatorIC.phi">phi</span></code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>initial phase</p>
+            </div>
+          </td>
+        </tr>
     </tbody>
   </table>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
-<span class="normal">57</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
-<span class="normal">64</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The initial condition for a harmonic oscillator</span>
 
 <span class="sd">    :cvar x0: the initial displacement</span>
 <span class="sd">    :cvar v0: the initial velocity</span>
+<span class="sd">    :cvar phi: initial phase</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">v0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2322,8 +2337,7 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
-<span class="normal">11</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
@@ -2365,7 +2379,8 @@ for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">harmonic oscil
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
-<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The params for the harmonic oscillator</span>
 
 <span class="sd">    :cvar omega: angular frequency of the harmonic oscillator</span>
@@ -2541,10 +2556,7 @@ x(t) = A \cos(\omega t + \phi),
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
@@ -2597,7 +2609,12 @@ x(t) = A \cos(\omega t + \phi),
 <span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SimpleHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SimpleHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a</span>
 <span class="sd">    [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).</span>
 
@@ -2646,14 +2663,16 @@ x(t) = A \cos(\omega t + \phi),
                 <span class="sa">f</span><span class="s2">&quot;System is not a Simple Harmonic Oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to simple harmonic oscillators:</span>
 
 <span class="sd">        $$</span>
-<span class="sd">        x(t) = x_0 \cos(\omega t).</span>
+<span class="sd">        x(t) = x_0 \cos(\omega t + \phi).</span>
 <span class="sd">        $$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">phi</span>
+        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -2684,26 +2703,30 @@ x(t) = A \cos(\omega t + \phi),
   
       <p>Solution to simple harmonic oscillators:</p>
 <div class="arithmatex">\[
-x(t) = x_0 \cos(\omega t).
+x(t) = x_0 \cos(\omega t + \phi).
 \]</div>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to simple harmonic oscillators:</span>
 
 <span class="sd">    $$</span>
-<span class="sd">    x(t) = x_0 \cos(\omega t).</span>
+<span class="sd">    x(t) = x_0 \cos(\omega t + \phi).</span>
 <span class="sd">    $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">phi</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
