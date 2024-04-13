@@ -89,7 +89,7 @@ class HarmonicOscillatorBase(ABC):
         }
 
     @abstractmethod
-    def _x(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    def _x(self, t: np.typing.ArrayLike) -> np.typing.ArrayLike:
         r"""Solution to simple harmonic oscillators."""
         ...
 
@@ -158,14 +158,16 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
                 f"System is not a Simple Harmonic Oscillator: {self.system}"
             )
 
-    def _x(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    def _x(self, t: np.typing.ArrayLike) -> np.typing.ArrayLike:
         r"""Solution to simple harmonic oscillators:
 
         $$
         x(t) = x_0 \cos(\omega t).
         $$
         """
-        return self.initial_condition.x0 * np.cos(self.system.omega * t)
+        return self.initial_condition.x0 * np.cos(
+            self.system.omega * t + self.initial_condition.phi
+        )
 
 
 class DampedHarmonicOscillator(HarmonicOscillatorBase):
