@@ -59,10 +59,12 @@ class HarmonicOscillatorIC(BaseModel):
 
     :cvar x0: the initial displacement
     :cvar v0: the initial velocity
+    :cvar phi: initial phase
     """
 
     x0: float = 1.0
     v0: float = 0.0
+    phi: float = 0.0
 
 
 class HarmonicOscillatorBase(ABC):
@@ -163,7 +165,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
         r"""Solution to simple harmonic oscillators:
 
         $$
-        x(t) = x_0 \cos(\omega t).
+        x(t) = x_0 \cos(\omega t + \phi).
         $$
         """
         return self.initial_condition.x0 * np.cos(
