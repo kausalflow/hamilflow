@@ -1166,7 +1166,7 @@
             Bases: <code><a class="autorefs autorefs-internal" title="hamilflow.models.harmonic_oscillator.HarmonicOscillatorBase" href="#hamilflow.models.harmonic_oscillator.HarmonicOscillatorBase">HarmonicOscillatorBase</a></code></p>
 
   
-      <p>Generate time series data for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">simple harmonic oscillator</a>.</p>
+      <p>Generate time series data for a <a href="https://en.wikipedia.org/wiki/Harmonic_oscillator">damped harmonic oscillator</a>.</p>
 <p>The equation for a general un-driven harmonic oscillator is<sup id="hamilflow.models.harmonic_oscillator.DampedHarmonicOscillator--fnref:wiki_ho"><a class="footnote-ref" href="#hamilflow.models.harmonic_oscillator.DampedHarmonicOscillator--fn:wiki_ho">1</a></sup><sup id="hamilflow.models.harmonic_oscillator.DampedHarmonicOscillator--fnref:libretext_ho"><a class="footnote-ref" href="#hamilflow.models.harmonic_oscillator.DampedHarmonicOscillator--fn:libretext_ho">2</a></sup></p>
 <div class="arithmatex">\[
 \frac{\mathrm d x^2}{\mathrm d t^2} + 2\zeta \omega \frac{\mathrm d x}{\mathrm dt} + \omega^2 x = 0,
@@ -1397,7 +1397,7 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 <span class="normal">319</span>
 <span class="normal">320</span>
 <span class="normal">321</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DampedHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a [damped harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).</span>
 
 <span class="sd">    The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]</span>
 
