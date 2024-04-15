@@ -174,7 +174,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
 
 
 class DampedHarmonicOscillator(HarmonicOscillatorBase):
-    r"""Generate time series data for a [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
+    r"""Generate time series data for a [damped harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
     The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]
 

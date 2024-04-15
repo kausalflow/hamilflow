@@ -33,6 +33,18 @@ n_samples_per_period = 200
 
 # %% [markdown]
 # ## Simple Harmonic Oscillator
+#
+# For an simple harmonic oscillator, the action of a simple harmonic oscillator is
+#
+# $$S_L[x] = \int_{t_0}^{t_1} \mathbb{d}t \left\{\frac{1}{2} m \dot x^2 - \frac{1}{2} m \omega^2 x^2 \right\}\,,$$
+#
+# where the least action principle leads to the following equation of motion,
+#
+# $$
+# \ddot x + \omega^2 x = 0\,.
+# $$
+#
+# A simple harmonic oscillator is a periodic motion.
 
 # %%
 sho_omega = 0.5
@@ -57,6 +69,14 @@ px.line(
 
 # %% [markdown]
 # ## Damped Harmonic Oscillator
+#
+# A damped harmonic oscillator is a simple harmonic oscillator with damping force that is proportional to its velocity,
+#
+# $$
+# \ddot x + \omega^2 x = - 2\xi\omega \dot x\,.
+# $$
+#
+# In this section, we demonstrate three scenarios of a damped harmonic oscillator.
 
 # %%
 dho_systems = {
