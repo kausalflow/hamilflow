@@ -83,6 +83,7 @@ nav:
     - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
     - "Brownian Motion": tutorials/brownian_motion.py
     - "Pendulum": tutorials/pendulum.py
+    - "Central Force": tutorials/central_force_motion.py
   - References:
     - "Introduction": references/index.md
     - "Models":
