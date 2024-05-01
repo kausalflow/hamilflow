@@ -24,7 +24,7 @@
     
     
       
-        <title>Central Force - HamilFlow</title>
+        <title>Motion in a Central Field - HamilFlow</title>
       
     
     
@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#motion-in-a-central-field" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -107,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Central Force
+              Motion in a Central Field
             
           </span>
         </div>
@@ -488,16 +493,57 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Motion in a Central Field
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Central Force
+    Motion in a Central Field
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#derivations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Derivations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -727,6 +773,25 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#derivations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Derivations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -743,8 +808,6 @@
   
   
 
-
-  <h1>Central Force</h1>
 
 <script>
 (function (global, factory) {
@@ -1182,7 +1245,95 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bd6d5fa1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ae393653">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="motion-in-a-central-field">Motion in a Central Field<a class="anchor-link" href="#motion-in-a-central-field">¶</a></h1><p>In this tutorial, we generate data for objects moving in a central field.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=27e358cb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="derivations">Derivations<a class="anchor-link" href="#derivations">¶</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7edf617a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>In this section, we briefly discuss the derivations of motion in a central field. Please refer to <em>Mechanics: Vol 1</em> by Landau and Lifshitz for more details[^1].</p>
+<p>The Lagrangian for an object in a central field is</p>
+<p>$$
+\mathcal  L = \frac{1}{2} m ({\dot r}^2 _+ r^2 {\dot \phi}^2) - V(r),
+$$</p>
+<p>where $r$ and $\phi$ are the polar coordinates, $m$ is the mass of the object, and $V(r)$ is the potential energy. The equations of motion are</p>
+<p>$$
+\begin{align}
+\frac{\mathrm d r}{\mathrm d t}  &amp;= \sqrt{ \frac{2}{m} (E - V(r)) - \frac{L^2}{m^2 r^2} } \\
+\frac{\mathrm d \phi}{\mathrm d t} &amp;= \frac{L}{m r^2},
+\end{align}
+$$</p>
+<p>where $E$ is the total energy and $L$ is the angular momentum. Both $E$ and $L$ are conserved. We obtain the coordinates as a function of time by solving the two equations.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=428d2a3e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>23For a inverse-square force, the potential energy is</p>
+<p>$$
+V(r) = - \frac{\alpha}{r},
+$$</p>
+<p>where $\alpha$ is a constant that specifies the strength of the force. For Newtonian gravity, $\alpha = G m_0$ with $G$ being the gravitational constant.</p>
+<p>First of all, we solve $\phi(r)$,</p>
+<p>$$
+\phi = \cos^{-1}\left( \frac{L/r - m\alpha/L}{2 m E + m \alpha^2/L^2} \right).
+$$</p>
+<p>Define</p>
+<p>$$
+p = \frac{L^2}{m\alpha}
+$$</p>
+<p>and</p>
+<p>$$
+e = \sqrt{ 1 + \frac{2 E L^2}{m \alpha^2}},
+$$</p>
+<p>we rewrite the solution $\phi(r)$ as</p>
+<p>$$
+r = \frac{p}{1 + e \cos{\phi}}.
+$$</p>
+<p>With the above relationship between $r$ and $\phi$, and $\frac{\mathrm d \phi}{\mathrm d} = \frac{L}{mr^2}$, we find that</p>
+<p>$$
+\frac{m\alpha^2}{L^3} \mathrm d t = \frac{1}{(1 + e \cos{\phi})^2} \mathrm d \phi.
+$$</p>
+<p>The integration on the right hand side depends on the domain of $e$.</p>
+<p>$$
+\frac{1}{(1 + e \cos{\phi})^2} \mathrm d \phi = \begin{cases}
+\frac{1}{(1 - e^2)^{3/2}} \left( 2 \tan^{-1} \sqrt{\frac{1 - e}{1 + e}} \tan\frac{\phi}{2} - \frac{e\sqrt{1 - e^2}\sin\phi}{1 + e\cos\phi} \right), &amp; \text{if } e&lt;1 \\
+\frac{1}{2}\tan{\frac{\phi}{2}} + \frac{1}{6}\tan^3{\frac{\phi}{2}}, &amp; \text{if } e=1 \\
+\frac{1}{(e^2 - 1)^{3/2}}\left( \frac{e\sqrt{e^2-1}\sin\phi}{1 + e\cos\phi} - \ln \left( \frac{\sqrt{1 + e} + \sqrt{e-1}\tan\frac{\phi}{2}}{\sqrt{1 + e} - \sqrt{e-1}\tan\frac{\phi}{2} } \right) \right), &amp; \text{if } e&gt; 1.
+\end{cases}
+$$</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1154a22f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1191,30 +1342,27 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dd5301a1">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e8576be5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy for="cell-1">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-1"></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>References:</p>
+<ol>
+<li>Landau LD, Lifshitz EM. Mechanics: Vol 1. 3rd ed. Oxford, England: Butterworth-Heinemann; 1982.</li>
+</ol>
 </div>
 </div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7c5568c6">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 </div>
 </div>
 </div>
