@@ -15,7 +15,7 @@
 #
 
 # %% [markdown]
-# ## Derivations
+# ## Formalism
 
 # %% [markdown]
 # In this section, we briefly discuss the derivations of motion in a central field. Please refer to *Mechanics: Vol 1* by Landau and Lifshitz for more details[^1].
@@ -23,7 +23,7 @@
 # The Lagrangian for an object in a central field is
 #
 # $$
-# \mathcal  L = \frac{1}{2} m ({\dot r}^2 _+ r^2 {\dot \phi}^2) - V(r),
+# \mathcal  L = \frac{1}{2} m ({\dot r}^2 + r^2 {\dot \phi}^2) - V(r),
 # $$
 #
 # where $r$ and $\phi$ are the polar coordinates, $m$ is the mass of the object, and $V(r)$ is the potential energy. The equations of motion are
@@ -39,7 +39,7 @@
 #
 
 # %% [markdown]
-# 23For a inverse-square force, the potential energy is
+# For a inverse-square force, the potential energy is
 #
 # $$
 # V(r) = - \frac{\alpha}{r},
@@ -80,20 +80,23 @@
 # The integration on the right hand side depends on the domain of $e$.
 #
 # $$
-# \frac{1}{(1 + e \cos{\phi})^2} \mathrm d \phi = \begin{cases}
+# \int\frac{1}{(1 + e \cos{\phi})^2} \mathrm d \phi = \begin{cases}
 # \frac{1}{(1 - e^2)^{3/2}} \left( 2 \tan^{-1} \sqrt{\frac{1 - e}{1 + e}} \tan\frac{\phi}{2} - \frac{e\sqrt{1 - e^2}\sin\phi}{1 + e\cos\phi} \right), & \text{if } e<1 \\
 # \frac{1}{2}\tan{\frac{\phi}{2}} + \frac{1}{6}\tan^3{\frac{\phi}{2}}, & \text{if } e=1 \\
 # \frac{1}{(e^2 - 1)^{3/2}}\left( \frac{e\sqrt{e^2-1}\sin\phi}{1 + e\cos\phi} - \ln \left( \frac{\sqrt{1 + e} + \sqrt{e-1}\tan\frac{\phi}{2}}{\sqrt{1 + e} - \sqrt{e-1}\tan\frac{\phi}{2} } \right) \right), & \text{if } e> 1.
 # \end{cases}
 # $$
+#
+# The value of $t(\phi)$ is easily obtained from the above formulae.
 
 # %% [markdown]
-#
+# There exists many numerical methods to solve the Kepler orbits as functions of time, $r(t)$ and $\phi(t)$. For our use case of the solutions, we choose to integrate the equation of motion directly.
 
 # %% [markdown]
 # References:
 #
 # 1. Landau LD, Lifshitz EM. Mechanics: Vol 1. 3rd ed. Oxford, England: Butterworth-Heinemann; 1982.
+# 2. Klioner SA. Basic Celestial Mechanics. arXiv [astro-ph.IM]. 2016. Available: http://arxiv.org/abs/1609.00915
 
 # %% [markdown]
 #
