@@ -1,6 +1,9 @@
 from functools import cached_property
 from typing import Dict, Optional
 
+import numpy as np
+import numpy.typing as npt
+import scipy as sp
 from pydantic import BaseModel, Field
 
 
@@ -86,3 +89,32 @@ class CentralField2D:
         return (
             0.5 * self.system.mass * (v_r_0**2 + r_0**2 * v_phi_0**2) + potential_energy
         )
+
+    def _potential(self, r: npt.ArrayLike) -> npt.ArrayLike:
+        return -1 * self.system.alpha / r
+
+    def drdt(self, t: npt.ArrayLike, r: npt.ArrayLike) -> npt.ArrayLike:
+        return np.sqrt(
+            2 / self.system.mass * (self._energy - self._potential(r))
+            - self._angular_momentum**2 / self.system.mass**2 / r**2
+        )
+
+    def r(self, t: npt.ArrayLike) -> npt.ArrayLike:
+        t_span = t.min(), t.max()
+        sol = sp.integrate.solve_ivp(
+            self.drdt, t_span=t_span, y0=[self.initial_condition.r_0], t_eval=t
+        )
+
+        return sol.y
+
+    def phi(self, t: npt.ArrayLike, r: npt.ArrayLike) -> npt.ArrayLike:
+        return (
+            self.initial_condition.phi_0
+            + self._angular_momentum / self.system.mass / r**2 * t
+        )
+
+    def __call__(self, t: npt.ArrayLike) -> npt.ArrayLike:
+        r = self.r(t)
+        phi = self.phi(t, r)
+
+        return phi, r
