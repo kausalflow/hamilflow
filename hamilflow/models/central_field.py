@@ -3,6 +3,7 @@ from typing import Dict, Optional
 
 import numpy as np
 import numpy.typing as npt
+import pandas as pd
 import scipy as sp
 from pydantic import BaseModel, Field
 
@@ -37,14 +38,14 @@ class CentralField2DIC(BaseModel):
 
     :cvar r_0: the initial radial coordinate
     :cvar phi_0: the initial phase
-    :cvar v_r_0: the initial radial velocity
-    :cvar v_phi_0: the initial phase velocity
+    :cvar drdt_0: the initial radial velocity
+    :cvar dphidt_0: the initial phase velocity
     """
 
     r_0: float = Field(gt=0, default=1.0)
     phi_0: float = Field(ge=0, default=0.0)
-    v_r_0: float = 1.0
-    v_phi_0: float = 1.0
+    drdt_0: float = 1.0
+    dphidt_0: float = 0.0
 
 
 class CentralField2D:
@@ -62,9 +63,13 @@ class CentralField2D:
         self,
         system: Dict[str, float],
         initial_condition: Optional[Dict[str, float]] = {},
+        rtol: float = 1e-6,
+        atol: float = 1e-6,
     ):
         self.system = CentralField2DSystem.model_validate(system)
         self.initial_condition = CentralField2DIC.model_validate(initial_condition)
+        self.rtol = rtol
+        self.atol = atol
 
     @cached_property
     def _angular_momentum(self) -> float:
@@ -74,20 +79,21 @@ class CentralField2D:
         return (
             self.system.mass
             * self.initial_condition.r_0**2
-            * self.initial_condition.v_phi_0
+            * self.initial_condition.dphidt_0
         )
 
     @cached_property
     def _energy(self) -> float:
         """computes the total energy"""
-        v_r_0 = self.initial_condition.v_r_0
-        v_phi_0 = self.initial_condition.v_phi_0
+        drdt_0 = self.initial_condition.drdt_0
+        dphidt_0 = self.initial_condition.dphidt_0
         r_0 = self.initial_condition.r_0
 
-        potential_energy = -1 * self.system.alpha / r_0
+        potential_energy = self._potential(r_0)
 
         return (
-            0.5 * self.system.mass * (v_r_0**2 + r_0**2 * v_phi_0**2) + potential_energy
+            0.5 * self.system.mass * (drdt_0**2 + r_0**2 * dphidt_0**2)
+            + potential_energy
         )
 
     def _potential(self, r: npt.ArrayLike) -> npt.ArrayLike:
@@ -102,10 +108,15 @@ class CentralField2D:
     def r(self, t: npt.ArrayLike) -> npt.ArrayLike:
         t_span = t.min(), t.max()
         sol = sp.integrate.solve_ivp(
-            self.drdt, t_span=t_span, y0=[self.initial_condition.r_0], t_eval=t
+            self.drdt,
+            t_span=t_span,
+            y0=[self.initial_condition.r_0],
+            t_eval=t,
+            rtol=self.rtol,
+            atol=self.atol,
         )
 
-        return sol.y
+        return sol.y[0]
 
     def phi(self, t: npt.ArrayLike, r: npt.ArrayLike) -> npt.ArrayLike:
         return (
@@ -117,4 +128,4 @@ class CentralField2D:
         r = self.r(t)
         phi = self.phi(t, r)
 
-        return phi, r
+        return pd.DataFrame(dict(t=t, r=r, phi=phi))

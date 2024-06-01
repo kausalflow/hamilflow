@@ -5,7 +5,11 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.2
+#   kernelspec:
+#     display_name: .venv
+#     language: python
+#     name: python3
 # ---
 
 # %% [markdown]
@@ -13,6 +17,45 @@
 #
 # In this tutorial, we generate data for objects moving in a central field.
 #
+
+# %% [markdown]
+# ## Usage
+
+# %%
+import numpy as np
+import pandas as pd
+import plotly.express as px
+
+from hamilflow.models.central_field import CentralField2D
+
+# %%
+system = {"alpha": 1.0, "mass": 1.0}
+ic = {"r_0": 1.0, "phi_0": 0.0, "drdt_0": 0.0, "dphidt_0": 0.1}
+
+t = np.linspace(0, 100, 101)
+
+# %%
+cf = CentralField2D(
+    system=system,
+    initial_condition=ic,
+)
+
+df_orbit = cf(t)
+
+df_orbit.head()
+
+
+# %%
+df_orbit.plot.line(x="t", y="r")
+
+# %%
+df_orbit.plot.line(x="phi", y="r")
+
+# %%
+fig = px.line_polar(df_orbit, r="r", theta="phi")
+
+fig.update_polars(angularaxis=dict(thetaunit="radians"))
+fig.show()
 
 # %% [markdown]
 # ## Formalism
@@ -35,7 +78,17 @@
 # \end{align}
 # $$
 #
-# where $E$ is the total energy and $L$ is the angular momentum. Both $E$ and $L$ are conserved. We obtain the coordinates as a function of time by solving the two equations.
+# where $E$ is the total energy and $L$ is the angular momentum,
+#
+# $$
+# \begin{align}
+# E =& \frac{1}{2} m \left(\left(\frac{\mathrm d r}{ \mathrm dt} \right)^2 + r^2 \left( \frac{\mathrm d r}{\mathrm dt} \right)^2\right) + V(r) \\
+# L =& m r^2 \frac{d\phi}{dt}
+# \end{align}
+# $$
+#
+# Both $E$ and $L$ are conserved. We obtain the coordinates as a function of time by solving the two equations.
+#
 #
 
 # %% [markdown]
