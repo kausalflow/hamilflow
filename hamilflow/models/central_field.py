@@ -63,13 +63,9 @@ class CentralField2D:
         self,
         system: Dict[str, float],
         initial_condition: Optional[Dict[str, float]] = {},
-        rtol: float = 1e-6,
-        atol: float = 1e-6,
     ):
         self.system = CentralField2DSystem.model_validate(system)
         self.initial_condition = CentralField2DIC.model_validate(initial_condition)
-        self.rtol = rtol
-        self.atol = atol
 
     @cached_property
     def _angular_momentum(self) -> float:
@@ -112,8 +108,6 @@ class CentralField2D:
             t_span=t_span,
             y0=[self.initial_condition.r_0],
             t_eval=t,
-            rtol=self.rtol,
-            atol=self.atol,
         )
 
         return sol.y[0]
@@ -124,8 +118,35 @@ class CentralField2D:
             + self._angular_momentum / self.system.mass / r**2 * t
         )
 
+    def state_derivative(self, t: npt.ArrayLike, state: npt.ArrayLike) -> npt.ArrayLike:
+        """derivative of the state vector (r, phi).
+
+        :param t: time sequence to be solved at
+        :param state: the state vector (r, phi)
+        """
+        r, _ = state
+        return np.array(
+            [
+                np.sqrt(
+                    2 / self.system.mass * (self._energy - self._potential(r))
+                    - self._angular_momentum**2 / self.system.mass**2 / r**2
+                ),
+                self._angular_momentum / self.system.mass / r**2,
+            ]
+        )
+
+    def state(self, t: npt.ArrayLike) -> npt.ArrayLike:
+        t_span = t.min(), t.max()
+        sol = sp.integrate.solve_ivp(
+            self.state_derivative,
+            t_span=t_span,
+            y0=[self.initial_condition.r_0, self.initial_condition.phi_0],
+            t_eval=t,
+        )
+
+        return sol.y
+
     def __call__(self, t: npt.ArrayLike) -> npt.ArrayLike:
-        r = self.r(t)
-        phi = self.phi(t, r)
+        r, phi = self.state(t)
 
         return pd.DataFrame(dict(t=t, r=r, phi=phi))
