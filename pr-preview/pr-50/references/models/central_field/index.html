@@ -766,6 +766,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hamilflow.models.central_field.CentralField2D.state_derivative" class="md-nav__link">
+    <span class="md-ellipsis">
+      state_derivative
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -891,6 +900,15 @@
   <a href="#hamilflow.models.central_field.CentralField2D._energy" class="md-nav__link">
     <span class="md-ellipsis">
       _energy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hamilflow.models.central_field.CentralField2D.state_derivative" class="md-nav__link">
+    <span class="md-ellipsis">
+      state_derivative
     </span>
   </a>
   
@@ -1024,8 +1042,7 @@
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/central_field.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 50</span>
-<span class="normal"> 51</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 51</span>
 <span class="normal"> 52</span>
 <span class="normal"> 53</span>
 <span class="normal"> 54</span>
@@ -1094,7 +1111,39 @@
 <span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
-<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CentralField2D</span><span class="p">:</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CentralField2D</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Central field motion in two dimensional space.</span>
 
 <span class="sd">    !!! info &quot;Inverse Sqare Law&quot;</span>
@@ -1121,20 +1170,21 @@
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span>
             <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">r_0</span><span class="o">**</span><span class="mi">2</span>
-            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">v_phi_0</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">dphidt_0</span>
         <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;computes the total energy&quot;&quot;&quot;</span>
-        <span class="n">v_r_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">v_r_0</span>
-        <span class="n">v_phi_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">v_phi_0</span>
+        <span class="n">drdt_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">drdt_0</span>
+        <span class="n">dphidt_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">dphidt_0</span>
         <span class="n">r_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">r_0</span>
 
-        <span class="n">potential_energy</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">alpha</span> <span class="o">/</span> <span class="n">r_0</span>
+        <span class="n">potential_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">(</span><span class="n">r_0</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="p">(</span><span class="n">v_r_0</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">r_0</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">v_phi_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">potential_energy</span>
+            <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="p">(</span><span class="n">drdt_0</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">r_0</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dphidt_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">potential_energy</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
@@ -1149,10 +1199,13 @@
     <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
         <span class="n">t_span</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">sol</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">solve_ivp</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">drdt</span><span class="p">,</span> <span class="n">t_span</span><span class="o">=</span><span class="n">t_span</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">r_0</span><span class="p">],</span> <span class="n">t_eval</span><span class="o">=</span><span class="n">t</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drdt</span><span class="p">,</span>
+            <span class="n">t_span</span><span class="o">=</span><span class="n">t_span</span><span class="p">,</span>
+            <span class="n">y0</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">r_0</span><span class="p">],</span>
+            <span class="n">t_eval</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span>
+        <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -1160,11 +1213,38 @@
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angular_momentum</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">/</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">state_derivative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;derivative of the state vector (r, phi).</span>
 
-        <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">r</span>
+<span class="sd">        :param t: time sequence to be solved at</span>
+<span class="sd">        :param state: the state vector (r, phi)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                    <span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_energy</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angular_momentum</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+                <span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_angular_momentum</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">/</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
+        <span class="n">t_span</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">solve_ivp</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state_derivative</span><span class="p">,</span>
+            <span class="n">t_span</span><span class="o">=</span><span class="n">t_span</span><span class="p">,</span>
+            <span class="n">y0</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">r_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">phi_0</span><span class="p">],</span>
+            <span class="n">t_eval</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -1224,6 +1304,104 @@ conserved, it doesn't change through time.</p>
 </div>
 
 
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="hamilflow.models.central_field.CentralField2D.state_derivative" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">state_derivative</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></code>
+
+<a href="#hamilflow.models.central_field.CentralField2D.state_derivative" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>derivative of the state vector (r, phi).</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>t</code></td>
+          <td>
+                <code><span title="numpy.ArrayLike">ArrayLike</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>time sequence to be solved at</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>state</code></td>
+          <td>
+                <code><span title="numpy.ArrayLike">ArrayLike</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>the state vector (r, phi)</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>hamilflow/models/central_field.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">state_derivative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;derivative of the state vector (r, phi).</span>
+
+<span class="sd">    :param t: time sequence to be solved at</span>
+<span class="sd">    :param state: the state vector (r, phi)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_energy</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angular_momentum</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+            <span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_angular_momentum</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span> <span class="o">/</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
 
 
 
@@ -1287,7 +1465,7 @@ conserved, it doesn't change through time.</p>
           </td>
         </tr>
         <tr>
-          <td><code><span title="hamilflow.models.central_field.CentralField2DIC.v_r_0">v_r_0</span></code></td>
+          <td><code><span title="hamilflow.models.central_field.CentralField2DIC.drdt_0">drdt_0</span></code></td>
           <td>
                 <code>float</code>
           </td>
@@ -1298,7 +1476,7 @@ conserved, it doesn't change through time.</p>
           </td>
         </tr>
         <tr>
-          <td><code><span title="hamilflow.models.central_field.CentralField2DIC.v_phi_0">v_phi_0</span></code></td>
+          <td><code><span title="hamilflow.models.central_field.CentralField2DIC.dphidt_0">dphidt_0</span></code></td>
           <td>
                 <code>float</code>
           </td>
@@ -1313,8 +1491,7 @@ conserved, it doesn't change through time.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/central_field.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
-<span class="normal">36</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
@@ -1325,19 +1502,20 @@ conserved, it doesn't change through time.</p>
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
-<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CentralField2DIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">47</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CentralField2DIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The initial condition for a Brownian motion</span>
 
 <span class="sd">    :cvar r_0: the initial radial coordinate</span>
 <span class="sd">    :cvar phi_0: the initial phase</span>
-<span class="sd">    :cvar v_r_0: the initial radial velocity</span>
-<span class="sd">    :cvar v_phi_0: the initial phase velocity</span>
+<span class="sd">    :cvar drdt_0: the initial radial velocity</span>
+<span class="sd">    :cvar dphidt_0: the initial phase velocity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">r_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
     <span class="n">phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-    <span class="n">v_r_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">v_phi_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">drdt_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">dphidt_0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -1430,8 +1608,7 @@ TCB as the unit instead of the large SI values.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/central_field.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
-<span class="normal">11</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
@@ -1452,7 +1629,8 @@ TCB as the unit instead of the large SI values.</p>
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
-<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CentralField2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CentralField2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Definition of the central field system</span>
 
 <span class="sd">    Potential:</span>
