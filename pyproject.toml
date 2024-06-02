@@ -11,7 +11,7 @@ packages = [{include = "hamilflow"}]
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
 numpy = "^1.26.3"
-pandas = ">=2.0.0,<=2.2.0"
+pandas = "^2.2.2"
 pydantic = "^2.6.1"
 loguru = "^0.7.2"
 matplotlib = "^3.8.3"
@@ -36,7 +36,7 @@ plotly = "^5.19.0"
 
 
 [tool.poetry.group.dev.dependencies]
-commitizen = "^3.18.0"
+commitizen = "*"
 
 
 [tool.commitizen]
