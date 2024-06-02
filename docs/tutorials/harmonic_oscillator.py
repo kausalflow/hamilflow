@@ -22,7 +22,10 @@
 import pandas as pd
 import plotly.express as px
 
-from hamilflow.models.harmonic_oscillator import HarmonicOscillator
+from hamilflow.models.harmonic_oscillator import (
+    DampedHarmonicOscillator,
+    SimpleHarmonicOscillator,
+)
 
 # %%
 n_periods = 3
@@ -30,11 +33,23 @@ n_samples_per_period = 200
 
 # %% [markdown]
 # ## Simple Harmonic Oscillator
+#
+# For an simple harmonic oscillator, the action of a simple harmonic oscillator is
+#
+# $$S_L[x] = \int_{t_0}^{t_1} \mathbb{d}t \left\{\frac{1}{2} m \dot x^2 - \frac{1}{2} m \omega^2 x^2 \right\}\,,$$
+#
+# where the least action principle leads to the following equation of motion,
+#
+# $$
+# \ddot x + \omega^2 x = 0\,.
+# $$
+#
+# A simple harmonic oscillator is a periodic motion.
 
 # %%
 sho_omega = 0.5
 
-sho = HarmonicOscillator(system={"omega": sho_omega})
+sho = SimpleHarmonicOscillator(system={"omega": sho_omega})
 
 # %%
 df_sho = sho(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
@@ -54,6 +69,14 @@ px.line(
 
 # %% [markdown]
 # ## Damped Harmonic Oscillator
+#
+# A damped harmonic oscillator is a simple harmonic oscillator with damping force that is proportional to its velocity,
+#
+# $$
+# \ddot x + \omega^2 x = - 2\xi\omega \dot x\,.
+# $$
+#
+# In this section, we demonstrate three scenarios of a damped harmonic oscillator.
 
 # %%
 dho_systems = {
@@ -70,7 +93,7 @@ dfs_dho = []
 for s_name, s in dho_systems.items():
 
     dfs_dho.append(
-        HarmonicOscillator(system=s)(
+        DampedHarmonicOscillator(system=s)(
             n_periods=n_periods, n_samples_per_period=n_samples_per_period
         ).assign(system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})")
     )
