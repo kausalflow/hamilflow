@@ -5,7 +5,9 @@ from typing import Dict, Literal, Optional, Union
 import numpy as np
 import pandas as pd
 from numpy.typing import ArrayLike
-from pydantic import BaseModel, Field, computed_field, field_validator
+from pydantic import BaseModel, computed_field, field_validator
+
+from hamilflow.models.harmonic_oscillator.initial_conditions import HarmonicOscillatorIC
 
 
 class HarmonicOscillatorSystem(BaseModel):
@@ -52,19 +54,6 @@ class HarmonicOscillatorSystem(BaseModel):
             raise ValueError(f"Value of zeta should be positive: {v=}")
 
         return v
-
-
-class HarmonicOscillatorIC(BaseModel):
-    """The initial condition for a harmonic oscillator
-
-    :cvar x0: initial displacement
-    :cvar v0: initial velocity
-    :cvar phi: initial phase
-    """
-
-    x0: float = Field(default=1.0)
-    v0: float = Field(default=0.0)
-    phi: float = Field(default=0.0)
 
 
 class HarmonicOscillatorBase(ABC):
