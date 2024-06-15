@@ -5,7 +5,7 @@ from typing import Dict, Literal, Optional, Union
 import numpy as np
 import pandas as pd
 from numpy.typing import ArrayLike
-from pydantic import BaseModel, computed_field, field_validator
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class HarmonicOscillatorSystem(BaseModel):
@@ -57,14 +57,14 @@ class HarmonicOscillatorSystem(BaseModel):
 class HarmonicOscillatorIC(BaseModel):
     """The initial condition for a harmonic oscillator
 
-    :cvar x0: the initial displacement
-    :cvar v0: the initial velocity
+    :cvar x0: initial displacement
+    :cvar v0: initial velocity
     :cvar phi: initial phase
     """
 
-    x0: float = 1.0
-    v0: float = 0.0
-    phi: float = 0.0
+    x0: float = Field(default=1.0)
+    v0: float = Field(default=0.0)
+    phi: float = Field(default=0.0)
 
 
 class HarmonicOscillatorBase(ABC):
