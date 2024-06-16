@@ -1,5 +1,4 @@
 from functools import cached_property
-from typing import Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -54,11 +53,11 @@ class BrownianMotionIC(BaseModel):
         the dimension of the model too.
     """
 
-    x0: Union[float, int, List[Union[float, int]]] = 1.0
+    x0: float | int | list[float | int] = Field(default=1.0)
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(cls, v: Union[float, int, list]) -> np.ndarray:
+    def check_x0_types(cls, v: float | int | list[float]) -> np.ndarray:
         if not isinstance(v, (float, int, list)):
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
 
@@ -142,9 +141,10 @@ class BrownianMotion:
 
     def __init__(
         self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
+        system: dict[str, float],
+        initial_condition: dict[str, float] | None = None,
     ):
+        initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)
         self.initial_condition = BrownianMotionIC.model_validate(initial_condition)
 
@@ -154,7 +154,7 @@ class BrownianMotion:
         return self.initial_condition.x0.size
 
     @property
-    def _axis_names(self) -> List[str]:
+    def _axis_names(self) -> list[str]:
         return [f"y_{i}" for i in range(self.dim)]
 
     def _trajectory(self, n_new_steps: int, seed: int) -> np.ndarray:

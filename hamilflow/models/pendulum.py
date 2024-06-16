@@ -1,6 +1,5 @@
 import math
 from functools import cached_property
-from typing import Dict, Union
 
 import numpy as np
 import pandas as pd
@@ -55,8 +54,8 @@ class Pendulum:
 
     def __init__(
         self,
-        system: Union[int, float, Dict[str, Union[int, float]]],
-        initial_condition: Union[int, float, Dict[str, Union[int, float]]],
+        system: int | float | dict[str, int | float],
+        initial_condition: int | float | dict[str, int | float],
     ) -> None:
         if isinstance(system, (float, int)):
             system = {"omega0": system}
@@ -66,7 +65,7 @@ class Pendulum:
         self.initial_condition = PendulumIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> Dict[str, float]:
+    def definition(self) -> dict[str, float]:
         """Model params and initial conditions defined as a dictionary."""
         return dict(
             system=self.system.model_dump(),
