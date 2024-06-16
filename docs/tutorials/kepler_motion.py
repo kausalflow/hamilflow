@@ -26,36 +26,13 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
-from hamilflow.models.central_field import CentralField2D
+from hamilflow.models.kepler_motion import CentralField2D
 
 # %%
 system = {"alpha": 1.0, "mass": 1.0}
 ic = {"r_0": 1.0, "phi_0": 0.0, "drdt_0": 0.0, "dphidt_0": 0.1}
 
-t = np.linspace(0, 100, 101)
-
-# %%
-cf = CentralField2D(
-    system=system,
-    initial_condition=ic,
-)
-
-df_orbit = cf(t)
-
-df_orbit.head()
-
-
-# %%
-df_orbit.plot.line(x="t", y="r")
-
-# %%
-df_orbit.plot.line(x="phi", y="r")
-
-# %%
-fig = px.line_polar(df_orbit, r="r", theta="phi")
-
-fig.update_polars(angularaxis=dict(thetaunit="radians"))
-fig.show()
+t = np.linspace(0, 1, 11)
 
 # %% [markdown]
 # ## Formalism

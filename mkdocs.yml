@@ -83,12 +83,12 @@ nav:
     - "Harmonic Oscillator": tutorials/harmonic_oscillator.py
     - "Brownian Motion": tutorials/brownian_motion.py
     - "Pendulum": tutorials/pendulum.py
-    - "Central Force Motion": tutorials/central_force_motion.py
+    - "Kepler Motion": tutorials/kepler_motion.py
   - References:
     - "Introduction": references/index.md
     - "Models":
       - "Harmonic Oscillator": references/models/harmonic_oscillator.md
       - "Brownian Motion": references/models/brownian_motion.md
       - "Pendulum": references/models/pendulum.md
-      - "Central Field": references/models/central_field.md
+      - "Kepler Motion": references/models/kepler_motion.md
   - "Changelog": changelog.md

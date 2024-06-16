@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from hamilflow.models.central_field import (
+from hamilflow.models.kepler_motion import (
     CentralField2D,
     CentralField2DIC,
     CentralField2DSystem,
