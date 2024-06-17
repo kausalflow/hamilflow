@@ -1,5 +1,4 @@
 import math
-from typing import List
 
 import numpy as np
 import pytest
@@ -51,7 +50,7 @@ class TestPendulum:
         p = Pendulum(omega0, theta0)
         assert pytest.approx(p.period) == period
 
-    def test_transf(self, omega0: float, theta0: float, times: List[float]) -> None:
+    def test_transf(self, omega0: float, theta0: float, times: list[float]) -> None:
         p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)
 
@@ -61,7 +60,7 @@ class TestPendulum:
         # assert_array_almost_equal_nulp(theta_terms, sin_u, 32)
 
     def test_period_dynamic_theta(
-        self, omega0: float, theta0: float, times: List[float]
+        self, omega0: float, theta0: float, times: list[float]
     ) -> None:
         p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)

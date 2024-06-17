@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from functools import cached_property
-from typing import Dict, Literal, Optional, Union
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -77,14 +77,15 @@ class HarmonicOscillatorBase(ABC):
 
     def __init__(
         self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
-    ):
+        system: dict[str, float],
+        initial_condition: dict[str, float] | None = None,
+    ) -> None:
+        initial_condition = initial_condition or {}
         self.system = HarmonicOscillatorSystem.model_validate(system)
         self.initial_condition = HarmonicOscillatorIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> Dict[str, float]:
+    def definition(self) -> dict[str, float]:
         """model params and initial conditions defined as a dictionary."""
         return {
             "system": self.system.model_dump(),
@@ -152,9 +153,9 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
 
     def __init__(
         self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
-    ):
+        system: dict[str, float],
+        initial_condition: dict[str, float] | None = None,
+    ) -> None:
         super().__init__(system, initial_condition)
         if self.system.type != "simple":
             raise ValueError(
@@ -224,9 +225,9 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
 
     def __init__(
         self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
-    ):
+        system: dict[str, float],
+        initial_condition: dict[str, float] | None = None,
+    ) -> None:
         super().__init__(system, initial_condition)
         if self.system.type == "simple":
             raise ValueError(
@@ -234,7 +235,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
                 f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`."
             )
 
-    def _x_under_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    def _x_under_damped(self, t: float | np.ndarray) -> float | np.ndarray:
         r"""Solution to under damped harmonic oscillators:
 
         $$
@@ -259,9 +260,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             * np.sin(omega_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-    def _x_critical_damped(
-        self, t: Union[float, np.ndarray]
-    ) -> Union[float, np.ndarray]:
+    def _x_critical_damped(self, t: float | np.ndarray) -> float | np.ndarray:
         r"""Solution to critical damped harmonic oscillators:
 
         $$
@@ -279,7 +278,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             -self.system.zeta * self.system.omega * t
         )
 
-    def _x_over_damped(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    def _x_over_damped(self, t: float | np.ndarray) -> float | np.ndarray:
         r"""Solution to over harmonic oscillators:
 
         $$
@@ -305,7 +304,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             * np.sinh(gamma_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-    def _x(self, t: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    def _x(self, t: float | np.ndarray) -> float | np.ndarray:
         r"""Solution to damped harmonic oscillators."""
         if self.system.type == "under_damped":
             x = self._x_under_damped(t)
