@@ -7,7 +7,7 @@ from numpy.typing import ArrayLike
 from pandas.api.types import is_scalar
 from scipy.fft import ifft
 
-from hamilflow.models.harmonic_oscillator import SimpleHarmonicOscillator
+from ..harmonic_oscillator import SimpleHarmonicOscillator
 
 
 class HarmonicOscillatorsChain:
@@ -55,7 +55,7 @@ class HarmonicOscillatorsChain:
         self.dof = len(initial_conditions)
         self.travelling_waves = [
             SimpleHarmonicOscillator(
-                dict(omega=2 * omega * np.sin(2 * np.pi * k / self.dof)),
+                dict(omega=2 * omega * np.sin(np.pi * k / self.dof)),
                 dict(x0=ic["y0"], phi=ic["phi"]),
             )
             for k, ic in enumerate(initial_conditions)
@@ -81,7 +81,7 @@ class HarmonicOscillatorsChain:
             t = np.asarray([t])
         travelling_waves = np.asarray([tw._x(t) for tw in self.travelling_waves])
         # FIXME this is imaginary
-        original_xs = ifft(travelling_waves, norm="ortho")
+        original_xs = ifft(travelling_waves.T, norm="ortho").T
 
         return original_xs, travelling_waves
 
@@ -103,12 +103,3 @@ class HarmonicOscillatorsChain:
         }
 
         return pd.DataFrame(data, index=t)
-
-
-tester = HarmonicOscillatorsChain(
-    2 * np.pi, [dict(y0=1, phi=0), dict(y0=1, phi=1), dict(y0=1, phi=2)]
-)
-
-print(tester.definition)
-
-print(tester(np.linspace(0, 1, 17)))
