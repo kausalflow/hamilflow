@@ -7,58 +7,41 @@ from numpy.typing import ArrayLike
 from pandas.api.types import is_scalar
 from scipy.fft import ifft
 
-from ..harmonic_oscillator import SimpleHarmonicOscillator
+from ..d0.complex_harmonic_oscillator import SimpleComplexHarmonicOscillator
 
 
 class HarmonicOscillatorsChain:
-    r"""Generate time series data for a
-    [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
-
-
-    In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
-
-    $$
-    \begin{align}
-    F &= - k x \\
-    F &= m a
-    \end{align}
-    $$
-
-    The mass behaves like a simple harmonic oscillator.
-
-    In general, the solution to a simple harmonic oscillator is
-
-    $$
-    x(t) = A \cos(\omega t + \phi),
-    $$
-
-    where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
-
-
-    To use this generator,
-
-    ```python
-    params = {"omega": omega}
-
-    ho = SimpleHarmonicOscillator(params=params)
-
-    df = ho(n_periods=1, n_samples_per_period=10)
-    ```
-
-    `df` will be a pandas dataframe with two columns: `t` and `x`.
+    r"""Generate time series data for a coupled harmonic oscillator chain
+    with periodic boundary condition.
     """
 
     def __init__(
-        self, omega: float, initial_conditions: Sequence[dict[str, float]]
+        self,
+        omega: float,
+        half_initial_conditions: Sequence[dict[str, complex | float | int]],
+        odd_dof: bool,
     ) -> None:
         self.omega = omega
-        self.dof = len(initial_conditions)
+        self.dof = len(half_initial_conditions) + odd_dof
         self.travelling_waves = [
-            SimpleHarmonicOscillator(
+            SimpleComplexHarmonicOscillator(
                 dict(omega=2 * omega * np.sin(np.pi * k / self.dof)),
                 dict(x0=ic["y0"], phi=ic["phi"]),
             )
-            for k, ic in enumerate(initial_conditions)
+            for k, ic in enumerate(half_initial_conditions)
+        ]
+        if odd_dof:
+            duplicate = self.travelling_waves[-1:0:-1]
+        else:
+            if self.travelling_waves[-1].initial_condition.x0.imag != 0:
+                raise ValueError("The amplitude of wave number N // 2 must be real")
+            duplicate = self.travelling_waves[-2:0:-1]
+        self.travelling_waves += [
+            SimpleComplexHarmonicOscillator(
+                dict(omega=sho.system.omega),
+                dict(x0=(ic := sho.initial_condition).x0.conjugate(), phi=ic.phi),
+            )
+            for sho in duplicate
         ]
 
     @cached_property
@@ -71,17 +54,10 @@ class HarmonicOscillatorsChain:
         )
 
     def _x(self, t: ArrayLike) -> tuple[ArrayLike, ArrayLike]:
-        r"""Solution to simple harmonic oscillators:
-
-        $$
-        x(t) = x_0 \cos(\omega t + \phi).
-        $$
-        """
         if is_scalar(t):
             t = np.asarray([t])
         travelling_waves = np.asarray([tw._x(t) for tw in self.travelling_waves])
-        # FIXME this is imaginary
-        original_xs = ifft(travelling_waves, axis=0, norm="ortho")
+        original_xs = np.real(ifft(travelling_waves, axis=0, norm="ortho"))
 
         return original_xs, travelling_waves
 
