@@ -22,7 +22,10 @@ class HarmonicOscillatorSystem(BaseModel):
     @cached_property
     def period(self) -> float:
         """period of the oscillator"""
-        return 2 * np.pi / self.omega
+        try:
+            return 2 * np.pi / self.omega
+        except ZeroDivisionError:
+            return np.inf
 
     @computed_field  # type: ignore[misc]
     @cached_property
