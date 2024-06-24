@@ -81,7 +81,7 @@ class HarmonicOscillatorsChain:
             t = np.asarray([t])
         travelling_waves = np.asarray([tw._x(t) for tw in self.travelling_waves])
         # FIXME this is imaginary
-        original_xs = ifft(travelling_waves.T, norm="ortho").T
+        original_xs = ifft(travelling_waves, axis=0, norm="ortho")
 
         return original_xs, travelling_waves
 
