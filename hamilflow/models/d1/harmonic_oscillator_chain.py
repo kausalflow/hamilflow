@@ -50,7 +50,10 @@ class HarmonicOscillatorsChain:
         self.dof = len(half_initial_conditions) + odd_dof
         self.travelling_waves = [
             SimpleComplexHarmonicOscillator(
-                dict(omega=2 * omega * np.sin(np.pi * k / self.dof)),
+                dict(
+                    omega=2 * omega * np.sin(np.pi * k / self.dof),
+                    real=not odd_dof and k == len(half_initial_conditions),
+                ),
                 dict(x0=ic["y0"], phi=ic["phi"]),
             )
             for k, ic in enumerate(half_initial_conditions)
@@ -63,8 +66,8 @@ class HarmonicOscillatorsChain:
             duplicate = self.travelling_waves[-2:0:-1]
         self.travelling_waves += [
             SimpleComplexHarmonicOscillator(
-                dict(omega=sho.system.omega),
-                dict(x0=(ic := sho.initial_condition).x0.conjugate(), phi=ic.phi),
+                dict(omega=-sho.system.omega),
+                dict(x0=(ic := sho.initial_condition).x0.conjugate(), phi=-ic.phi),
             )
             for sho in duplicate
         ]
@@ -81,7 +84,7 @@ class HarmonicOscillatorsChain:
     def _z(self, t: ArrayLike) -> tuple[ArrayLike, ArrayLike]:
         if is_scalar(t):
             t = np.asarray([t])
-        travelling_waves = np.asarray([tw._x(t) for tw in self.travelling_waves])
+        travelling_waves = np.asarray([tw._z(t) for tw in self.travelling_waves])
         original_zs = ifft(travelling_waves, axis=0, norm="ortho")
         return original_zs, travelling_waves
 
