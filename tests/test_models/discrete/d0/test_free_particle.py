@@ -15,9 +15,13 @@ class TestFreeParticleIC:
     ) -> None:
         assert FreeParticleIC(x0=x0, v0=v0)
 
-    @pytest.mark.parametrize(("x0", "v0"), [(1, (2,)), ((1,), (2, 3))])
-    def test_raise(self, x0: int | Sequence[int], v0: int | Sequence[int]) -> None:
-        with pytest.raises(ValidationError):
+    @pytest.mark.parametrize(
+        ("x0", "v0", "expected"), [(1, (2,), TypeError), ((1,), (2, 3), ValueError)]
+    )
+    def test_raise(
+        self, x0: int | Sequence[int], v0: Sequence[int], expected: type[Exception]
+    ) -> None:
+        with pytest.raises(expected):
             FreeParticleIC(x0=x0, v0=v0)
 
 
