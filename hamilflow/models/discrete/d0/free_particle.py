@@ -24,9 +24,9 @@ class FreeParticleIC(BaseModel):
     @model_validator(mode="after")
     def check_dimensions_match(self) -> Self:
         if (x0_seq := isinstance(self.x0, Sequence)) != isinstance(self.v0, Sequence):
-            raise TypeError("x0 and v0 needs both to be scalars or Sequences")
+            raise TypeError("x0 and v0 need both to be scalars or Sequences")
         elif x0_seq and len(cast(Sequence, self.x0)) != len(cast(Sequence, self.v0)):
-            raise ValueError("Sequences x0 and v0 needs to have the same length")
+            raise ValueError("Sequences x0 and v0 need to have the same length")
 
         return self
 
