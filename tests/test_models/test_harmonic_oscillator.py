@@ -1,5 +1,6 @@
 import pandas as pd
 import pytest
+from pydantic import ValidationError
 
 from hamilflow.models.harmonic_oscillator import (
     DampedHarmonicOscillator,
@@ -136,3 +137,15 @@ def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
     df = ho(n_periods=1, n_samples_per_period=10)
 
     pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
+
+
+class TestHarmonicOscillatorSystem:
+    @pytest.mark.parametrize("omega", [-1, 1])
+    def test_complex(self, omega: int) -> None:
+        HarmonicOscillatorSystem(omega=omega, real=False)
+
+    @pytest.mark.parametrize("omega", [-1, 1])
+    @pytest.mark.parametrize("zeta", [0.5, 1.0, 1.5])
+    def test_raise_complex(self, omega: int, zeta: float) -> None:
+        with pytest.raises(NotImplementedError):
+            HarmonicOscillatorSystem(omega=omega, zeta=zeta, real=False)
