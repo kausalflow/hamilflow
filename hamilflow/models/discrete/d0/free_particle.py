@@ -43,7 +43,7 @@ class FreeParticle:
         self.initial_condition = FreeParticleIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> dict[str, dict[str, int | float | Sequence[int | float]]]:
+    def definition(self) -> dict[str, dict[str, int | float | list[int | float]]]:
         """model params and initial conditions defined as a dictionary."""
         return dict(initial_condition=self.initial_condition.model_dump())
 
