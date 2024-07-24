@@ -7,7 +7,8 @@ from numpy.typing import ArrayLike
 from pandas.api.types import is_scalar
 from scipy.fft import ifft
 
-from ..d0.complex_harmonic_oscillator import SimpleComplexHarmonicOscillator
+from ...harmonic_oscillator import SimpleHarmonicOscillator
+from ..d0.free_particle import FreeParticle
 
 
 class HarmonicOscillatorsChain:
@@ -43,65 +44,84 @@ class HarmonicOscillatorsChain:
     def __init__(
         self,
         omega: float,
-        half_initial_conditions: Collection[Mapping[str, complex | float | int]],
+        independent_initial_conditions: Sequence[Mapping[str, float | int]],
         odd_dof: bool,
     ) -> None:
         self.omega = omega
-        self.dof = len(half_initial_conditions) + odd_dof
-        self.travelling_waves = [
-            SimpleComplexHarmonicOscillator(
-                dict(
-                    omega=2 * omega * np.sin(np.pi * k / self.dof),
-                    real=not odd_dof and k == len(half_initial_conditions),
-                ),
-                dict(x0=ic["y0"], phi=ic["phi"]),
-            )
-            for k, ic in enumerate(half_initial_conditions)
-        ]
-        if odd_dof:
-            duplicate = self.travelling_waves[-1:0:-1]
-        else:
-            if self.travelling_waves[-1].initial_condition.x0.imag != 0:
-                raise ValueError("The amplitude of wave number N // 2 must be real")
-            duplicate = self.travelling_waves[-2:0:-1]
-        self.travelling_waves += [
-            SimpleComplexHarmonicOscillator(
-                dict(omega=-sho.system.omega),
-                dict(x0=(ic := sho.initial_condition).x0.conjugate(), phi=-ic.phi),
-            )
-            for sho in duplicate
+        self.n_independant_wave_dof = len(independent_initial_conditions) - 1
+        self.odd_dof = odd_dof
+
+        self.free_mode = FreeParticle(independent_initial_conditions[0])
+
+        r_wave_modes_ic = independent_initial_conditions[1:]
+        self.r_wave_modes = [
+            self._sho_factory(k, ic["amp"], ic["phi"])
+            for k, ic in enumerate(r_wave_modes_ic, 1)
         ]
 
+    def _sho_factory(
+        self, k: int, amp: float | int, phi: float | int
+    ) -> SimpleHarmonicOscillator:
+        return SimpleHarmonicOscillator(
+            dict(
+                omega=2 * self.omega * np.sin(np.pi * k / self.n_dof),
+                real=not self.odd_dof and k == self.n_independant_wave_dof,
+            ),
+            dict(x0=amp, phi=phi),
+        )
+
     @cached_property
-    def definition(self) -> dict[str, Any]:
+    def n_dof(self) -> int:
+        return self.n_independant_wave_dof * 2 + self.odd_dof
+
+    @cached_property
+    def definition(
+        self,
+    ) -> dict[
+        str,
+        float
+        | int
+        | dict[str, dict[str, int | float | list[int | float]]]
+        | list[dict[str, dict[str, int | float | bool]]],
+    ]:
         """model params and initial conditions defined as a dictionary."""
         return dict(
             omega=self.omega,
-            dof=self.dof,
-            travelling_waves=[tw.definition for tw in self.travelling_waves],
+            n_dof=self.n_dof,
+            free_mode=self.free_mode.definition,
+            r_wave_modes=[rwm.definition for rwm in self.r_wave_modes],
         )
 
-    def _z(self, t: ArrayLike) -> tuple[ArrayLike, ArrayLike]:
-        if is_scalar(t):
-            t = np.asarray([t])
-        travelling_waves = np.asarray([tw._z(t) for tw in self.travelling_waves])
+    def _z(
+        self, t: float | int | Sequence[float | int]
+    ) -> tuple[np.ndarray, np.ndarray]:
+        to_concat = [self.free_mode._x(t).reshape(1, -1)]
+
+        r_waves = np.array([rwm._x(t) for rwm in self.r_wave_modes], copy=False)
+        to_concat.extend(
+            (r_waves, r_waves[:, ::-1].conj())
+            if self.odd_dof
+            else (r_waves[:, :-1], r_waves[:, -1], r_waves[:, -1::-1].conj())
+        )
+
+        travelling_waves = np.concatenate(to_concat)
         original_zs = ifft(travelling_waves, axis=0, norm="ortho")
         return original_zs, travelling_waves
 
-    def _x(self, t: ArrayLike) -> tuple[ArrayLike, ArrayLike]:
+    def _x(
+        self, t: float | int | Sequence[float | int]
+    ) -> tuple[np.ndarray, np.ndarray]:
         original_xs, travelling_waves = self._z(t)
 
         return np.real(original_xs), travelling_waves
 
-    def __call__(self, t: ArrayLike) -> pd.DataFrame:
+    def __call__(self, t: float | int | Sequence[float | int]) -> pd.DataFrame:
         """Generate time series data for the harmonic oscillator chain.
 
         Returns float(s) representing the displacement at the given time(s).
 
         :param t: time.
         """
-        if is_scalar(t):
-            t = np.asarray([t])
         original_xs, travelling_waves = self._x(t)
         data = {
             f"{name}{i}": values

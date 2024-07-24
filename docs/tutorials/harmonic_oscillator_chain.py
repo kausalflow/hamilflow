@@ -23,15 +23,13 @@ import math
 import numpy as np
 from plotly import express as px
 
-from hamilflow.models.d1.harmonic_oscillator_chain import HarmonicOscillatorsChain
+from hamilflow.models.discrete.d1.harmonic_oscillator_chain import (
+    HarmonicOscillatorsChain,
+)
 
 hoc = HarmonicOscillatorsChain(
     2 * math.pi,
-    [
-        dict(y0=0, phi=0),
-        dict(y0=complex(1, 1), phi=math.pi / 4),
-        dict(y0=complex(0, 0), phi=np.pi / 6),
-    ],
+    [dict(x0=0, v0=0), dict(amp=1, phi=math.pi / 4), dict(amp=0, phi=np.pi / 6)],
     True,
 )
 
