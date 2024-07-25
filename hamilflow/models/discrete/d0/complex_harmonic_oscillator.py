@@ -30,7 +30,7 @@ class ComplexSimpleHarmonicOscillator:
     def __init__(
         self,
         system: Mapping[str, float | int],
-        initial_condition: Mapping[str, float | int],
+        initial_condition: Mapping[str, tuple[float | int, float | int]],
     ) -> None:
         self.system = HarmonicOscillatorSystem.model_validate(system)
         self.initial_condition = ComplexSimpleHarmonicOscillatorIC.model_validate(
@@ -73,6 +73,6 @@ class ComplexSimpleHarmonicOscillator:
         """
         if not isinstance(t, Sequence):
             t = np.array([t], copy=False)
-        data = self._x(t)
+        data = self._z(t)
 
         return pd.DataFrame({"t": t, "z": data})

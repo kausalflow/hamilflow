@@ -6,7 +6,7 @@ from typing import Literal, Mapping, Sequence
 import numpy as np
 import pandas as pd
 from numpy.typing import ArrayLike
-from pydantic import BaseModel, Field, computed_field, field_validator, model_validator
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class HarmonicOscillatorSystem(BaseModel):
