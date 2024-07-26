@@ -5,7 +5,7 @@ import pytest
 from pandas.testing import assert_frame_equal
 from pydantic import ValidationError
 
-from hamilflow.models.discrete.d0.free_particle import FreeParticle, FreeParticleIC
+from hamilflow.models.free_particle import FreeParticle, FreeParticleIC
 
 
 class TestFreeParticleIC:
