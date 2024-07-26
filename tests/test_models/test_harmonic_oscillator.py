@@ -1,3 +1,5 @@
+from typing import Mapping
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -144,7 +146,7 @@ def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
 
 class TestComplexHarmonicOscillatorIC:
     @pytest.mark.parametrize("kwargs", [dict(x0=(1, 2), phi=(2, 3)), dict(x0=(1, 2))])
-    def test_ic(self, kwargs: dict[str, tuple[int, int]]) -> None:
+    def test_ic(self, kwargs: Mapping[str, tuple[int, int]]) -> None:
         assert ComplexSimpleHarmonicOscillatorIC(**kwargs)
 
 

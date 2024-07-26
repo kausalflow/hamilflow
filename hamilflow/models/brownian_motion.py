@@ -1,4 +1,5 @@
 from functools import cached_property
+from typing import Mapping
 
 import numpy as np
 import pandas as pd
@@ -33,8 +34,8 @@ class BrownianMotionSystem(BaseModel):
     :cvar delta_t: time granunality of the motion
     """
 
-    sigma: float = Field(ge=0)
-    delta_t: float = Field(ge=0, default=1.0)
+    sigma: float = Field(ge=0.0)
+    delta_t: float = Field(ge=0.0, default=1.0)
 
     @computed_field  # type: ignore[misc]
     @cached_property
@@ -141,8 +142,8 @@ class BrownianMotion:
 
     def __init__(
         self,
-        system: dict[str, float],
-        initial_condition: dict[str, float] | None = None,
+        system: Mapping[str, float],
+        initial_condition: Mapping[str, float] | None = None,
     ):
         initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)
