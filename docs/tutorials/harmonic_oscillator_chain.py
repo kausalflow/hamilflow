@@ -23,29 +23,62 @@ import math
 import numpy as np
 from plotly import express as px
 
-from hamilflow.models.discrete.d1.harmonic_oscillator_chain import (
-    HarmonicOscillatorsChain,
-)
+from hamilflow.models.harmonic_oscillator_chain import HarmonicOscillatorsChain
 
+# %%
 hoc = HarmonicOscillatorsChain(
     2 * math.pi,
-    [dict(x0=0, v0=0), dict(amp=1, phi=math.pi / 4), dict(amp=0, phi=np.pi / 6)],
+    [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5,
     True,
 )
 
-print(hoc.definition)
-
 df_res = hoc(np.linspace(0, 4, 257))
-df_x_long = (
-    df_res[["x0", "x1", "x2", "x3", "x4"]]
-    .rename(columns={f"x{i}": i for i in range(5)})
-    .melt(var_name="x_index", value_name="displacement", ignore_index=False)
-    .rename_axis(index="t")
-    .reset_index(drop=False)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
+px.imshow(df_x_wide, origin="lower")
+
+# %%
+hoc = HarmonicOscillatorsChain(
+    2 * math.pi,
+    [dict(x0=0, v0=0), dict(amp=(0, 1))] + [dict(amp=(0, 0))] * 5,
+    True,
 )
 
-px.line(df_x_long, x="displacement", y="t", color="x_index")
+df_res = hoc(np.linspace(0, 4, 257))
+df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
+px.imshow(df_x_wide, origin="lower")
 
+# %%
+hoc = HarmonicOscillatorsChain(
+    2 * math.pi,
+    [dict(x0=0, v0=0), dict(amp=(0, 0)), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 4,
+    True,
+)
+
+df_res = hoc(np.linspace(0, 4, 257))
+df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
+px.imshow(df_x_wide, origin="lower")
+
+# %%
+hoc = HarmonicOscillatorsChain(
+    2 * math.pi,
+    [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5,
+    True,
+)
+
+df_res = hoc(np.linspace(0, 4, 257))
+df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
+px.imshow(df_x_wide, origin="lower")
+
+# %%
+hoc = HarmonicOscillatorsChain(
+    2 * math.pi,
+    [dict(x0=0, v0=0)] + [dict(amp=(0, 0))] * 5 + [dict(amp=(1, 1))],
+    False,
+)
+
+df_res = hoc(np.linspace(0, 4, 257))
+df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
+px.imshow(df_x_wide, origin="lower")
 
 # %% [markdown]
 # ## Mathematical-physical discription
