@@ -15,7 +15,7 @@ class PendulumSystem(BaseModel):
     parameter
     """
 
-    omega0: float = Field(gt=0, frozen=True)
+    omega0: float = Field(gt=0.0, frozen=True)
 
 
 class PendulumIC(BaseModel):

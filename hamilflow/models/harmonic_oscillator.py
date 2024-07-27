@@ -1,3 +1,4 @@
+import math
 from abc import ABC, abstractmethod
 from functools import cached_property
 from typing import Literal, Mapping, Sequence
@@ -5,12 +6,7 @@ from typing import Literal, Mapping, Sequence
 import numpy as np
 import pandas as pd
 from numpy.typing import ArrayLike
-from pydantic import BaseModel, Field, computed_field, field_validator, model_validator
-
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class HarmonicOscillatorSystem(BaseModel):
@@ -18,22 +14,16 @@ class HarmonicOscillatorSystem(BaseModel):
 
     :cvar omega: angular frequency of the harmonic oscillator
     :cvar zeta: damping ratio
-    :cvar real: use real solution (only supported for the undamped case)
     """
 
-    omega: float
-    zeta: float = 0.0
-
-    real: bool = Field(default=True)
+    omega: float = Field()
+    zeta: float = Field(default=0.0)
 
     @computed_field  # type: ignore[misc]
     @cached_property
     def period(self) -> float:
         """period of the oscillator"""
-        try:
-            return 2 * np.pi / self.omega
-        except ZeroDivisionError:
-            return np.inf
+        return 2 * math.pi / self.omega
 
     @computed_field  # type: ignore[misc]
     @cached_property
@@ -64,13 +54,6 @@ class HarmonicOscillatorSystem(BaseModel):
 
         return v
 
-    @model_validator(mode="after")
-    def check_real_zeta(self) -> Self:
-        if not self.real and self.zeta != 0.0:
-            raise NotImplementedError("real = False only implemented for zeta = 0.0")
-
-        return self
-
 
 class HarmonicOscillatorIC(BaseModel):
     """The initial condition for a harmonic oscillator
@@ -80,9 +63,9 @@ class HarmonicOscillatorIC(BaseModel):
     :cvar phi: initial phase
     """
 
-    x0: float = 1.0
-    v0: float = 0.0
-    phi: float = 0.0
+    x0: float = Field(default=1.0)
+    v0: float = Field(default=0.0)
+    phi: float = Field(default=0.0)
 
 
 class HarmonicOscillatorBase(ABC):
@@ -95,7 +78,7 @@ class HarmonicOscillatorBase(ABC):
 
     def __init__(
         self,
-        system: Mapping[str, float | int | bool],
+        system: Mapping[str, float | int],
         initial_condition: Mapping[str, float | int] | None = None,
     ) -> None:
         initial_condition = initial_condition or {}
@@ -103,7 +86,7 @@ class HarmonicOscillatorBase(ABC):
         self.initial_condition = HarmonicOscillatorIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> dict[str, dict[str, float | int | bool]]:
+    def definition(self) -> dict[str, dict[str, float | int]]:
         """model params and initial conditions defined as a dictionary."""
         return {
             "system": self.system.model_dump(),
@@ -147,17 +130,13 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
 
     The mass behaves like a simple harmonic oscillator.
 
-    In general, the solution to a real simple harmonic oscillator is
+    In general, the solution to a simple harmonic oscillator is
 
     $$
     x(t) = A \cos(\omega t + \phi),
     $$
 
     where $\omega$ is the angular frequency, $\phi$ is the initial phase, and $A$ is the amplitude.
-    The complex solution is
-    $$
-    x(t) = A \exp(-\mathbb{i} (\omega t + \phi)).
-    $$
 
 
     To use this generator,
@@ -175,7 +154,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
 
     def __init__(
         self,
-        system: Mapping[str, float | int | bool],
+        system: Mapping[str, float | int],
         initial_condition: Mapping[str, float | int] | None = None,
     ) -> None:
         super().__init__(system, initial_condition)
@@ -184,23 +163,14 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
                 f"System is not a Simple Harmonic Oscillator: {self.system}"
             )
 
-    def _f(self, phase: float | int | Sequence[float | int]) -> np.ndarray:
-        np_phase = np.array(phase, copy=False)
-        return np.cos(np_phase) if self.system.real else np.exp(-1j * np_phase)
-
     def _x(self, t: float | int | Sequence[float | int]) -> np.ndarray:
         r"""Solution to simple harmonic oscillators:
 
         $$
-        x(t) = x_0 \cos(\omega t + \phi)
+        x(t) = x_0 \cos(\omega t + \phi).
         $$
-        if real, or
-        $$
-        x(t) = x_0 \exp(-\mathbb{i} (\omega t + \phi))
-        $$
-        if not real.
         """
-        return self.initial_condition.x0 * self._f(
+        return self.initial_condition.x0 * np.cos(
             self.system.omega * t + self.initial_condition.phi
         )
 
@@ -349,3 +319,72 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             )
 
         return x
+
+
+class ComplexSimpleHarmonicOscillatorIC(BaseModel):
+    """The initial condition for a complex harmonic oscillator
+
+    :cvar x0: the initial displacements
+    :cvar phi: initial phases
+    """
+
+    x0: tuple[float | int, float | int] = Field()
+    phi: tuple[float | int, float | int] = Field(default=(0, 0))
+
+
+class ComplexSimpleHarmonicOscillator:
+    r"""Generate time series data for a complex simple harmonic oscillator.
+
+    :param system: all the params that defines the complex harmonic oscillator.
+    :param initial_condition: the initial condition of the complex harmonic oscillator.
+    """
+
+    def __init__(
+        self,
+        system: Mapping[str, float | int],
+        initial_condition: Mapping[str, tuple[float | int, float | int]],
+    ) -> None:
+        self.system = HarmonicOscillatorSystem.model_validate(system)
+        self.initial_condition = ComplexSimpleHarmonicOscillatorIC.model_validate(
+            initial_condition
+        )
+        if self.system.type != "simple":
+            raise ValueError(
+                f"System is not a Simple Harmonic Oscillator: {self.system}"
+            )
+
+    @cached_property
+    def definition(
+        self,
+    ) -> dict[str, dict[str, float | int | tuple[float | int, float | int]]]:
+        """model params and initial conditions defined as a dictionary."""
+
+        return dict(
+            system=self.system.model_dump(),
+            initial_condition=self.initial_condition.model_dump(),
+        )
+
+    def _z(self, t: float | int | Sequence[float | int]) -> ArrayLike:
+        r"""Solution to complex simple harmonic oscillators:
+
+        $$
+        x(t) = x_+ \exp(-\mathbb{i} (\omega t + \phi_+)) + x_- \exp(+\mathbb{i} (\omega t + \phi_-)).
+        $$
+        """
+        omega = self.system.omega
+        x0, phi = self.initial_condition.x0, self.initial_condition.phi
+        phases = -omega * t - phi[0], omega * t + phi[1]
+        return x0[0] * np.exp(1j * phases[0]) + x0[1] * np.exp(1j * phases[1])
+
+    def __call__(self, t: float | int | Sequence[float | int]) -> pd.DataFrame:
+        """Generate time series data for the harmonic oscillator.
+
+        Returns a list of floats representing the displacement at each time.
+
+        :param t: time(s).
+        """
+        if not isinstance(t, Sequence):
+            t = np.array([t], copy=False)
+        data = self._z(t)
+
+        return pd.DataFrame({"t": t, "z": data})
