@@ -155,7 +155,7 @@ class BrownianMotion:
 
     @property
     def _axis_names(self) -> list[str]:
-        return [f"y_{i}" for i in range(self.dim)]
+        return [f"x_{i}" for i in range(self.dim)]
 
     def _trajectory(self, n_new_steps: int, seed: int) -> np.ndarray:
         """The trajectory of the particle.
