@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -163,17 +163,22 @@ class TestComplexHarmonicOscillator:
                 dict(omega=3, zeta=zeta), dict(x0=(2, 3), phi=(3, 4))
             )
 
+    @pytest.fixture(params=(1, (1,), [1, 2], np.array([2, 3, 5, 7, 11])))
+    def times(self, request: pytest.FixtureRequest) -> int | Sequence[int]:
+        return request.param
+
     @pytest.mark.parametrize("omega", [3, 5])
     @pytest.mark.parametrize("x0", [2, 4])
     @pytest.mark.parametrize("phi", [1, 6])
-    def test_degenerate_real(self, omega: int, x0: int, phi: int) -> None:
+    def test_degenerate_real(
+        self, omega: int, x0: int, phi: int, times: int | Sequence[int]
+    ) -> None:
         csho = ComplexSimpleHarmonicOscillator(
             dict(omega=omega), dict(x0=(x0, x0), phi=(phi, phi))
         )
         sho = SimpleHarmonicOscillator(dict(omega=omega), dict(x0=2 * x0, phi=phi))
-        t = np.array([2, 3, 5, 7, 11], copy=False)
-        z = csho._z(t)
-        x = sho._x(t)
+        z = csho._z(times)
+        x = sho._x(times)
 
         assert np.all(z.imag == 0.0)
         assert_array_equal(z.real, x)

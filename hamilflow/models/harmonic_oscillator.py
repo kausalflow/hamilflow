@@ -171,7 +171,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
         $$
         """
         return self.initial_condition.x0 * np.cos(
-            self.system.omega * t + self.initial_condition.phi
+            self.system.omega * np.array(t, copy=False) + self.initial_condition.phi
         )
 
 
@@ -307,6 +307,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
 
     def _x(self, t: float | int | Sequence[float | int]) -> ArrayLike:
         r"""Solution to damped harmonic oscillators."""
+        t = np.array(t, copy=False)
         if self.system.type == "under_damped":
             x = self._x_under_damped(t)
         elif self.system.type == "over_damped":
@@ -371,6 +372,7 @@ class ComplexSimpleHarmonicOscillator:
         x(t) = x_+ \exp(-\mathbb{i} (\omega t + \phi_+)) + x_- \exp(+\mathbb{i} (\omega t + \phi_-)).
         $$
         """
+        t = np.array(t, copy=False)
         omega = self.system.omega
         x0, phi = self.initial_condition.x0, self.initial_condition.phi
         phases = -omega * t - phi[0], omega * t + phi[1]
@@ -383,8 +385,7 @@ class ComplexSimpleHarmonicOscillator:
 
         :param t: time(s).
         """
-        if not isinstance(t, Sequence):
-            t = np.array([t], copy=False)
+        t = [t] if not isinstance(t, Sequence) else t
         data = self._z(t)
 
         return pd.DataFrame({"t": t, "z": data})
