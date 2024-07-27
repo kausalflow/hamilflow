@@ -1,4 +1,3 @@
-import math
 from abc import ABC, abstractmethod
 from functools import cached_property
 from typing import Literal, Mapping, Sequence
@@ -23,7 +22,7 @@ class HarmonicOscillatorSystem(BaseModel):
     @cached_property
     def period(self) -> float:
         """period of the oscillator"""
-        return 2 * math.pi / self.omega
+        return 2 * np.pi / self.omega
 
     @computed_field  # type: ignore[misc]
     @cached_property
