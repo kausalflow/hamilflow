@@ -20,10 +20,10 @@ def hamilflow(ctx):
 
 @hamilflow.command()
 @click.argument("path", type=click.Path(exists=True, path_type=Path), required=True)
-def gen(path: Path):
-    """Generate dataset based on a config file.
+def generate(path: Path):
+    """Generate dataset based on an input config file.
 
-    :param path: where to create the config file.
+    :param path: location of the config file.
     """
 
     click.secho(f"Reading config from: {path}")
