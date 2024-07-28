@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -14,8 +14,9 @@
 # ---
 
 # %% [markdown]
-# # One-dimensional harmonic oscillator chain
-# We have worked out the case with periodic boundary condition.
+# # Harmonic oscillator circle
+#
+# In this tutorial, we show a few interesting examples of the harmonic oscillator circle.
 
 # %%
 import math
@@ -25,60 +26,84 @@ from plotly import express as px
 
 from hamilflow.models.harmonic_oscillator_chain import HarmonicOscillatorsChain
 
-# %%
-hoc = HarmonicOscillatorsChain(
-    2 * math.pi,
-    [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5,
-    True,
-)
-
-df_res = hoc(np.linspace(0, 4, 257))
-df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
-px.imshow(df_x_wide, origin="lower")
+# %% [markdown]
+# ## Basic setups
 
 # %%
-hoc = HarmonicOscillatorsChain(
-    2 * math.pi,
-    [dict(x0=0, v0=0), dict(amp=(0, 1))] + [dict(amp=(0, 0))] * 5,
-    True,
-)
+t = np.linspace(0, 3, 257)
+omega = 2 * math.pi
+pattern_x = r"x\d+"
 
-df_res = hoc(np.linspace(0, 4, 257))
-df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
-px.imshow(df_x_wide, origin="lower")
+
+# %% [markdown]
+# ## Fundamental right-moving wave
 
 # %%
-hoc = HarmonicOscillatorsChain(
-    2 * math.pi,
-    [dict(x0=0, v0=0), dict(amp=(0, 0)), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 4,
-    True,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
+hoc = HarmonicOscillatorsChain(omega, ics, True)
 
-df_res = hoc(np.linspace(0, 4, 257))
-df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
-px.imshow(df_x_wide, origin="lower")
+df_res = hoc(t)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
-# %%
-hoc = HarmonicOscillatorsChain(
-    2 * math.pi,
-    [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5,
-    True,
-)
-
-df_res = hoc(np.linspace(0, 4, 257))
-df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
-px.imshow(df_x_wide, origin="lower")
+# %% [markdown]
+# ## Fundamental left-moving wave
 
 # %%
-hoc = HarmonicOscillatorsChain(
-    2 * math.pi,
-    [dict(x0=0, v0=0)] + [dict(amp=(0, 0))] * 5 + [dict(amp=(1, 1))],
-    False,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(0, 1))] + [dict(amp=(0, 0))] * 5
+hoc = HarmonicOscillatorsChain(2 * math.pi, ics, True)
 
-df_res = hoc(np.linspace(0, 4, 257))
-df_x_wide = df_res.loc[:, df_res.columns.str.match(r"x\d+")]
-px.imshow(df_x_wide, origin="lower")
+df_res = hoc(t)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
+
+# %% [markdown]
+# ## Faster right-moving wave
+# Also known as the first harmonic.
+
+# %%
+ics = [dict(x0=0, v0=0), dict(amp=(0, 0)), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 4
+hoc = HarmonicOscillatorsChain(omega, ics, True)
+
+df_res = hoc(t)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
+
+# %% [markdown]
+# ## Fundamental stationary wave, odd dof
+
+# %%
+ics = [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5
+hoc = HarmonicOscillatorsChain(omega, ics, True)
+
+df_res = hoc(t)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
+
+
+# %% [markdown]
+# ## Fundamental stationary wave, even dof
+# There are stationary nodes at $i = 3, 9$.
+
+# %%
+ics = [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5
+hoc = HarmonicOscillatorsChain(omega, ics, False)
+
+df_res = hoc(t)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
+
+
+# %% [markdown]
+# ## Linearly moving chain and fundamental right-moving wave
+
+# %%
+ics = [dict(x0=0, v0=2), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
+hoc = HarmonicOscillatorsChain(omega, ics, False)
+
+df_res = hoc(t)
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 # %% [markdown]
 # ## Mathematical-physical discription
@@ -88,22 +113,22 @@ px.imshow(df_x_wide, origin="lower")
 #
 # This system can be solved in terms of _travelling waves_, obtained by discrete Fourier transform.
 #
+
 # We can complexify the system
 # $$S_L[x_i] = S_L[x_i, \phi_j] \equiv S_L[X^\ast_i, X_j] = \int_{t_0}^{t_1}\mathbb{d} t \left\\{ \frac{1}{2}m \dot X^\ast_i \delta_{ij} \dot X_j - \frac{1}{2}m X^\ast_i A_{ij} X_j\right\\}\\,,$$
 # where $A_{ij} / \omega^2$ is equal to $(-2)$ if $i=j$, $1$ if $|i-j|=1$ or $|i-j|=N$, and $0$ otherwise;
 # $X_i \coloneqq x_i \mathbb{e}^{-\phi_i}$, $X^\ast_i \coloneqq x_i \mathbb{e}^{+\phi_i}$.
-#
+
 # $A_{ij}$ can be diagonalised by the inverse discrete Fourier transform
 # $$X_i = (F^{-1})_{ik} Y_k = \frac{1}{\sqrt{N}}\sum_k \mathbb{e}^{i \frac{2\mathbb{\pi}}{N} k\mathbb{i}} Y_k\\,.$$
-#
+
 # Calculating gives
 # $$S_L[X^\ast_i, X_j] = S_L[Y^\ast_i, Y_j] = \sum_{k=0}^{N-1} \int_{t_0}^{t_1}\mathbb{d} t \left\\{ \frac{1}{2}m \dot Y^\ast_k \dot Y_k - \frac{1}{2}m \omega^2\cdot4\sin^2\frac{2\mathbb{\pi}k}{N} Y^\ast_k Y_k\right\\}\\,.$$
-# Using the same transformation to separate the non-dynamic phases, we can arrive at a real action
-# $$S_L[y] = \sum_{k=0}^{N-1} \int_{t_0}^{t_1}\mathbb{d} t \left\\{ \frac{1}{2}m \dot y_k^2 - \frac{1}{2}m \omega^2\cdot4\sin^2\frac{2\mathbb{\pi}k}{N} y_k^2\right\\}\\,.$$
-#
-# The origional system can then be solved by $N$ independent oscillators
-# $$\dot y_k^2 + 4\omega^2\sin^2\frac{2\mathbb{\pi}k}{N} y_k^2 \equiv 4\omega^2\sin^2\frac{2\mathbb{\pi}k}{N} y_{k0}^2\,.$$
-#
+# We can arrive at an action for the Fourier modes
+# $$S_L[Y, Y^*] = \sum_{k=0}^{N-1} \int_{t_0}^{t_1}\mathbb{d} t \left\\{ \frac{1}{2}m \dot Y_k^* Y_k - \frac{1}{2}m \omega^2\cdot4\sin^2\frac{2\mathbb{\pi}k}{N} Y_k^* Y_k\right\\}\\,.$$
+
+# The origional system can then be solved by $N$ complex oscillators.
+
 # Since the original degrees of freedom are real, the initial conditions of the propagating waves need to satisfy
 # $Y_k = Y^*_{-k \mod N}$, see [Wikipedia](https://en.wikipedia.org/wiki/Discrete_Fourier_transform#DFT_of_real_and_purely_imaginary_signals).
 
