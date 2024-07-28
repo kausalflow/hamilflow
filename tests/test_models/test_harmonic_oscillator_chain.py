@@ -27,7 +27,7 @@ class TestHarmonicOscillatorChain:
 
     @pytest.fixture(
         params=chain.from_iterable(
-            product(_possible_wave_modes, repeat=r) for r in range(2)
+            product(_possible_wave_modes, repeat=r) for r in range(3)
         )
     )
     def wave_modes(self, request: pytest.FixtureRequest) -> list[dict[str, int]]:
@@ -45,7 +45,7 @@ class TestHarmonicOscillatorChain:
         self,
         omega: int,
         free_mode: Mapping[str, int],
-        wave_modes: Iterable[dict[str, int]],
+        wave_modes: Iterable[Mapping[str, int]],
         odd_dof: bool,
     ) -> None:
         assert HarmonicOscillatorsChain(omega, [free_mode, *wave_modes], odd_dof)
@@ -54,7 +54,7 @@ class TestHarmonicOscillatorChain:
         self,
         omega: int,
         free_mode: Mapping[str, int],
-        wave_modes: Iterable[dict[str, int]],
+        wave_modes: Iterable[Mapping[str, int]],
         odd_dof: bool,
         times: int | Sequence[int],
     ) -> None:
