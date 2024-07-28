@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Mapping
+from typing import Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -54,15 +54,16 @@ class BrownianMotionIC(BaseModel):
         the dimension of the model too.
     """
 
-    x0: float | int | list[float | int] = Field(default=1.0)
+    x0: float | Sequence[float] = Field(default=1.0)
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(cls, v: float | int | list[float]) -> np.ndarray:
-        if not isinstance(v, (float, int, list)):
+    def check_x0_types(cls, v: float | Sequence[float]) -> np.ndarray:
+        if not isinstance(v, (float, int, Sequence)):
+            # TODO I do not think this raise can be reached
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
 
-        return np.asarray(v)
+        return np.array(v, copy=False)
 
 
 class BrownianMotion:
