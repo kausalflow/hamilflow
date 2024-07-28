@@ -28,6 +28,8 @@ from hamilflow.models.harmonic_oscillator import ComplexSimpleHarmonicOscillator
 
 # %% [markdown]
 # ## Basic setups
+
+# %%
 t = np.linspace(0, 3, 257)
 system_specs = dict(omega=2 * math.pi)
 
@@ -72,5 +74,5 @@ arr_z = df["z"].to_numpy(copy=False)
 
 px.line_3d(x=arr_z.real, y=arr_z.imag, z=t, labels=dict(x="real", y="imag", z="time"))
 
-# %%
+# %% [markdown]
 # # End of Notebook
