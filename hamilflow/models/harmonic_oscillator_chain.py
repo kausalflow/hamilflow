@@ -36,22 +36,29 @@ class HarmonicOscillatorsChain:
         :param initial_conditions: a sequence of initial conditions on the Fourier modes.
             The first element in the sequence is that of the zero mode, taking a position and a velocity.
             Rest of the elements are that of the independent travelling waves, taking two amplitudes and two initial phases.
-        :param odd_dof: The system will have `2 * len(initial_conditions) - int(odd_dof)` degrees of freedom.
+        :param odd_dof: The system will have `2 * len(initial_conditions) + int(odd_dof) - 2` degrees of freedom.
         """
+        self.n_dof = 2 * len(initial_conditions) + odd_dof - 2
+        if not odd_dof:
+            prefix = "For even degrees of freedom, "
+            if self.n_dof == 0:
+                raise ValueError(prefix + "at least 1 travelling wave is needed")
+            amp = cast(tuple[float, float], initial_conditions[-1]["amp"])
+            if amp[0] != amp[1]:
+                msg = "k == N // 2 must have equal positive and negative amplitudes."
+                raise ValueError(prefix + msg)
         self.omega = omega
-        self.n_independant_csho_dof = len(initial_conditions) - 1
         self.odd_dof = odd_dof
 
         self.free_mode = FreeParticle(cast(Mapping[str, float], initial_conditions[0]))
 
-        r_wave_modes_ic = initial_conditions[1:]
         self.independent_csho_modes = [
             self._sho_factory(
                 k,
                 cast(tuple[float, float], ic["amp"]),
                 cast(tuple[float, float] | None, ic.get("phi")),
             )
-            for k, ic in enumerate(r_wave_modes_ic, 1)
+            for k, ic in enumerate(initial_conditions[1:], 1)
         ]
 
     def _sho_factory(
@@ -66,10 +73,6 @@ class HarmonicOscillatorsChain:
             ),
             dict(x0=amp) | (dict(phi=phi) if phi else {}),
         )
-
-    @cached_property
-    def n_dof(self) -> int:
-        return self.n_independant_csho_dof * 2 + self.odd_dof
 
     @cached_property
     def definition(
@@ -107,7 +110,7 @@ class HarmonicOscillatorsChain:
                 else (
                     independent_cshos[:-1],
                     independent_cshos[[-1]],
-                    independent_cshos[-1::-1].conj(),
+                    independent_cshos[-2::-1].conj(),
                 )
             )
 
