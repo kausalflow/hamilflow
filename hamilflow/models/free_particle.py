@@ -3,6 +3,7 @@ from typing import Mapping, Sequence, cast
 
 import numpy as np
 import pandas as pd
+from numpy.typing import ArrayLike
 from pydantic import BaseModel, Field, model_validator
 
 try:
@@ -18,8 +19,8 @@ class FreeParticleIC(BaseModel):
     :cvar v0: the initial velocity
     """
 
-    x0: float | int | Sequence[float | int] = Field()
-    v0: float | int | Sequence[float | int] = Field()
+    x0: float | Sequence[float] = Field()
+    v0: float | Sequence[float] = Field()
 
     @model_validator(mode="after")
     def check_dimensions_match(self) -> Self:
@@ -38,19 +39,19 @@ class FreeParticle:
     """
 
     def __init__(
-        self, initial_condition: Mapping[str, float | int | Sequence[float | int]]
+        self, initial_condition: Mapping[str, float | Sequence[float]]
     ) -> None:
         self.initial_condition = FreeParticleIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> dict[str, dict[str, int | float | Sequence[int | float]]]:
+    def definition(self) -> dict[str, dict[str, float | list[float]]]:
         """model params and initial conditions defined as a dictionary."""
         return dict(initial_condition=self.initial_condition.model_dump())
 
-    def _x(self, t: float | int | Sequence[float | int]) -> np.ndarray:
+    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray:
         return np.outer(t, self.initial_condition.v0) + self.initial_condition.x0
 
-    def __call__(self, t: float | int | Sequence[float | int]) -> pd.DataFrame:
+    def __call__(self, t: "Sequence[float] | ArrayLike[float]") -> pd.DataFrame:
         """Generate time series data for the free particle.
 
         :param t: time(s).
