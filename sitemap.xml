@@ -41,6 +41,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kausalflow.github.io/hamilflow/tutorials/complex_harmonic_oscillator/</loc>
+         <lastmod>2024-07-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kausalflow.github.io/hamilflow/tutorials/harmonic_oscillator/</loc>
          <lastmod>2024-07-29</lastmod>
          <changefreq>daily</changefreq>
