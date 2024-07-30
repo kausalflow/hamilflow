@@ -15,7 +15,7 @@ class HarmonicOscillatorsChain:
     with periodic boundary condition.
 
     A one-dimensional circle of $N$ interacting harmonic oscillators can be described by the Lagrangian action
-    $$S_L[x_i] = \int_{t_0}^{t_1}\mathbb{d} t \left\\{ \sum_{i=0}^{N-1} \frac{1}{2}m \dot x_i^2 - \frac{1}{2}m\omega^2\left(x_i - x_{i+1}\right)^2 \right\\}\\,,$$
+    $$S_L[x_i] = \int_{t_0}^{t_1}\mathbb{d} t \left\{ \sum_{i=0}^{N-1} \frac{1}{2}m \dot x_i^2 - \frac{1}{2}m\omega^2\left(x_i - x_{i+1}\right)^2 \right\}\,,$$
     where $x_N \coloneqq x_0$.
 
     This system can be solved in terms of _travelling waves_, obtained by discrete Fourier transform.
