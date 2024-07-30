@@ -91,5 +91,5 @@ nav:
       - "Harmonic Oscillator": references/models/harmonic_oscillator.md
       - "Brownian Motion": references/models/brownian_motion.md
       - "Pendulum": references/models/pendulum.md
-      - "Harmonic Oscillator Chain": references/models/harmonic_oscillator_chain.py
+      - "Harmonic Oscillator Chain": references/models/harmonic_oscillator_chain.md
   - "Changelog": changelog.md
