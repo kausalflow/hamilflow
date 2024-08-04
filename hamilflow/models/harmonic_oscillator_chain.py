@@ -22,6 +22,12 @@ class HarmonicOscillatorsChain:
 
     Since the original degrees of freedom are real, the initial conditions of the propagating waves need to satisfy
     $Y_k = Y^*_{-k \mod N}$, see [Wikipedia](https://en.wikipedia.org/wiki/Discrete_Fourier_transform#DFT_of_real_and_purely_imaginary_signals).
+
+    :param omega: frequence parameter
+    :param initial_conditions: a sequence of initial conditions on the Fourier modes.
+        The first element in the sequence is that of the zero mode, taking a position and a velocity.
+        Rest of the elements are that of the independent travelling waves, taking two amplitudes and two initial phases.
+    :param odd_dof: The system will have `2 * len(initial_conditions) + int(odd_dof) - 2` degrees of freedom.
     """
 
     def __init__(
@@ -30,14 +36,6 @@ class HarmonicOscillatorsChain:
         initial_conditions: Sequence[Mapping[str, float | tuple[float, float]]],
         odd_dof: bool,
     ) -> None:
-        """Instantiate an oscillator chain.
-
-        :param omega: frequence parameter
-        :param initial_conditions: a sequence of initial conditions on the Fourier modes.
-            The first element in the sequence is that of the zero mode, taking a position and a velocity.
-            Rest of the elements are that of the independent travelling waves, taking two amplitudes and two initial phases.
-        :param odd_dof: The system will have `2 * len(initial_conditions) + int(odd_dof) - 2` degrees of freedom.
-        """
         self.n_dof = 2 * len(initial_conditions) + odd_dof - 2
         if not odd_dof:
             prefix = "For even degrees of freedom, "
