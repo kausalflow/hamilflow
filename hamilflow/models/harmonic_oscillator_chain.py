@@ -78,7 +78,6 @@ class HarmonicOscillatorsChain:
     ) -> dict[
         str,
         float
-        | int
         | dict[str, dict[str, float | list[float]]]
         | list[dict[str, dict[str, float | tuple[float, float]]]],
     ]:
