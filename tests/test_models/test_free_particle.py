@@ -60,5 +60,6 @@ class TestFreeParticle:
         expected: pd.DataFrame,
     ) -> None:
         assert_frame_equal(
-            FreeParticle(initial_condition=dict(x0=x0, v0=v0))(t), expected
+            FreeParticle(initial_condition=dict(x0=x0, v0=v0))(t).astype(float),
+            expected.astype(float),
         )

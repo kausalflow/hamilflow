@@ -1357,17 +1357,18 @@ min-versions = ["babel (==2.9.0)", "click (==7.0)", "colorama (==0.4)", "ghp-imp
 
 [[package]]
 name = "mkdocs-autorefs"
-version = "0.5.0"
+version = "1.0.1"
 description = "Automatically link across pages in MkDocs."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_autorefs-0.5.0-py3-none-any.whl", hash = "sha256:7930fcb8ac1249f10e683967aeaddc0af49d90702af111a5e390e8b20b3d97ff"},
-    {file = "mkdocs_autorefs-0.5.0.tar.gz", hash = "sha256:9a5054a94c08d28855cfab967ada10ed5be76e2bfad642302a610b252c3274c0"},
+    {file = "mkdocs_autorefs-1.0.1-py3-none-any.whl", hash = "sha256:aacdfae1ab197780fb7a2dac92ad8a3d8f7ca8049a9cbe56a4218cd52e8da570"},
+    {file = "mkdocs_autorefs-1.0.1.tar.gz", hash = "sha256:f684edf847eced40b570b57846b15f0bf57fb93ac2c510450775dcf16accb971"},
 ]
 
 [package.dependencies]
 Markdown = ">=3.3"
+markupsafe = ">=2.0.1"
 mkdocs = ">=1.1"
 
 [[package]]
@@ -1407,13 +1408,13 @@ pygments = ">2.12.0"
 
 [[package]]
 name = "mkdocs-material"
-version = "9.5.29"
+version = "9.5.30"
 description = "Documentation that simply works"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_material-9.5.29-py3-none-any.whl", hash = "sha256:afc1f508e2662ded95f0a35a329e8a5acd73ee88ca07ba73836eb6fcdae5d8b4"},
-    {file = "mkdocs_material-9.5.29.tar.gz", hash = "sha256:3e977598ec15a4ddad5c4dfc9e08edab6023edb51e88f0729bd27be77e3d322a"},
+    {file = "mkdocs_material-9.5.30-py3-none-any.whl", hash = "sha256:fc070689c5250a180e9b9d79d8491ef9a3a7acb240db0728728d6c31eeb131d4"},
+    {file = "mkdocs_material-9.5.30.tar.gz", hash = "sha256:3fd417dd42d679e3ba08b9e2d72cd8b8af142cc4a3969676ad6b00993dd182ec"},
 ]
 
 [package.dependencies]
@@ -1447,13 +1448,13 @@ files = [
 
 [[package]]
 name = "mkdocstrings"
-version = "0.24.3"
+version = "0.25.2"
 description = "Automatic documentation from sources, for MkDocs."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocstrings-0.24.3-py3-none-any.whl", hash = "sha256:5c9cf2a32958cd161d5428699b79c8b0988856b0d4a8c5baf8395fc1bf4087c3"},
-    {file = "mkdocstrings-0.24.3.tar.gz", hash = "sha256:f327b234eb8d2551a306735436e157d0a22d45f79963c60a8b585d5f7a94c1d2"},
+    {file = "mkdocstrings-0.25.2-py3-none-any.whl", hash = "sha256:9e2cda5e2e12db8bb98d21e3410f3f27f8faab685a24b03b06ba7daa5b92abfc"},
+    {file = "mkdocstrings-0.25.2.tar.gz", hash = "sha256:5cf57ad7f61e8be3111a2458b4e49c2029c9cb35525393b179f9c916ca8042dc"},
 ]
 
 [package.dependencies]
@@ -2971,4 +2972,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "85d1fecc5884732fd047039fc57d353c64875165644464cf9e03db5dc6f0fb0c"
+content-hash = "f11275b268de798415ada707d667e6636ba74100b07bde00101de6a571ce0499"
