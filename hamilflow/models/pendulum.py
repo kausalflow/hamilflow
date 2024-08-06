@@ -8,6 +8,8 @@ from numpy.typing import ArrayLike
 from pydantic import BaseModel, Field, computed_field
 from scipy.special import ellipj, ellipk
 
+from hamilflow.models.utils.typing import TypeTime
+
 
 class PendulumSystem(BaseModel):
     r"""The params for the pendulum.
@@ -130,11 +132,26 @@ class Pendulum:
 
         return 2 * np.arcsin(cn / dn * self._k)
 
-    def __call__(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
+    def generate_from(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
+        """generate the time sequence from more interpretable params
+
+        :param n_periods: number of periods to include
+        :param n_samples_per_period: number of samples in each period
+        :return: an array that contains all the timesteps
+        """
         time_delta = self.period / n_samples_per_period
         time_steps = np.arange(0, n_periods * n_samples_per_period) * time_delta
 
-        thetas = self.theta(time_steps)
-        us = self.u(time_steps)
+        return self(time_steps)
 
-        return pd.DataFrame(dict(t=time_steps, x=thetas, u=us))
+    def __call__(self, t: TypeTime) -> pd.DataFrame:
+        """generate the variables of the pendulum in time together with the time steps
+
+        :param t: time steps
+        :return: values of the variables
+            angle `x`, generalized coordinates `u`, and time `t`.
+        """
+        thetas = self.theta(t)
+        us = self.u(t)
+
+        return pd.DataFrame(dict(t=t, x=thetas, u=us))
