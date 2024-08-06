@@ -75,7 +75,7 @@ def test_brownian_motion(sigma, x0, expected):
     bm = BrownianMotion(system=system, initial_condition=initial_condition)
 
     pd.testing.assert_frame_equal(
-        bm(n_steps=5, seed=42),
+        bm.generate_from(n_steps=5, seed=42),
         pd.DataFrame(expected),
         check_exact=False,
         check_like=True,

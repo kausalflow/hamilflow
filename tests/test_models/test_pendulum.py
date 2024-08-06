@@ -70,3 +70,9 @@ class TestPendulum:
         theta, theta_1 = p.theta(times), p.theta(arr_times_1)
 
         assert_array_almost_equal(theta, theta_1)
+
+    def test_generate_from(self, omega0: float, theta0: float) -> None:
+        p = Pendulum(omega0, theta0)
+
+        df = p.generate_from(n_periods=1, n_samples_per_period=10)
+        assert len(df) == 10
