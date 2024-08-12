@@ -199,11 +199,11 @@ class BrownianMotion:
     def __call__(self, t: TypeTime, seed: int = 42) -> pd.DataFrame:
         """Simulate the coordinates of the particle
 
-        :param t: the time sequence to be used to generate data
+        :param t: the time sequence to be used to generate data, 1-D array like
         :param seed: random generator seed for the stochastic process.
             Use it to reproduce results.
         """
-        n_steps = len(t)
+        n_steps = np.array(t).size
         trajectory = self._trajectory(n_new_steps=n_steps - 1, seed=seed)
 
         df = pd.DataFrame(trajectory, columns=self._axis_names)
