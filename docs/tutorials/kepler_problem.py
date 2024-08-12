@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.2
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
-from hamilflow.models.kepler_motion import CentralField2D
+from hamilflow.models.kepler_problem import Kepler2D
 
 # %%
 system = {"alpha": 1.0, "mass": 1.0}

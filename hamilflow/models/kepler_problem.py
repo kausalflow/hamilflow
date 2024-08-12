@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Dict, Optional
+from typing import Mapping
 
 import numpy as np
 import numpy.typing as npt
@@ -8,7 +8,7 @@ import scipy as sp
 from pydantic import BaseModel, Field
 
 
-class CentralField2DSystem(BaseModel):
+class Kepler2DSystem(BaseModel):
     r"""Definition of the central field system
 
     Potential:
@@ -33,7 +33,7 @@ class CentralField2DSystem(BaseModel):
     mass: float = Field(gt=0, default=1)
 
 
-class CentralField2DIC(BaseModel):
+class Kepler2DIC(BaseModel):
     """The initial condition for a Brownian motion
 
     :cvar r_0: the initial radial coordinate
@@ -48,7 +48,7 @@ class CentralField2DIC(BaseModel):
     dphidt_0: float = 0.0
 
 
-class CentralField2D:
+class Kepler2D:
     r"""Central field motion in two dimensional space.
 
     !!! info "Inverse Sqare Law"
@@ -61,13 +61,13 @@ class CentralField2D:
 
     def __init__(
         self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
+        system: Mapping[str, float],
+        initial_condition: Mapping[str, float] | None = None,
         rtol: float = 1e-6,
         atol: float = 1e-6,
     ):
-        self.system = CentralField2DSystem.model_validate(system)
-        self.initial_condition = CentralField2DIC.model_validate(initial_condition)
+        self.system = Kepler2DSystem.model_validate(system)
+        self.initial_condition = Kepler2DIC.model_validate(initial_condition or {})
         self.rtol = rtol
         self.atol = atol
 

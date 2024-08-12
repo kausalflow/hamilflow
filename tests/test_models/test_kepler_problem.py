@@ -2,11 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from hamilflow.models.kepler_motion import (
-    CentralField2D,
-    CentralField2DIC,
-    CentralField2DSystem,
-)
+from hamilflow.models.kepler_problem import Kepler2D, Kepler2DIC, Kepler2DSystem
 
 
 @pytest.fixture
@@ -27,7 +23,7 @@ def t():
 def test_central_field_2d_conserved(
     central_field_2d_ic_params, central_field_2d_system_params
 ):
-    cf = CentralField2D(
+    cf = Kepler2D(
         system=central_field_2d_system_params,
         initial_condition=central_field_2d_ic_params,
     )
@@ -40,7 +36,7 @@ def test_central_field_2d_orbit(
     central_field_2d_ic_params, central_field_2d_system_params, t
 ):
 
-    cf = CentralField2D(
+    cf = Kepler2D(
         system=central_field_2d_system_params,
         initial_condition=central_field_2d_ic_params,
     )
