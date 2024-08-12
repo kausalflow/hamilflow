@@ -1,27 +1,27 @@
 import math
-from typing import List
+from typing import Sequence
 
 import numpy as np
 import pytest
-from _pytest.fixtures import SubRequest
 from numpy.testing import assert_array_almost_equal
+from numpy.typing import ArrayLike
 
 from hamilflow.models.pendulum import Pendulum, PendulumIC, PendulumSystem
 
 
 @pytest.fixture(params=[0.3, 0.6, 1.5])
-def omega0(request: SubRequest):
-    yield request.param
+def omega0(request: pytest.FixtureRequest) -> float:
+    return request.param
 
 
 @pytest.fixture(params=[-1.5, -0.3, 0.2, 0.4, +1.4])
-def theta0(request):
-    yield request.param
+def theta0(request: pytest.FixtureRequest) -> float:
+    return request.param
 
 
-@pytest.fixture(params=[[-5.5, 0.0, 0.5, 1.0]])
-def times(request):
-    yield request.param
+@pytest.fixture(params=(-1.2, [-5.5, 0.0, 0.5, 1.0], np.linspace(0, 1, 7)))
+def times(request: pytest.FixtureRequest) -> float:
+    return request.param
 
 
 class TestPendulumSystem:
@@ -51,23 +51,22 @@ class TestPendulum:
         p = Pendulum(omega0, theta0)
         assert pytest.approx(p.period) == period
 
-    def test_transf(self, omega0: float, theta0: float, times: List[float]) -> None:
+    def test_transf(
+        self, omega0: float, theta0: float, times: "Sequence[float] | ArrayLike[float]"
+    ) -> None:
         p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)
 
         sin_u = np.sin(p.u(arr_times))
         theta_terms = np.sin(p.theta(arr_times) / 2) / p._k
         assert_array_almost_equal(theta_terms, sin_u)
-        # assert_array_almost_equal_nulp(theta_terms, sin_u, 32)
 
     def test_period_dynamic_theta(
-        self, omega0: float, theta0: float, times: List[float]
+        self, omega0: float, theta0: float, times: "Sequence[float] | ArrayLike[float]"
     ) -> None:
         p = Pendulum(omega0, theta0)
-        arr_times = np.asarray(times)
-        arr_times_1 = arr_times + p.period
+        arr_times_1 = np.array(times, copy=False) + p.period
 
-        theta, theta_1 = p.theta(arr_times), p.theta(arr_times_1)
+        theta, theta_1 = p.theta(times), p.theta(arr_times_1)
 
         assert_array_almost_equal(theta, theta_1)
-        # assert_array_almost_equal_nulp(theta, theta_1, 80)

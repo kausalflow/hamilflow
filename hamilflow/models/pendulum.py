@@ -1,6 +1,6 @@
 import math
 from functools import cached_property
-from typing import Dict, Union
+from typing import Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -16,7 +16,7 @@ class PendulumSystem(BaseModel):
     parameter
     """
 
-    omega0: float = Field(gt=0, frozen=True)
+    omega0: float = Field(gt=0.0, frozen=True)
 
 
 class PendulumIC(BaseModel):
@@ -55,8 +55,8 @@ class Pendulum:
 
     def __init__(
         self,
-        system: Union[int, float, Dict[str, Union[int, float]]],
-        initial_condition: Union[int, float, Dict[str, Union[int, float]]],
+        system: float | Mapping[str, float],
+        initial_condition: float | Mapping[str, float],
     ) -> None:
         if isinstance(system, (float, int)):
             system = {"omega0": system}
@@ -66,7 +66,7 @@ class Pendulum:
         self.initial_condition = PendulumIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> Dict[str, float]:
+    def definition(self) -> dict[str, float]:
         """Model params and initial conditions defined as a dictionary."""
         return dict(
             system=self.system.model_dump(),
@@ -103,10 +103,10 @@ class Pendulum:
         """
         return 4 * ellipk(self._math_m) / self.omega0
 
-    def _math_u(self, t: ArrayLike) -> np.ndarray[float]:
-        return self.omega0 * np.asarray(t)
+    def _math_u(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
+        return self.omega0 * np.array(t, copy=False)
 
-    def u(self, t: ArrayLike) -> np.ndarray[float]:
+    def u(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
         r"""The convenient generalised coordinate $u$,
         $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
@@ -119,7 +119,7 @@ class Pendulum:
 
         return ph
 
-    def theta(self, t: ArrayLike) -> np.ndarray[float]:
+    def theta(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
         r"""Angle $\theta$.
 
         :param t: time

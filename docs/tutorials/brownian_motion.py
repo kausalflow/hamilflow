@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.2
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -59,7 +59,7 @@ bm_1d = BrownianMotion(
 df_1d = bm_1d(n_steps=1000)
 
 # %%
-px.line(df_1d, x="t", y="y_0")
+px.line(df_1d, x="t", y="x_0")
 
 # %% [markdown]
 # ## 2D Brownian Motion
@@ -83,7 +83,7 @@ df_2d = bm_2d(n_steps=500)
 
 # %%
 (
-    px.scatter(df_2d, x="y_0", y="y_1", color="t")
+    px.scatter(df_2d, x="x_0", y="x_1", color="t")
     .update_traces(
         mode="lines+markers",
         marker=dict(

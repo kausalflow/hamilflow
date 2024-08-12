@@ -9,9 +9,9 @@ packages = [{include = "hamilflow"}]
 
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.10,<3.13"
 numpy = "^1.26.3"
-pandas = ">=2.0.0,<=2.2.0"
+pandas = "^2.2.2"
 pydantic = "^2.6.1"
 loguru = "^0.7.2"
 matplotlib = "^3.8.3"
@@ -19,26 +19,24 @@ scipy = "^1.12.0"
 
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.1.1"
+pytest = "^8.2.1"
 pytest-cov = "^4.1.0"
 
 
 [tool.poetry.group.docs.dependencies]
-mkdocs-material = "^9.5.9"
-mkdocs-autorefs = "^0.5.0"
-mkdocstrings = {version = "^0.24.0", extras = ["python"]}
-mkdocs-jupyter = "^0.24.7"
-jupytext = "^1.16.2"
-mkdocs = "1.5.3"
-
-
+mkdocs-material = "^9.5.31"
+mkdocs-autorefs = "^1.0.1"
+mkdocstrings = {version = "^0.25.2", extras = ["python"]}
+mkdocs-jupyter = "^0.24.8"
+jupytext = "^1.16.4"
+mkdocs = "^1.6.0"
 
 [tool.poetry.group.tutorial.dependencies]
-plotly = "^5.19.0"
+plotly = "^5.23.0"
 
 
 [tool.poetry.group.dev.dependencies]
-commitizen = "^3.18.0"
+commitizen = "*"
 
 
 [tool.commitizen]
