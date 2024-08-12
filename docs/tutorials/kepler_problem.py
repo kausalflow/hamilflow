@@ -29,10 +29,10 @@ import plotly.express as px
 from hamilflow.models.kepler_problem import Kepler2D
 
 # %%
-system = {"alpha": 1.0, "mass": 1.0}
-ic = {"r_0": 1.0, "phi_0": 0.0, "drdt_0": 0.0, "dphidt_0": 0.1}
+# system = {"alpha": 1.0, "mass": 1.0}
+# ic = {"r_0": 1.0, "phi_0": 0.0, "drdt_0": 0.0, "dphidt_0": 0.1}
 
-t = np.linspace(0, 1, 11)
+# t = np.linspace(0, 1, 11)
 
 # %% [markdown]
 # ## Formalism

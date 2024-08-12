@@ -1,5 +1,6 @@
+import math
 from functools import cached_property
-from typing import Mapping
+from typing import Collection, Mapping
 
 import numpy as np
 import numpy.typing as npt
@@ -9,7 +10,7 @@ from pydantic import BaseModel, Field
 
 
 class Kepler2DSystem(BaseModel):
-    r"""Definition of the central field system
+    r"""Definition of the Kepler problem
 
     Potential:
 
@@ -29,103 +30,120 @@ class Kepler2DSystem(BaseModel):
     :cvar mass: the mass of the orbiting object
     """
 
+    # TODO add repulsive alpha < 0
     alpha: float = Field(gt=0, default=1)
     mass: float = Field(gt=0, default=1)
 
 
-class Kepler2DIC(BaseModel):
-    """The initial condition for a Brownian motion
+class Kepler2DIM(BaseModel):
+    """The integrals of motion for a Kepler problem
 
-    :cvar r_0: the initial radial coordinate
-    :cvar phi_0: the initial phase
-    :cvar drdt_0: the initial radial velocity
-    :cvar dphidt_0: the initial phase velocity
+    :cvar ene: the energy
+    :cvar angular_mom: the angular momentum
     """
 
-    r_0: float = Field(gt=0, default=1.0)
-    phi_0: float = Field(ge=0, default=0.0)
-    drdt_0: float = 1.0
-    dphidt_0: float = 0.0
+    # :cvar t_0: the time at which the radial position is closest to 0
+    # :cvar phi_0: the angle at which the radial position is closest to 0
+
+    ene: float = Field()
+    angular_mom: float = Field()
 
 
 class Kepler2D:
-    r"""Central field motion in two dimensional space.
+    r"""Kepler problem in two dimensional space.
 
-    !!! info "Inverse Sqare Law"
-
-        We only consider central field of the form $-\frac{\alpha}{r}$.
-
-    :param system: the Central field motion system definition
+    :param system: the Kepler problem system definition
     :param initial_condition: the initial condition for the simulation
     """
 
     def __init__(
         self,
         system: Mapping[str, float],
-        initial_condition: Mapping[str, float] | None = None,
-        rtol: float = 1e-6,
-        atol: float = 1e-6,
-    ):
+        initial_condition: Mapping[str, float],
+    ) -> None:
         self.system = Kepler2DSystem.model_validate(system)
-        self.initial_condition = Kepler2DIC.model_validate(initial_condition or {})
-        self.rtol = rtol
-        self.atol = atol
+        self.integrals_of_motion = Kepler2DIM.model_validate(initial_condition)
+
+        if self.ene < self.minimal_ene:
+            raise ValueError(
+                f"Energy {self.ene} less than minimally allowed {self.minimal_ene}"
+            )
+
+        if self.eccentricity == 0:
+            raise NotImplementedError
+        elif 0 < self.eccentricity < 1:
+            self.tau_from_u = self.tau_from_u_elliptic
+        elif self.eccentricity == 1:
+            raise NotImplementedError
+        elif self.eccentricity > 1:
+            raise NotImplementedError
+        else:
+            raise RuntimeError
+
+    @property
+    def mass(self) -> float:
+        return self.system.mass
+
+    @property
+    def alpha(self) -> float:
+        return self.system.alpha
+
+    @property
+    def ene(self) -> float:
+        return self.integrals_of_motion.ene
+
+    @property
+    def angular_mom(self) -> float:
+        return self.integrals_of_motion.angular_mom
 
     @cached_property
-    def _angular_momentum(self) -> float:
-        """computes the angular momentum of the motion. Since the angular momentum is
-        conserved, it doesn't change through time.
-        """
-        return (
-            self.system.mass
-            * self.initial_condition.r_0**2
-            * self.initial_condition.dphidt_0
-        )
+    def minimal_ene(self) -> float:
+        return -self.mass * self.alpha**2 / (2 * self.angular_mom**2)
+
+    # FIXME is it called parameter in English?
+    @cached_property
+    def parameter(self) -> float:
+        return self.angular_mom**2 / self.mass * self.alpha
 
     @cached_property
-    def _energy(self) -> float:
-        """computes the total energy"""
-        drdt_0 = self.initial_condition.drdt_0
-        dphidt_0 = self.initial_condition.dphidt_0
-        r_0 = self.initial_condition.r_0
+    def eccentricity(self) -> float:
+        return math.sqrt(
+            1 + 2 * self.ene * self.angular_mom**2 / self.mass * self.alpha**2
+        )
 
-        potential_energy = self._potential(r_0)
+    def tau(
+        self, t: "Collection[float] | npt.ArrayLike[float]"
+    ) -> "npt.ArrayLike[float]":
+        return np.array(t, copy=False) * self.mass * self.alpha**2 / self.angular_mom**3
 
+    @staticmethod
+    def tau_from_u_elliptic(
+        e: float, u: "Collection[float] | npt.ArrayLike[float]"
+    ) -> "npt.ArrayLike[float]":
+        u = np.array(u, copy=False)
+        cosqr, eusqrt = 1 - e**2, np.sqrt(e**2 - u**2)
         return (
-            0.5 * self.system.mass * (drdt_0**2 + r_0**2 * dphidt_0**2)
-            + potential_energy
+            -eusqrt / cosqr / (1 + u)
+            - np.arctan((e**2 + u) / np.sqrt(cosqr) * eusqrt) / cosqr**1.5
         )
 
-    def _potential(self, r: npt.ArrayLike) -> npt.ArrayLike:
-        return -1 * self.system.alpha / r
+    def u(
+        self, tau: "Collection[float] | npt.ArrayLike[float]"
+    ) -> "npt.ArrayLike[float]":
+        pass
 
-    def drdt(self, t: npt.ArrayLike, r: npt.ArrayLike) -> npt.ArrayLike:
-        return np.sqrt(
-            2 / self.system.mass * (self._energy - self._potential(r))
-            - self._angular_momentum**2 / self.system.mass**2 / r**2
-        )
+    def r(
+        self, t: "Collection[float] | npt.ArrayLike[float]"
+    ) -> "npt.ArrayLike[float]":
+        pass
 
-    def r(self, t: npt.ArrayLike) -> npt.ArrayLike:
-        t_span = t.min(), t.max()
-        sol = sp.integrate.solve_ivp(
-            self.drdt,
-            t_span=t_span,
-            y0=[self.initial_condition.r_0],
-            t_eval=t,
-            rtol=self.rtol,
-            atol=self.atol,
-        )
+    def phi(
+        self, t: "Collection[float] | npt.ArrayLike[float]"
+    ) -> "npt.ArrayLike[float]":
+        pass
 
-        return sol.y[0]
-
-    def phi(self, t: npt.ArrayLike, r: npt.ArrayLike) -> npt.ArrayLike:
-        return (
-            self.initial_condition.phi_0
-            + self._angular_momentum / self.system.mass / r**2 * t
-        )
-
-    def __call__(self, t: npt.ArrayLike) -> npt.ArrayLike:
+    def __call__(self, t: "Collection[float] | npt.ArrayLike[float]") -> pd.DataFrame:
         r = self.r(t)
-        phi = self.phi(t, r)
+        phi = self.phi(t)
 
         return pd.DataFrame(dict(t=t, r=r, phi=phi))
