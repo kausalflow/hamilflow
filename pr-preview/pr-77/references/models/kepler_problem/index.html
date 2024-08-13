@@ -1034,16 +1034,8 @@
   </table>
 
             <details class="quote">
-              <summary>Source code in <code>hamilflow/models/kepler_problem.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
+              <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 60</span>
 <span class="normal"> 61</span>
 <span class="normal"> 62</span>
 <span class="normal"> 63</span>
@@ -1132,7 +1124,9 @@
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Kepler problem in two dimensional space.</span>
 
 <span class="sd">    :param system: the Kepler problem system definition</span>
@@ -1152,14 +1146,12 @@
                 <span class="sa">f</span><span class="s2">&quot;Energy </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ene</span><span class="si">}</span><span class="s2"> less than minimally allowed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minimal_ene</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccentricity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-        <span class="k">elif</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccentricity</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tau_from_u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_from_u_elliptic</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccentricity</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u_root</span> <span class="o">=</span> <span class="n">tau_of_u_root_elliptic</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccentricity</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u_root</span> <span class="o">=</span> <span class="n">tau_of_u_root_parabolic</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccentricity</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u_root</span> <span class="o">=</span> <span class="n">tau_of_u_root_hyperbolic</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span>
 
@@ -1199,26 +1191,20 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike[float]&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_mom</span><span class="o">**</span><span class="mi">3</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">tau_from_u_elliptic</span><span class="p">(</span>
-        <span class="n">e</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike[float]&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike[float]&quot;</span><span class="p">:</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">cosqr</span><span class="p">,</span> <span class="n">eusqrt</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">e</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="o">-</span><span class="n">eusqrt</span> <span class="o">/</span> <span class="n">cosqr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span>
-            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cosqr</span><span class="p">)</span> <span class="o">*</span> <span class="n">eusqrt</span><span class="p">)</span> <span class="o">/</span> <span class="n">cosqr</span><span class="o">**</span><span class="mf">1.5</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike[float]&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike[float]&quot;</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">u_of_tau_by_inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u_root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eccentricity</span><span class="p">,</span> <span class="n">ta</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">ta</span> <span class="ow">in</span> <span class="n">tau</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike[float]&quot;</span>
+    <span class="k">def</span> <span class="nf">r_of_u</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike[float]&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike[float]&quot;</span><span class="p">:</span>
-        <span class="k">pass</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span>
 
     <span class="k">def</span> <span class="nf">phi</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike[float]&quot;</span>
@@ -1226,10 +1212,12 @@
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike[float]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_of_tau</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_of_u</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="n">tau</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
@@ -1310,19 +1298,19 @@
   </table>
 
             <details class="quote">
-              <summary>Source code in <code>hamilflow/models/kepler_problem.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
+              <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DIM</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DIM</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The integrals of motion for a Kepler problem</span>
 
 <span class="sd">    :cvar ene: the energy</span>
@@ -1425,16 +1413,8 @@ TCB as the unit instead of the large SI values.</p>
   </table>
 
             <details class="quote">
-              <summary>Source code in <code>hamilflow/models/kepler_problem.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
+              <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
@@ -1449,7 +1429,15 @@ TCB as the unit instead of the large SI values.</p>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
-<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Definition of the Kepler problem</span>
 
 <span class="sd">    Potential:</span>
