@@ -85,7 +85,7 @@ nav:
     - "Brownian Motion": tutorials/brownian_motion.py
     - "Pendulum": tutorials/pendulum.py
     - "Harmonic Oscillator Chain": tutorials/harmonic_oscillator_chain.py
-    - "Kepler Motion": tutorials/kepler_motion.py
+    - "Kepler Problem": tutorials/kepler_problem.py
   - References:
     - "Introduction": references/index.md
     - "Models":
@@ -93,5 +93,5 @@ nav:
       - "Brownian Motion": references/models/brownian_motion.md
       - "Pendulum": references/models/pendulum.md
       - "Harmonic Oscillator Chain": references/models/harmonic_oscillator_chain.md
-      - "Kepler Motion": references/models/kepler_motion.md
+      - "Kepler Problem": references/models/kepler_problem.md
   - "Changelog": changelog.md
