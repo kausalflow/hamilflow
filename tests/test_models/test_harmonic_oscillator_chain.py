@@ -90,7 +90,7 @@ class TestHarmonicOscillatorChain:
     def test_raise(
         self,
         omega: int,
-        free_mode: Mapping[str, int] | None,
+        free_mode: Mapping[str, int],
         wave_mode: Mapping[str, int],
     ) -> None:
         ics = [free_mode, *([wave_mode] if wave_mode else [])]
