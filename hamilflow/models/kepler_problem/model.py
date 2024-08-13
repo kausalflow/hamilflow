@@ -1,12 +1,20 @@
 import math
-from functools import cached_property
+from functools import cached_property, partial
 from typing import Collection, Mapping
 
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
 import scipy as sp
+from numba import njit
 from pydantic import BaseModel, Field
+
+from hamilflow.models.kepler_problem.math import (
+    tau_of_u_root_elliptic,
+    tau_of_u_root_hyperbolic,
+    tau_of_u_root_parabolic,
+    u_of_tau_by_inverse,
+)
 
 
 class Kepler2DSystem(BaseModel):
@@ -69,14 +77,12 @@ class Kepler2D:
                 f"Energy {self.ene} less than minimally allowed {self.minimal_ene}"
             )
 
-        if self.eccentricity == 0:
-            raise NotImplementedError
-        elif 0 < self.eccentricity < 1:
-            self.tau_from_u = self.tau_from_u_elliptic
+        if 0 <= self.eccentricity < 1:
+            self.tau_of_u_root = tau_of_u_root_elliptic
         elif self.eccentricity == 1:
-            raise NotImplementedError
+            self.tau_of_u_root = tau_of_u_root_parabolic
         elif self.eccentricity > 1:
-            raise NotImplementedError
+            self.tau_of_u_root = tau_of_u_root_hyperbolic
         else:
             raise RuntimeError
 
@@ -116,26 +122,20 @@ class Kepler2D:
     ) -> "npt.ArrayLike[float]":
         return np.array(t, copy=False) * self.mass * self.alpha**2 / self.angular_mom**3
 
-    @staticmethod
-    def tau_from_u_elliptic(
-        e: float, u: "Collection[float] | npt.ArrayLike[float]"
-    ) -> "npt.ArrayLike[float]":
-        u = np.array(u, copy=False)
-        cosqr, eusqrt = 1 - e**2, np.sqrt(e**2 - u**2)
-        return (
-            -eusqrt / cosqr / (1 + u)
-            - np.arctan((e**2 + u) / np.sqrt(cosqr) * eusqrt) / cosqr**1.5
-        )
-
-    def u(
+    def u_of_tau(
         self, tau: "Collection[float] | npt.ArrayLike[float]"
     ) -> "npt.ArrayLike[float]":
-        pass
+        return np.array(
+            [
+                u_of_tau_by_inverse(self.tau_of_u_root, self.eccentricity, ta)
+                for ta in tau
+            ]
+        )
 
-    def r(
-        self, t: "Collection[float] | npt.ArrayLike[float]"
+    def r_of_u(
+        self, u: "Collection[float] | npt.ArrayLike[float]"
     ) -> "npt.ArrayLike[float]":
-        pass
+        return (np.array(u, copy=False) + 1) / self.parameter
 
     def phi(
         self, t: "Collection[float] | npt.ArrayLike[float]"
@@ -143,7 +143,9 @@ class Kepler2D:
         pass
 
     def __call__(self, t: "Collection[float] | npt.ArrayLike[float]") -> pd.DataFrame:
-        r = self.r(t)
+        tau = self.tau(t)
+        u = self.u_of_tau(tau)
+        r = self.r_of_u(u)
         phi = self.phi(t)
 
-        return pd.DataFrame(dict(t=t, r=r, phi=phi))
+        return pd.DataFrame(dict(t=t, tau=tau, u=u, r=r, phi=phi))

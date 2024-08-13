@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
-from hamilflow.models.kepler_problem import Kepler2D
+from hamilflow.models.kepler_problem.model import Kepler2D
 
 # %%
 # system = {"alpha": 1.0, "mass": 1.0}
