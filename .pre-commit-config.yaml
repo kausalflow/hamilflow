@@ -29,10 +29,14 @@ repos:
     hooks:
       - id: mypy
         name: mypy
-        entry: poetry run mypy
+        entry: mypy
         language: python
         language_version: python3.12
-        # additional_dependencies: ["mypy==0.790"]
+        additional_dependencies:
+          - mypy
+          - pandas-stubs
+          - pydantic
+          - pytest
         types: [python]
         # use require_serial so that script
         # is only called once per commit
