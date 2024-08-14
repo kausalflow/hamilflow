@@ -19,8 +19,8 @@ class FreeParticleIC(BaseModel):
     :cvar v0: the initial velocity
     """
 
-    x0: "Sequence[float] | npt.ArrayLike" = Field()
-    v0: "Sequence[float] | npt.ArrayLike" = Field()
+    x0: float | Sequence[float] = Field()
+    v0: float | Sequence[float] = Field()
 
     @model_validator(mode="after")
     def check_dimensions_match(self) -> Self:

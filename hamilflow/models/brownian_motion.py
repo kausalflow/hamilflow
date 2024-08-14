@@ -57,18 +57,16 @@ class BrownianMotionIC(BaseModel):
         the dimension of the model too.
     """
 
-    x0: "Sequence[float] | npt.ArrayLike" = Field(default=1.0)
+    x0: float | Sequence[float] = Field(default=1.0)
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(
-        cls, v: "Sequence[float] | npt.ArrayLike"
-    ) -> "npt.NDArray[np.float64]":
+    def check_x0_types(cls, v: float | Sequence[float]) -> float | Sequence[float]:
         if not isinstance(v, (float, int, Sequence)):
             # TODO I do not think this raise can be reached
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
 
-        return np.array(v, copy=False)
+        return v
 
 
 class BrownianMotion:
