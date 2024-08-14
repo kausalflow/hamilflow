@@ -28,6 +28,7 @@ mkdocs-material = "^9.5.30"
 mkdocs-autorefs = "^1.0.1"
 mkdocstrings = {version = "^0.25.2", extras = ["python"]}
 mkdocs-jupyter = "^0.24.8"
+jupytext = "^1.16.4"
 
 
 [tool.poetry.group.tutorial.dependencies]
