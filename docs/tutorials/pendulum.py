@@ -46,7 +46,9 @@ pen = Pendulum(system=omega0, initial_condition=theta0)
 # ## Data
 
 # %%
-df_pen = pen(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
+df_pen = pen.generate_from(
+    n_periods=n_periods, n_samples_per_period=n_samples_per_period
+)
 df_pen.head()
 
 # %%
