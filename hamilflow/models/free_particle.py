@@ -3,7 +3,7 @@ from typing import Mapping, Sequence, cast
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from pydantic import BaseModel, Field, model_validator
 
 try:
@@ -19,8 +19,8 @@ class FreeParticleIC(BaseModel):
     :cvar v0: the initial velocity
     """
 
-    x0: float | Sequence[float] = Field()
-    v0: float | Sequence[float] = Field()
+    x0: "Sequence[float] | npt.ArrayLike" = Field()
+    v0: "Sequence[float] | npt.ArrayLike" = Field()
 
     @model_validator(mode="after")
     def check_dimensions_match(self) -> Self:
@@ -48,16 +48,19 @@ class FreeParticle:
         """model params and initial conditions defined as a dictionary."""
         return dict(initial_condition=self.initial_condition.model_dump())
 
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray:
-        return np.outer(t, self.initial_condition.v0) + self.initial_condition.x0
+    def _x(self, t: "Sequence[float] |  npt.ArrayLike") -> "npt.NDArray[np.float64]":
+        t = np.array(t, copy=False)
+        v0 = np.array(self.initial_condition.v0, copy=False)
+        x0 = np.array(self.initial_condition.x0, copy=False)
+        return np.outer(t, v0) + x0
 
-    def __call__(self, t: "Sequence[float] | ArrayLike[float]") -> pd.DataFrame:
+    def __call__(self, t: "Sequence[float] |  npt.ArrayLike") -> pd.DataFrame:
         """Generate time series data for the free particle.
 
         :param t: time(s).
         """
 
         data = self._x(t)
-        columns = (f"x{i+1}" for i in range(data.shape[1]))
+        columns = [f"x{i+1}" for i in range(data.shape[1])]
 
         return pd.DataFrame(data, columns=columns).assign(t=t).sort_index(axis=1)
