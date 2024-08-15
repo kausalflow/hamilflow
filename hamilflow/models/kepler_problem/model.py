@@ -1,10 +1,10 @@
 import math
 from functools import cached_property, partial
-from typing import TYPE_CHECKING, Collection, Mapping
+from typing import TYPE_CHECKING, Any, Collection, Mapping
 
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from .math import (
     acos_with_shift,
@@ -40,11 +40,11 @@ class Kepler2DSystem(BaseModel):
     """
 
     # TODO add repulsive alpha < 0
-    alpha: float = Field(gt=0, default=1)
-    mass: float = Field(gt=0, default=1)
+    alpha: float = Field(gt=0, default=1.0)
+    mass: float = Field(gt=0, default=1.0)
 
 
-class Kepler2DIM(BaseModel):
+class Kepler2DIoM(BaseModel):
     """The integrals of motion for a Kepler problem
 
     :cvar ene: the energy
@@ -57,6 +57,14 @@ class Kepler2DIM(BaseModel):
     ene: float = Field()
     angular_mom: float = Field()
 
+    # TODO process angular momentum = 0
+    @field_validator("angular_mom")
+    @classmethod
+    def angular_mom_non_zero(cls, v: Any) -> float:
+        if v == 0:
+            raise NotImplementedError("Only non-zero angular momenta are supported")
+        return v
+
 
 class Kepler2D:
     r"""Kepler problem in two dimensional space.
@@ -68,10 +76,10 @@ class Kepler2D:
     def __init__(
         self,
         system: Mapping[str, float],
-        initial_condition: Mapping[str, float],
+        integrals_of_motion: Mapping[str, float],
     ) -> None:
         self.system = Kepler2DSystem.model_validate(system)
-        self.integrals_of_motion = Kepler2DIM.model_validate(initial_condition)
+        self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
 
         if self.ene < self.minimal_ene:
             raise ValueError(
