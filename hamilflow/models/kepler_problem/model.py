@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from pydantic import BaseModel, Field, field_validator
 
-from .math import (
+from .dynamics import (
     acos_with_shift,
     solve_u_of_tau,
     tau_of_u_elliptic,

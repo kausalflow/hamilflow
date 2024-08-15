@@ -27,8 +27,8 @@ def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
     )
 
 
-def tau_of_u_prime(e: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
-    return 1 / (1 + u) ** 2 / np.sqrt(e**2 - u**2)
+def tau_of_u_prime(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    return -1 / (1 + u) ** 2 / np.sqrt(ecc**2 - u**2)
 
 
 def solve_u_of_tau(
