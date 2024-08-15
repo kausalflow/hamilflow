@@ -1,20 +1,21 @@
 import math
 from functools import cached_property, partial
-from typing import Collection, Mapping
+from typing import TYPE_CHECKING, Collection, Mapping
 
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
-import scipy as sp
-from numba import njit
 from pydantic import BaseModel, Field
 
-from hamilflow.models.kepler_problem.math import (
-    tau_of_u_root_elliptic,
-    tau_of_u_root_hyperbolic,
-    tau_of_u_root_parabolic,
-    u_of_tau_by_inverse,
+from .math import (
+    acos_with_shift,
+    solve_u_of_tau,
+    tau_of_u_elliptic,
+    tau_of_u_hyperbolic,
+    tau_of_u_parabolic,
 )
+
+if TYPE_CHECKING:
+    from numpy import typing as npt
 
 
 class Kepler2DSystem(BaseModel):
@@ -77,12 +78,12 @@ class Kepler2D:
                 f"Energy {self.ene} less than minimally allowed {self.minimal_ene}"
             )
 
-        if 0 <= self.eccentricity < 1:
-            self.tau_of_u_root = tau_of_u_root_elliptic
-        elif self.eccentricity == 1:
-            self.tau_of_u_root = tau_of_u_root_parabolic
-        elif self.eccentricity > 1:
-            self.tau_of_u_root = tau_of_u_root_hyperbolic
+        if 0 <= self.ecc < 1:
+            self.tau_of_u = tau_of_u_elliptic
+        elif self.ecc == 1:
+            self.tau_of_u = tau_of_u_parabolic
+        elif self.ecc > 1:
+            self.tau_of_u = tau_of_u_hyperbolic
         else:
             raise RuntimeError
 
@@ -106,46 +107,68 @@ class Kepler2D:
     def minimal_ene(self) -> float:
         return -self.mass * self.alpha**2 / (2 * self.angular_mom**2)
 
+    @cached_property
+    def period(self) -> float:
+        if self.ene >= 0:
+            msg = f"Only energy < 0 gives a bounded motion where the system has a period, got {self.ene}"
+            raise TypeError(msg)
+        return math.pi * self.alpha * math.sqrt(self.mass / 2 / self.ene**3)
+
     # FIXME is it called parameter in English?
     @cached_property
     def parameter(self) -> float:
         return self.angular_mom**2 / self.mass * self.alpha
 
     @cached_property
-    def eccentricity(self) -> float:
+    def ecc(self) -> float:
         return math.sqrt(
             1 + 2 * self.ene * self.angular_mom**2 / self.mass * self.alpha**2
         )
 
-    def tau(
-        self, t: "Collection[float] | npt.ArrayLike[float]"
-    ) -> "npt.ArrayLike[float]":
-        return np.array(t, copy=False) * self.mass * self.alpha**2 / self.angular_mom**3
+    @cached_property
+    def period_in_tau(self) -> float:
+        if self.ecc >= 1:
+            msg = (
+                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}"
+            )
+            raise TypeError(msg)
+        return 2 * math.pi / (1 - self.ecc**2) ** 1.5
 
-    def u_of_tau(
-        self, tau: "Collection[float] | npt.ArrayLike[float]"
-    ) -> "npt.ArrayLike[float]":
-        return np.array(
-            [
-                u_of_tau_by_inverse(self.tau_of_u_root, self.eccentricity, ta)
-                for ta in tau
-            ]
+    def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
+        return np.array(t, copy=False) * np.sqrt(
+            self.mass * self.alpha**2 / self.angular_mom**3
         )
 
-    def r_of_u(
-        self, u: "Collection[float] | npt.ArrayLike[float]"
-    ) -> "npt.ArrayLike[float]":
+    def tau_of_u_eq(self, tau: "npt.ArrayLike", u: "npt.ArrayLike") -> "npt.ArrayLike":
+        return self.tau_of_u(self.ecc, u) - tau
+
+    def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
+        tau = np.array(tau, copy=False)
+        return (
+            np.zeros(tau.shape, dtype=np.float32)
+            if self.ecc == 0
+            else [s.root for s in solve_u_of_tau(self.tau_of_u_eq, tau)]
+        )
+
+    def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         return (np.array(u, copy=False) + 1) / self.parameter
 
-    def phi(
-        self, t: "Collection[float] | npt.ArrayLike[float]"
-    ) -> "npt.ArrayLike[float]":
-        pass
+    def phi_of_u_tau(
+        self,
+        u: "Collection[float] | npt.ArrayLike",
+        tau: "Collection[float] | npt.ArrayLike",
+    ) -> "npt.ArrayLike":
+        u, tau = map(partial(np.array, copy=False), [u, tau])
+        return (
+            tau
+            if self.ecc == 0
+            else acos_with_shift(u / self.ecc, tau / self.period_in_tau)
+        )
 
-    def __call__(self, t: "Collection[float] | npt.ArrayLike[float]") -> pd.DataFrame:
+    def __call__(self, t: "Collection[float] | npt.ArrayLike") -> pd.DataFrame:
         tau = self.tau(t)
         u = self.u_of_tau(tau)
         r = self.r_of_u(u)
-        phi = self.phi(t)
+        phi = self.phi_of_u_tau(u, tau)
 
         return pd.DataFrame(dict(t=t, tau=tau, u=u, r=r, phi=phi))

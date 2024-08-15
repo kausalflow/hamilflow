@@ -1,46 +1,49 @@
-import math
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 import numpy as np
-from numpy import typing as npt
 from scipy.optimize._root_scalar import root_scalar
 
+if TYPE_CHECKING:
+    from numpy import typing as npt
 
-def tau_of_u_root_elliptic(e: float, tau: float, u: float) -> float:
-    cosqr, eusqrt = 1 - e**2, math.sqrt(e**2 - u**2)
+
+def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    cosqr, eusqrt = 1 - ecc**2, np.sqrt(ecc**2 - u**2)
     return (
         -eusqrt / cosqr / (1 + u)
-        - math.atan((e**2 + u) / math.sqrt(cosqr) / eusqrt) / cosqr**1.5
-        - tau
+        - np.arctan((ecc**2 + u) / np.sqrt(cosqr) / eusqrt) / cosqr**1.5
     )
 
 
-def tau_of_u_root_parabolic(e: float, tau: float, u: float) -> float:
-    return math.sqrt(1 - u) * (2 + u) / 3 / (1 + u) ** 1.5 - tau
+def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    return np.sqrt(1 - u) * (2 + u) / 3 / (1 + u) ** 1.5
 
 
-def tau_of_u_root_hyperbolic(e: float, tau: float, u: float) -> float:
-    cosqr, eusqrt = e**2 - 1, math.sqrt(e**2 - u**2)
+def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    cosqr, eusqrt = ecc**2 - 1, np.sqrt(ecc**2 - u**2)
     return (
         eusqrt / cosqr / (1 + u)
-        - math.atanh(math.sqrt(cosqr) * eusqrt / (e**2 + u)) / cosqr**1.5
-        - tau
+        - np.arctanh(np.sqrt(cosqr) * eusqrt / (ecc**2 + u)) / cosqr**1.5
     )
 
 
-def tau_of_u_prime(e: float, u: float) -> float:
-    return 1 / (1 + u) ** 2 / math.sqrt(e**2 - u**2)
+def tau_of_u_prime(e: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    return 1 / (1 + u) ** 2 / np.sqrt(e**2 - u**2)
 
 
-def u_of_tau_by_inverse(
-    tau_of_u_root: Callable[[float, float, float], float], e: float, tau: float
-) -> float:
-    return root_scalar(
-        tau_of_u_root, (e, tau), "newton", x0=0.0, fprime=tau_of_u_prime
-    ).root
+def solve_u_of_tau(
+    tau_of_u_eq: "Callable[[npt.ArrayLike, npt.ArrayLike], npt.ArrayLike]",
+    tau: "npt.NDArray[np.float32]",
+) -> "npt.NDArray[np.float32]":
+    return np.array(
+        [
+            root_scalar(tau_of_u_eq, (ta,), "newton", x0=0.0, fprime=tau_of_u_prime)
+            for ta in tau
+        ]
+    )
 
 
-def acos_with_shift(x: npt.ArrayLike, shift: npt.ArrayLike) -> npt.ArrayLike:
+def acos_with_shift(x: "npt.ArrayLike", shift: "npt.ArrayLike") -> "npt.ArrayLike":
     p_shift = (div := np.floor(shift)) * 2 * np.pi
     remainder = shift - div
     p_value = np.arccos(x)
