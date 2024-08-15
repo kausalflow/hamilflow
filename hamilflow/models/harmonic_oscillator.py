@@ -4,7 +4,7 @@ from typing import Literal, Mapping, Sequence
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from pydantic import BaseModel, Field, computed_field, field_validator
 
 
@@ -93,7 +93,7 @@ class HarmonicOscillatorBase(ABC):
         }
 
     @abstractmethod
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to simple harmonic oscillators."""
         ...
 
@@ -162,7 +162,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
                 f"System is not a Simple Harmonic Oscillator: {self.system}"
             )
 
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray:
+    def _x(self, t: "Sequence[float] | npt.ArrayLike") -> np.ndarray:
         r"""Solution to simple harmonic oscillators:
 
         $$
@@ -235,7 +235,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
                 f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`."
             )
 
-    def _x_under_damped(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x_under_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to under damped harmonic oscillators:
 
         $$
@@ -249,6 +249,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Omega = \omega\sqrt{ 1 - \zeta^2}.
         $$
         """
+        t = np.array(t, copy=False)
         omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
         return (
             self.initial_condition.x0 * np.cos(omega_damp * t)
@@ -260,7 +261,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             * np.sin(omega_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-    def _x_critical_damped(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x_critical_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to critical damped harmonic oscillators:
 
         $$
@@ -274,11 +275,12 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Omega = \omega\sqrt{ 1 - \zeta^2}.
         $$
         """
+        t = np.array(t, copy=False)
         return self.initial_condition.x0 * np.exp(
             -self.system.zeta * self.system.omega * t
         )
 
-    def _x_over_damped(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x_over_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to over harmonic oscillators:
 
         $$
@@ -292,6 +294,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Gamma = \omega\sqrt{ \zeta^2 - 1 }.
         $$
         """
+        t = np.array(t, copy=False)
         gamma_damp = self.system.omega * np.sqrt(self.system.zeta - 1)
 
         return (
@@ -304,7 +307,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             * np.sinh(gamma_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to damped harmonic oscillators."""
         t = np.array(t, copy=False)
         if self.system.type == "under_damped":
@@ -364,9 +367,7 @@ class ComplexSimpleHarmonicOscillator:
             initial_condition=self.initial_condition.model_dump(),
         )
 
-    def _z(
-        self, t: "Sequence[float] | ArrayLike[float] | ArrayLike[float]"
-    ) -> ArrayLike:
+    def _z(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to complex simple harmonic oscillators:
 
         $$
@@ -379,16 +380,14 @@ class ComplexSimpleHarmonicOscillator:
         phases = -omega * t - phi[0], omega * t + phi[1]
         return x0[0] * np.exp(1j * phases[0]) + x0[1] * np.exp(1j * phases[1])
 
-    def __call__(
-        self, t: "Sequence[float] | ArrayLike[float] | ArrayLike[float]"
-    ) -> pd.DataFrame:
+    def __call__(self, t: "Sequence[float] | npt.ArrayLike") -> pd.DataFrame:
         """Generate time series data for the harmonic oscillator.
 
         Returns a list of floats representing the displacement at each time.
 
         :param t: time(s).
         """
-        t = t if isinstance(t, (Sequence, np.ndarray)) else [t]
+        t = np.array(t, copy=False)
         data = self._z(t)
 
         return pd.DataFrame({"t": t, "z": data})

@@ -9,11 +9,6 @@ repos:
       - id: end-of-file-fixer
       - id: requirements-txt-fixer
       - id: trailing-whitespace
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
-    hooks:
-      - id: mypy
-        files: ^(hamilflow/|tests/)
   - repo: https://github.com/ambv/black
     rev: 24.4.2
     hooks:
@@ -25,3 +20,28 @@ repos:
       - id: isort
         name: isort (python)
         args: ["--multi-line", "3", "--profile", "black", "--treat-comment-as-code", "# %%", "--float-to-top"]
+  - repo: local
+    # We do not use pre-commit/mirrors-mypy,
+    # as it comes with opinionated defaults
+    # (like --ignore-missing-imports)
+    # and is difficult to configure to run
+    # with the dependencies correctly installed.
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: python
+        # language_version: python3.12
+        additional_dependencies:
+          - mypy
+          - pandas-stubs
+          - pydantic
+          - pytest
+        types:
+          - python
+        # use require_serial so that script
+        # is only called once per commit
+        require_serial: true
+        # Print the number of files as a sanity-check
+        verbose: true
+        exclude: ^docs/tutorials

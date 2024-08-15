@@ -43,7 +43,7 @@ ics = [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
-df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]  # type: ignore [index]
 px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 # %% [markdown]

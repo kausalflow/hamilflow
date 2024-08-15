@@ -4,6 +4,7 @@ from typing import Mapping, Sequence
 import numpy as np
 import pandas as pd
 import scipy as sp
+from numpy import typing as npt
 from pydantic import BaseModel, Field, computed_field, field_validator
 
 from hamilflow.models.utils.typing import TypeTime
@@ -60,12 +61,12 @@ class BrownianMotionIC(BaseModel):
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(cls, v: float | Sequence[float]) -> np.ndarray:
+    def check_x0_types(cls, v: float | Sequence[float]) -> float | Sequence[float]:
         if not isinstance(v, (float, int, Sequence)):
             # TODO I do not think this raise can be reached
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
 
-        return np.array(v, copy=False)
+        return v
 
 
 class BrownianMotion:
@@ -146,7 +147,9 @@ class BrownianMotion:
     def __init__(
         self,
         system: Mapping[str, float],
-        initial_condition: Mapping[str, float] | None = None,
+        initial_condition: (
+            Mapping[str, "Sequence[float] | npt.ArrayLike"] | None
+        ) = None,
     ):
         initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)
@@ -155,13 +158,13 @@ class BrownianMotion:
     @property
     def dim(self) -> int:
         """Dimension of the Brownian motion"""
-        return self.initial_condition.x0.size
+        return np.array(self.initial_condition.x0, copy=False).size
 
     @property
     def _axis_names(self) -> list[str]:
         return [f"x_{i}" for i in range(self.dim)]
 
-    def _trajectory(self, n_new_steps: int, seed: int) -> np.ndarray:
+    def _trajectory(self, n_new_steps: int, seed: int) -> "npt.NDArray[np.float64]":
         """The trajectory of the particle.
 
         We first compute the delta displacement in each step.

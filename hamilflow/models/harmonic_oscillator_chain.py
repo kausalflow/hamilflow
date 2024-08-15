@@ -3,7 +3,7 @@ from typing import Mapping, Sequence, cast
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from scipy.fft import ifft
 
 from .free_particle import FreeParticle
@@ -92,8 +92,8 @@ class HarmonicOscillatorsChain:
         )
 
     def _z(
-        self, t: "Sequence[float] | ArrayLike[float]"
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self, t: "Sequence[float] | npt.ArrayLike"
+    ) -> "tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]":
         t = np.array(t, copy=False).reshape(-1)
         all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]
 
@@ -116,24 +116,27 @@ class HarmonicOscillatorsChain:
         return original_zs, travelling_waves
 
     def _x(
-        self, t: "Sequence[float] | ArrayLike[float]"
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self, t: "Sequence[float] | npt.ArrayLike"
+    ) -> "tuple[npt.NDArray[np.float64], npt.NDArray[np.complex64]]":
         original_xs, travelling_waves = self._z(t)
 
         return np.real(original_xs), travelling_waves
 
-    def __call__(self, t: "Sequence[float] | ArrayLike[float]") -> pd.DataFrame:
+    def __call__(self, t: "Sequence[float] | npt.ArrayLike") -> pd.DataFrame:
         """Generate time series data for the harmonic oscillator chain.
 
         Returns float(s) representing the displacement at the given time(s).
 
         :param t: time.
         """
+        t = np.array(t, copy=False)
         original_xs, travelling_waves = self._x(t)
-        data = {
-            f"{name}{i}": values
+        data = {  # type: ignore [var-annotated]
+            f"{name}{i}": cast(
+                "npt.NDArray[np.float64] | npt.NDArray[np.complex64]", values
+            )
             for name, xs in zip(("x", "y"), (original_xs, travelling_waves))
-            for i, values in enumerate(xs)
+            for i, values in enumerate(xs)  # type: ignore [arg-type]
         }
 
         return pd.DataFrame(data, index=t)

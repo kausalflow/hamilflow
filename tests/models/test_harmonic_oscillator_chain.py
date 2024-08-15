@@ -1,5 +1,5 @@
 from itertools import chain, product
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Mapping, Sequence, cast
 
 import numpy as np
 import pytest
@@ -88,10 +88,7 @@ class TestHarmonicOscillatorChain:
 
     @pytest.mark.parametrize("wave_mode", [None, *_possible_wave_modes[1:]])
     def test_raise(
-        self,
-        omega: int,
-        free_mode: Mapping[str, int],
-        wave_mode: Mapping[str, int],
+        self, omega: int, free_mode: Mapping[str, int], wave_mode: Mapping[str, int]
     ) -> None:
         ics = [free_mode, *([wave_mode] if wave_mode else [])]
         with pytest.raises(ValueError):
