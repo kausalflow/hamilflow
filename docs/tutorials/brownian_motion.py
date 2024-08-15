@@ -56,7 +56,7 @@ bm_1d = BrownianMotion(
 # Call the model to generate 1000 steps.
 
 # %%
-df_1d = bm_1d(n_steps=1000)
+df_1d = bm_1d.generate_from(n_steps=1000)
 
 # %%
 px.line(df_1d, x="t", y="x_0")
@@ -79,7 +79,7 @@ bm_2d = BrownianMotion(
 # We call the model to generate 1000 steps.
 
 # %%
-df_2d = bm_2d(n_steps=500)
+df_2d = bm_2d.generate_from(n_steps=500)
 
 # %%
 (

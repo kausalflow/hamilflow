@@ -34,8 +34,9 @@ mkdocs-material = "^9.5.31"
 mkdocs-autorefs = "^1.0.1"
 mkdocstrings = {version = "^0.25.2", extras = ["python"]}
 mkdocs-jupyter = "^0.24.8"
-jupytext = "^1.16.4"
 mkdocs = "^1.6.0"
+jupytext = "^1.16.4"
+
 
 [tool.poetry.group.tutorial.dependencies]
 plotly = "^5.23.0"

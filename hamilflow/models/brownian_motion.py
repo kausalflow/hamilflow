@@ -6,6 +6,8 @@ import pandas as pd
 import scipy as sp
 from pydantic import BaseModel, Field, computed_field, field_validator
 
+from hamilflow.models.utils.typing import TypeTime
+
 
 class BrownianMotionSystem(BaseModel):
     r"""Definition of the Brownian Motion system
@@ -183,17 +185,28 @@ class BrownianMotion:
 
         return trajectory
 
-    def __call__(self, n_steps: int, seed: int = 42) -> pd.DataFrame:
-        """Simulate the coordinates of the particle
+    def generate_from(self, n_steps: int, seed: int = 42) -> pd.DataFrame:
+        """generate data from a set of interpretable params for this model
 
         :param n_steps: total number of steps to be simulated, including the inital step.
         :param seed: random generator seed for the stochastic process.
             Use it to reproduce results.
         """
+        time_steps = np.arange(0, n_steps) * self.system.delta_t
+
+        return self(t=time_steps, seed=seed)
+
+    def __call__(self, t: TypeTime, seed: int = 42) -> pd.DataFrame:
+        """Simulate the coordinates of the particle
+
+        :param t: the time sequence to be used to generate data, 1-D array like
+        :param seed: random generator seed for the stochastic process.
+            Use it to reproduce results.
+        """
+        n_steps = np.array(t).size
         trajectory = self._trajectory(n_new_steps=n_steps - 1, seed=seed)
 
         df = pd.DataFrame(trajectory, columns=self._axis_names)
-
-        df["t"] = np.arange(0, n_steps) * self.system.delta_t
+        df["t"] = t
 
         return df
