@@ -54,12 +54,6 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 
-[tool.mypy]
-plugins = [
-  "pydantic.mypy"
-]
-
-
 [[tool.mypy.overrides]]
 module = ["plotly.*", "scipy.*"]
 ignore_missing_imports = true

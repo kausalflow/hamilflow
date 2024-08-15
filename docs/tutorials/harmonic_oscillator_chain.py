@@ -20,7 +20,6 @@
 
 # %%
 import math
-from typing import cast
 
 import numpy as np
 from plotly import express as px
@@ -40,10 +39,7 @@ pattern_x = r"x\d+"
 # ## Fundamental right-moving wave
 
 # %%
-ics = cast(
-    list[dict[str, int | tuple[int, int]]],
-    [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
@@ -54,14 +50,11 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # ## Fundamental left-moving wave
 
 # %%
-ics = cast(
-    list[dict[str, int | tuple[int, int]]],
-    [dict(x0=0, v0=0), dict(amp=(0, 1))] + [dict(amp=(0, 0))] * 5,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(0, 1))] + [dict(amp=(0, 0))] * 5
 hoc = HarmonicOscillatorsChain(2 * math.pi, ics, True)
 
 df_res = hoc(t)
-df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]  # type: ignore [index]
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
 px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 # %% [markdown]
@@ -69,28 +62,22 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # Also known as the first harmonic.
 
 # %%
-ics = cast(
-    list[dict[str, int | tuple[int, int]]],
-    [dict(x0=0, v0=0), dict(amp=(0, 0)), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 4,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(0, 0)), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 4
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
-df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]  # type: ignore [index]
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
 px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 # %% [markdown]
 # ## Fundamental stationary wave, odd dof
 
 # %%
-ics = cast(
-    list[dict[str, int | tuple[int, int]]],
-    [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
-df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]  # type: ignore [index]
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
 px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 
@@ -99,14 +86,11 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # There are stationary nodes at $i = 3, 9$.
 
 # %%
-ics = cast(
-    list[dict[str, int | tuple[int, int]]],
-    [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5,
-)
+ics = [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, False)
 
 df_res = hoc(t)
-df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]  # type: ignore [index]
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
 px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 
@@ -114,14 +98,11 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # ## Linearly moving chain and fundamental right-moving wave
 
 # %%
-ics = cast(
-    list[dict[str, int | tuple[int, int]]],
-    [dict(x0=0, v0=2), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5,
-)
+ics = [dict(x0=0, v0=2), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, False)
 
 df_res = hoc(t)
-df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]  # type: ignore [index]
+df_x_wide = df_res.loc[:, df_res.columns.str.match(pattern_x)]
 px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 
 # %% [markdown]

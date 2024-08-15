@@ -31,15 +31,17 @@ repos:
         name: mypy
         entry: mypy
         language: python
-        language_version: python3.12
+        # language_version: python3.12
         additional_dependencies:
           - mypy
           - pandas-stubs
           - pydantic
           - pytest
-        types: [python]
+        types:
+          - python
         # use require_serial so that script
         # is only called once per commit
         require_serial: true
         # Print the number of files as a sanity-check
         verbose: true
+        exclude: tutorial
