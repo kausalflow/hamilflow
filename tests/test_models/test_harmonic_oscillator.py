@@ -177,7 +177,7 @@ class TestComplexHarmonicOscillator:
             dict(omega=omega), dict(x0=(x0, x0), phi=(phi, phi))
         )
         sho = SimpleHarmonicOscillator(dict(omega=omega), dict(x0=2 * x0, phi=phi))
-        z = csho._z(times)
+        z = np.array(csho._z(times), copy=False)
         x = sho._x(times)
 
         assert np.all(z.imag == 0.0)

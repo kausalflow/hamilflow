@@ -52,3 +52,8 @@ changelog_file = "docs/changelog.md"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[[tool.mypy.overrides]]
+module = ["plotly.*", "scipy.*"]
+ignore_missing_imports = true

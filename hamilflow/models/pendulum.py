@@ -1,10 +1,10 @@
 import math
 from functools import cached_property
-from typing import Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from pydantic import BaseModel, Field, computed_field
 from scipy.special import ellipj, ellipk
 
@@ -68,7 +68,7 @@ class Pendulum:
         self.initial_condition = PendulumIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> dict[str, float]:
+    def definition(self) -> dict[str, dict[str, Any]]:
         """Model params and initial conditions defined as a dictionary."""
         return dict(
             system=self.system.model_dump(),
@@ -105,10 +105,12 @@ class Pendulum:
         """
         return 4 * ellipk(self._math_m) / self.omega0
 
-    def _math_u(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
+    def _math_u(
+        self, t: "Sequence[float] | npt.ArrayLike"
+    ) -> "npt.NDArray[np.float64]":
         return self.omega0 * np.array(t, copy=False)
 
-    def u(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
+    def u(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
         r"""The convenient generalised coordinate $u$,
         $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
@@ -121,7 +123,7 @@ class Pendulum:
 
         return ph
 
-    def theta(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
+    def theta(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
         r"""Angle $\theta$.
 
         :param t: time
