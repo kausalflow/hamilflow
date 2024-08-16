@@ -29,6 +29,8 @@ def ecc(request: pytest.FixtureRequest) -> float:
 
 @pytest.fixture(params=[-0.7, False, 0.7])
 def u_s(request: pytest.FixtureRequest, ecc: float) -> "npt.ArrayLike":
+    # There are dividends sqrt(e**2 - u**2) and (u + 1),
+    # hence u cannot be too close to +e / -e / -1
     f = 1 - _EPS_ECC
     ecc_f = ecc * f
     return max(-f, request.param * ecc) or np.linspace(max(-f, -ecc_f) * f, ecc_f, 7)
@@ -49,6 +51,8 @@ class TestTauOfU:
     def test_const(
         self, ecc: float, tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]"
     ) -> None:
+        # There are dividends sqrt(e**2 - u**2) and (u + 1),
+        # hence u cannot be too close to +e / -e / -1
         res = np.array(tau_of_u(ecc, ecc * (1 - _EPS_SQRT)), copy=False)
         almost_zero = np.full(res.shape, _EPS_SQRT)
         assert_array_almost_equal(res, almost_zero)
