@@ -28,13 +28,13 @@ def ecc(request: pytest.FixtureRequest) -> float:
     return request.param
 
 
-@pytest.fixture(params=[-0.7, False, 0.7])
+@pytest.fixture(params=[-0.9, False, 0.9])
 def u_s(request: pytest.FixtureRequest, ecc: float) -> "npt.ArrayLike":
     # There are dividends sqrt(e**2 - u**2) and (u + 1),
     # hence u cannot be too close to +e / -e / -1
     f = 1 - _EPS_ECC
     ecc_f = ecc * f
-    return max(-f, request.param * ecc) or np.linspace(max(-f, -ecc_f) * f, ecc_f, 9)
+    return max(-f, request.param * ecc) or np.linspace(max(-f, -ecc_f), ecc_f, 7)
 
 
 class TestTauAndU:
