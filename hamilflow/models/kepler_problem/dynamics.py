@@ -12,7 +12,7 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
     cosqr, eusqrt = 1 - ecc**2, np.sqrt(ecc**2 - u**2)
     return (
         -eusqrt / cosqr / (1 + u)
-        - np.arctan((ecc**2 + u) / np.sqrt(cosqr) / eusqrt) / cosqr**1.5
+        + (np.pi / 2 - np.arctan((ecc**2 + u) / np.sqrt(cosqr) / eusqrt)) / cosqr**1.5
     )
 
 
