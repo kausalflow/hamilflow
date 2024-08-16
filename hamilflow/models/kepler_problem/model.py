@@ -1,13 +1,13 @@
 import math
-from functools import cached_property, partial
-from typing import TYPE_CHECKING, Any, cast
+from functools import cached_property
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
 from pydantic import BaseModel, Field, field_validator
 
+from ...maths.trigonometrics import acos_with_shift
 from .dynamics import (
-    acos_with_shift,
     solve_u_of_tau,
     tau_of_u_elliptic,
     tau_of_u_hyperbolic,
