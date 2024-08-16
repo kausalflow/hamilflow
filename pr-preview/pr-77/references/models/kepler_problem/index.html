@@ -1034,9 +1034,7 @@
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 71</span>
 <span class="normal"> 72</span>
 <span class="normal"> 73</span>
 <span class="normal"> 74</span>
@@ -1146,8 +1144,7 @@
 <span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
+<span class="normal">181</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Kepler problem in two dimensional space.</span>
 
 <span class="sd">    :param system: the Kepler problem system definition</span>
@@ -1156,8 +1153,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">system</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-        <span class="n">integrals_of_motion</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">system</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
+        <span class="n">integrals_of_motion</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">Kepler2DSystem</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">integrals_of_motion</span> <span class="o">=</span> <span class="n">Kepler2DIoM</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">integrals_of_motion</span><span class="p">)</span>
@@ -1228,15 +1225,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_mom</span><span class="o">**</span><span class="mi">3</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">tau_of_u_eq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="o">-</span> <span class="n">tau</span>
-
     <span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="k">else</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">root</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">solve_u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u_eq</span><span class="p">,</span> <span class="n">tau</span><span class="p">)]</span>
+            <span class="k">else</span> <span class="n">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">r_of_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
@@ -1247,12 +1241,12 @@
         <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
         <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">tau</span><span class="p">])</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">tau</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="k">else</span> <span class="n">acos_with_shift</span><span class="p">(</span><span class="n">u</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">,</span> <span class="n">tau</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">period_in_tau</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">acos_with_shift</span><span class="p">(</span><span class="n">u</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">,</span> <span class="n">tau</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">period_in_tau</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
@@ -1342,9 +1336,7 @@
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
@@ -1361,7 +1353,9 @@
 <span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DIoM</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DIoM</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The integrals of motion for a Kepler problem</span>
 
 <span class="sd">    :cvar ene: the energy</span>
@@ -1473,9 +1467,7 @@ TCB as the unit instead of the large SI values.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
@@ -1496,7 +1488,9 @@ TCB as the unit instead of the large SI values.</p>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
-<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Definition of the Kepler problem</span>
 
 <span class="sd">    Potential:</span>
