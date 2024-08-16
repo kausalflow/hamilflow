@@ -1,6 +1,6 @@
 import math
 from functools import cached_property, partial
-from typing import TYPE_CHECKING, Any, Collection, Mapping
+from typing import TYPE_CHECKING, Any, cast
 
 import numpy as np
 import pandas as pd
@@ -15,6 +15,8 @@ from .dynamics import (
 )
 
 if TYPE_CHECKING:
+    from typing import Collection, Mapping
+
     from numpy import typing as npt
 
 
@@ -75,8 +77,8 @@ class Kepler2D:
 
     def __init__(
         self,
-        system: Mapping[str, float],
-        integrals_of_motion: Mapping[str, float],
+        system: "Mapping[str, float]",
+        integrals_of_motion: "Mapping[str, float]",
     ) -> None:
         self.system = Kepler2DSystem.model_validate(system)
         self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
@@ -148,7 +150,7 @@ class Kepler2D:
         )
 
     def tau_of_u_eq(self, tau: "npt.ArrayLike", u: "npt.ArrayLike") -> "npt.ArrayLike":
-        return self.tau_of_u(self.ecc, u) - tau
+        return self.tau_of_u(self.ecc, u) - np.array(tau, copy=False)
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         tau = np.array(tau, copy=False)
@@ -166,12 +168,12 @@ class Kepler2D:
         u: "Collection[float] | npt.ArrayLike",
         tau: "Collection[float] | npt.ArrayLike",
     ) -> "npt.ArrayLike":
-        u, tau = map(partial(np.array, copy=False), [u, tau])
-        return (
-            tau
-            if self.ecc == 0
-            else acos_with_shift(u / self.ecc, tau / self.period_in_tau)
-        )
+        u = np.array(u, copy=False)
+        tau = np.array(tau, copy=False)
+        if self.ecc == 0:
+            return np.zeros(u.shape)
+        else:
+            return acos_with_shift(u / self.ecc, tau / self.period_in_tau)
 
     def __call__(self, t: "Collection[float] | npt.ArrayLike") -> pd.DataFrame:
         tau = self.tau(t)

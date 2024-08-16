@@ -1,3 +1,4 @@
+from functools import partial
 from typing import TYPE_CHECKING, Callable
 
 import numpy as np
@@ -8,6 +9,7 @@ if TYPE_CHECKING:
 
 
 def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    u = np.array(u, copy=False)
     cosqr, eusqrt = 1 - ecc**2, np.sqrt(ecc**2 - u**2)
     return (
         -eusqrt / cosqr / (1 + u)
@@ -16,10 +18,12 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
 
 
 def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    u = np.array(u, copy=False)
     return np.sqrt(1 - u) * (2 + u) / 3 / (1 + u) ** 1.5
 
 
 def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    u = np.array(u, copy=False)
     cosqr, eusqrt = ecc**2 - 1, np.sqrt(ecc**2 - u**2)
     return (
         eusqrt / cosqr / (1 + u)
@@ -28,13 +32,15 @@ def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
 
 
 def tau_of_u_prime(ecc: float, u: "npt.ArrayLike") -> "npt.ArrayLike":
+    u = np.array(u, copy=False)
     return -1 / (1 + u) ** 2 / np.sqrt(ecc**2 - u**2)
 
 
 def solve_u_of_tau(
     tau_of_u_eq: "Callable[[npt.ArrayLike, npt.ArrayLike], npt.ArrayLike]",
-    tau: "npt.NDArray[np.float32]",
+    tau: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float32]":
+    tau = np.array(tau, copy=False).reshape(-1)
     return np.array(
         [
             root_scalar(tau_of_u_eq, (ta,), "newton", x0=0.0, fprime=tau_of_u_prime)
@@ -44,6 +50,7 @@ def solve_u_of_tau(
 
 
 def acos_with_shift(x: "npt.ArrayLike", shift: "npt.ArrayLike") -> "npt.ArrayLike":
+    x, shift = map(partial(np.array, copy=False), [x, shift])
     p_shift = (div := np.floor(shift)) * 2 * np.pi
     remainder = shift - div
     p_value = np.arccos(x)

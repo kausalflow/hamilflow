@@ -21,7 +21,7 @@ _EPS = 0.05
 
 @pytest.mark.parametrize("ecc", [1 / 3, 1 / 2, 5 / 7, 1.0, 12 / 11, 27 / 13])
 def test_tau_of_u(ecc: float) -> None:
-    def integrand(u: float) -> float:
+    def integrand(u: "npt.ArrayLike") -> "npt.ArrayLike":
         return tau_of_u_prime(ecc, u)
 
     if 0 < ecc < 1:
@@ -41,4 +41,4 @@ def test_tau_of_u(ecc: float) -> None:
     u_s = np.linspace(max(-1, -ecc) + _EPS, ecc - _EPS, 5)
     rets = [quad(integrand, 0, u) for u in u_s]
     integrals = np.array([ret[0] for ret in rets]) + const
-    assert_array_almost_equal(integrals, tau_of_u(ecc, u_s))
+    assert_array_almost_equal(integrals, np.array(tau_of_u(ecc, u_s), copy=False))
