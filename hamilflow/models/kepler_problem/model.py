@@ -8,10 +8,10 @@ from pydantic import BaseModel, Field, field_validator
 
 from ...maths.trigonometrics import acos_with_shift
 from .dynamics import (
-    solve_u_of_tau,
     tau_of_u_elliptic,
     tau_of_u_hyperbolic,
     tau_of_u_parabolic,
+    u_of_tau,
 )
 
 if TYPE_CHECKING:
@@ -149,15 +149,12 @@ class Kepler2D:
             self.mass * self.alpha**2 / self.angular_mom**3
         )
 
-    def tau_of_u_eq(self, tau: "npt.ArrayLike", u: "npt.ArrayLike") -> "npt.ArrayLike":
-        return self.tau_of_u(self.ecc, u) - np.array(tau, copy=False)
-
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         tau = np.array(tau, copy=False)
         return (
             np.zeros(tau.shape, dtype=np.float32)
             if self.ecc == 0
-            else [s.root for s in solve_u_of_tau(self.tau_of_u_eq, tau)]
+            else u_of_tau(self.ecc, tau)
         )
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
