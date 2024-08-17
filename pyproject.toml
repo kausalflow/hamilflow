@@ -64,6 +64,10 @@ build-backend = "poetry.core.masonry.api"
 formats = "ipynb,py:percent"
 
 
+[tool.mypy]
+plugins = ["numpy.typing.mypy_plugin"]
+
+
 [[tool.mypy.overrides]]
 module = ["plotly.*", "scipy.*"]
 ignore_missing_imports = true
