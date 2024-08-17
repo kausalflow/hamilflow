@@ -31,19 +31,19 @@ def _u0_hyperbolic(
     return numer / (1 + cosqr**2 * tau2)
 
 
-def nsolve_u_from_tau(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult:
+def nsolve_u_from_tau_newton(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult:
     tau = np.array(tau, copy=False)
-    if ecc < 1:
+    if 0 < ecc < 1:
         tau_of_u = tau_of_u_elliptic
         u0 = _u0_elliptic(ecc, tau)
     elif ecc > 1:
         tau_of_u = tau_of_u_hyperbolic
         u0 = _u0_hyperbolic(ecc, tau)
     else:
-        raise ValueError
+        raise ValueError(f"Expect ecc > 0, ecc != 1, got {ecc}")
 
-    def f(u: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
-        return tau_of_u(ecc, u) - np.array(tau, copy=False)
+    def f(u: float, tau: "npt.NDArray[np.float64]") -> "npt.NDArray[np.float64]":
+        return tau_of_u(ecc, u) - tau
 
     def fprime(u: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
         return tau_of_u_prime(ecc, u)
@@ -51,24 +51,30 @@ def nsolve_u_from_tau(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult:
     def fprime2(u: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
         return tau_of_u_prime2(ecc, u)
 
-    print("start", u0)
-    return newton(
-        f,
-        u0,
-        fprime,
-        (tau,),
-        fprime2=fprime2,
-        maxiter=1000,
-        full_output=True,
-        disp=False,
-    )
-    # return toms748(f, max(-1, -ecc), ecc, (tau,), 2, full_output=True)
+    return newton(f, u0, fprime, (tau,), fprime2=fprime2, full_output=True, disp=False)
+
+
+def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeResult]:
+    tau_s = np.array(tau, copy=False).reshape(-1)
+    if 0 < ecc < 1:
+        tau_of_u = tau_of_u_elliptic
+    elif ecc > 1:
+        tau_of_u = tau_of_u_hyperbolic
+    else:
+        raise ValueError(f"Expect ecc > 0, ecc != 1, got {ecc}")
+
+    def f(u: float, tau: float) -> np.float64:
+        return (
+            np.finfo(np.float64).max if u == -1 else np.float64(tau_of_u(ecc, u) - tau)
+        )
+
+    return [toms748(f, max(-1, -ecc), ecc, (ta,), 2, full_output=True) for ta in tau_s]
 
 
 def u_of_tau(ecc: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
     if ecc == 1:
         return esolve_u_from_tau_parabolic(ecc, tau)
     elif ecc > 0:
-        return nsolve_u_from_tau(ecc, tau)[0]
+        return np.array([s[0] for s in nsolve_u_from_tau_bisect(ecc, tau)])
     else:
-        raise ValueError
+        raise ValueError(f"Expect ecc > 0, got {ecc}")

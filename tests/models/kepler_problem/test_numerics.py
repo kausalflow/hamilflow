@@ -20,8 +20,8 @@ if TYPE_CHECKING:
 _EPS_ECC = 1e-5
 
 
-# 5 / 7, 12 / 11, 257 / 13 makes test_u_of_tau fail
-@pytest.fixture(params=[1 / 3, 1 / 2, 1.0, 29 / 13, 256 / 19])
+# 5 / 7, 12 / 11, 257 / 13 makes u_of_tau from newton fail
+@pytest.fixture(params=[0.0, 0.1, 0.3, 0.7, 0.9, 1.0, 1.1, 2.0, 11.0, 101.0])
 def ecc(request: pytest.FixtureRequest) -> float:
     return request.param
 
@@ -32,21 +32,24 @@ def u_s(request: pytest.FixtureRequest, ecc: float) -> "npt.ArrayLike":
     # hence u cannot be too close to +e / -e / -1
     f = 1 - _EPS_ECC
     ecc_f = ecc * f
-    return max(-f, request.param * ecc) or np.linspace(max(-f, -ecc_f), ecc_f, 7)
+    return max(-f, request.param * ecc_f) or np.linspace(max(-f, -ecc_f), ecc_f, 7)
+
+
+@pytest.fixture()
+def tau_of_u(ecc: float) -> "Callable[[float, npt.ArrayLike], npt.ArrayLike]":
+    if ecc == 0:
+        pytest.skip(f"Circular case")
+    elif 0 < ecc < 1:
+        return tau_of_u_elliptic
+    elif ecc == 1:
+        return tau_of_u_parabolic
+    elif ecc > 1:
+        return tau_of_u_hyperbolic
+    else:
+        raise ValueError(f"Expect ecc >= 0, got {ecc}")
 
 
 class TestUOfTau:
-    @pytest.fixture()
-    def tau_of_u(self, ecc: float) -> "Callable[[float, npt.ArrayLike], npt.ArrayLike]":
-        if 0 < ecc < 1:
-            return tau_of_u_elliptic
-        elif ecc == 1:
-            return tau_of_u_parabolic
-        elif ecc > 1:
-            return tau_of_u_hyperbolic
-        else:
-            raise ValueError(f"Expected ecc > 0, got {ecc}")
-
     def test_u_of_tau(
         self,
         ecc: float,

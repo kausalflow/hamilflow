@@ -12,13 +12,14 @@ def system_kwargs(request: pytest.FixtureRequest) -> dict[str, float]:
     return dict(zip(("alpha", "mass"), request.param))
 
 
-@pytest.fixture(params=[0.0, 0.5, 1.0, 2.0])
-def ecc(request: pytest.FixtureRequest) -> float:
+@pytest.fixture(params=[1.0, 2.0])
+def parameter(request: pytest.FixtureRequest) -> float:
     return request.param
 
 
-@pytest.fixture(params=[1.0, 2.0])
-def parameter(request: pytest.FixtureRequest) -> float:
+# 5 / 7, 12 / 11, 257 / 13 makes u_of_tau from newton fail
+@pytest.fixture(params=[0.0, 0.1, 0.3, 0.7, 0.9, 1.0, 1.1, 2.0, 11.0, 101.0])
+def ecc(request: pytest.FixtureRequest) -> float:
     return request.param
 
 
