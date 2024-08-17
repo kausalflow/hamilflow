@@ -7,12 +7,7 @@ import pandas as pd
 from pydantic import BaseModel, Field, field_validator
 
 from ...maths.trigonometrics import acos_with_shift
-from .dynamics import (
-    tau_of_u_elliptic,
-    tau_of_u_hyperbolic,
-    tau_of_u_parabolic
-    
-)
+from .dynamics import tau_of_u_elliptic, tau_of_u_hyperbolic, tau_of_u_parabolic
 from .numerics import u_of_tau
 
 if TYPE_CHECKING:

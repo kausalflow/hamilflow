@@ -7,11 +7,9 @@ from numpy.testing import assert_array_almost_equal
 from hamilflow.models.kepler_problem.dynamics import (
     tau_of_u_elliptic,
     tau_of_u_hyperbolic,
-    tau_of_u_parabolic)
-
-from hamilflow.models.kepler_problem.numerics import (
-    u_of_tau
+    tau_of_u_parabolic,
 )
+from hamilflow.models.kepler_problem.numerics import u_of_tau
 
 if TYPE_CHECKING:
     from typing import Callable
@@ -36,6 +34,7 @@ def u_s(request: pytest.FixtureRequest, ecc: float) -> "npt.ArrayLike":
     ecc_f = ecc * f
     return max(-f, request.param * ecc) or np.linspace(max(-f, -ecc_f), ecc_f, 7)
 
+
 class TestUOfTau:
     @pytest.fixture()
     def tau_of_u(self, ecc: float) -> "Callable[[float, npt.ArrayLike], npt.ArrayLike]":
@@ -47,6 +46,7 @@ class TestUOfTau:
             return tau_of_u_hyperbolic
         else:
             raise ValueError(f"Expected ecc > 0, got {ecc}")
+
     def test_u_of_tau(
         self,
         ecc: float,

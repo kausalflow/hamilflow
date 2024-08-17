@@ -4,15 +4,16 @@ import numpy as np
 from scipy.optimize import OptimizeResult, newton, toms748
 
 from hamilflow.models.kepler_problem.dynamics import (
+    esolve_u_from_tau_parabolic,
     tau_of_u_elliptic,
     tau_of_u_hyperbolic,
-    tau_of_u_parabolic,
     tau_of_u_prime,
     tau_of_u_prime2,
-    esolve_u_from_tau_parabolic)
+)
 
 if TYPE_CHECKING:
     from numpy import typing as npt
+
 
 def _u0_elliptic(
     ecc: float, tau: "npt.NDArray[np.float64]"
@@ -20,6 +21,7 @@ def _u0_elliptic(
     cosqr = 1 - ecc**2
     cot = 1 / np.tan(cosqr**1.5 * tau)
     return ecc * (-ecc + cosqr * cot * np.sqrt(1 + cot**2)) / (1 + cosqr * cot**2)
+
 
 def _u0_hyperbolic(
     ecc: float, tau: "npt.NDArray[np.float64]"
@@ -50,7 +52,16 @@ def nsolve_u_from_tau(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult:
         return tau_of_u_prime2(ecc, u)
 
     print("start", u0)
-    return newton(f, u0, fprime, (tau,), fprime2=fprime2, maxiter=1000, full_output=True, disp=False)
+    return newton(
+        f,
+        u0,
+        fprime,
+        (tau,),
+        fprime2=fprime2,
+        maxiter=1000,
+        full_output=True,
+        disp=False,
+    )
     # return toms748(f, max(-1, -ecc), ecc, (tau,), 2, full_output=True)
 
 
