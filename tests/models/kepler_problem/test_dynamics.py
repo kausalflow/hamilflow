@@ -10,9 +10,12 @@ from numpy.testing import (
 from scipy.integrate import quad
 
 from hamilflow.models.kepler_problem.dynamics import (
+    _tau_of_1_plus_u_hyperbolic,
     _tau_of_e_minus_u_elliptic,
+    _tau_of_e_minus_u_hyperbolic,
     _tau_of_e_plus_u_elliptic,
     _tau_of_u_exact_elliptic,
+    _tau_of_u_exact_hyperbolic,
     tau_of_u_elliptic,
     tau_of_u_hyperbolic,
     tau_of_u_parabolic,
@@ -28,9 +31,7 @@ _EPS_SQRT = 1e-16
 _EPS_ECC = 1e-5
 
 
-@pytest.fixture(
-    params=[1 / 3, 1 / 2, 5 / 7, 1.0, 12 / 11, 29 / 13, 256 / 19, 1023 / 13]
-)
+@pytest.fixture(params=[0.1, 0.3, 0.7, 0.9, 1.0, 1.1, 2.0, 11.0, 101.0])
 def ecc(request: pytest.FixtureRequest) -> float:
     return request.param
 
@@ -80,26 +81,39 @@ class TestTauOfU:
         assert_allclose(integrals, np.array(tau_of_u(ecc, u_s), copy=False))
 
     @pytest.fixture()
-    def tau_from_expansions(
+    @pytest.mark.skipif("ecc == 1.0")
+    def exact_and_approx_tau_s(
         self, ecc: float
-    ) -> "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]":
+    ) -> "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]":
         if 0 < ecc < 1:
-            return _tau_of_e_plus_u_elliptic, _tau_of_e_minus_u_elliptic
+            return (
+                _tau_of_u_exact_elliptic,
+                _tau_of_e_plus_u_elliptic,
+                _tau_of_e_minus_u_elliptic,
+            )
         elif ecc > 1:
-            raise NotImplementedError
+            return (
+                _tau_of_u_exact_hyperbolic,
+                _tau_of_1_plus_u_hyperbolic,
+                _tau_of_e_minus_u_hyperbolic,
+            )
+        elif ecc == 1:
+            pytest.skip("Parabolic case is exact. Pass")
         else:
-            raise ValueError
+            raise ValueError(f"Expect ecc > 0, got {ecc}")
 
-    @pytest.mark.parametrize("ecc", [0.1, 0.5, 0.9])
     @pytest.mark.parametrize("epsilon", [1e-7])
+    @pytest.mark.skipif("ecc == 1.0")
     def test_expansion(
         self,
         ecc: float,
         epsilon: float,
-        tau_from_expansions: "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]",
+        exact_and_approx_tau_s: "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]",
     ) -> None:
         factor = 1 - epsilon
-        for u, f in zip((max(-1, -ecc) * factor, ecc * factor), tau_from_expansions):
-            actual = f(ecc, u)  # type: ignore [arg-type]
-            desired = _tau_of_u_exact_elliptic(ecc, u)  # type: ignore [arg-type]
-            assert_approx_equal(actual, desired, err_msg=f"ecc={ecc}, u={u}")
+        f, g_s = exact_and_approx_tau_s[0], exact_and_approx_tau_s[1:]
+        for u, g in zip((max(-1, -ecc) * factor, ecc * factor), g_s):
+            u_s = np.array(u, copy=False)
+            desired, actual = f(ecc, u_s), g(ecc, u_s)
+            if not np.isinf(desired):
+                assert_approx_equal(actual, desired, err_msg=f"ecc={ecc}, u={u_s}")
