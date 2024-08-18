@@ -186,6 +186,7 @@ class Kepler2D:
             return np.zeros(tau.shape)
         else:
             if self.ecc < 1:
+                # FIXME this is not right: tau % self.period_in_tau; 2 * period - tau
                 tau = tau % (self.period_in_tau / 2)
             return u_of_tau(self.ecc, np.abs(tau))
 
