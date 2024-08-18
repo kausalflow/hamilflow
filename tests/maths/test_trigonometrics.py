@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 
 
 class TestAcosWithShift:
-    _some_numbers: ClassVar[list[float]] = [-7.0, -3.0, -1.0, 1.0, 3.0, 7.0]
+    _some_numbers: ClassVar[list[float]] = [x / 2 - 5 for x in range(20)]
 
-    @pytest.fixture(params=[*_some_numbers, _some_numbers])
+    @pytest.fixture(params=[_some_numbers[0], _some_numbers])
     def phi(self, request: pytest.FixtureRequest) -> float | list[float]:
         return request.param
 

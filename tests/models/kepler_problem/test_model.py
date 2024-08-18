@@ -97,7 +97,7 @@ class TestKepler2D:
                 period_in_tau = 2 * (kep.tau_of_u(-kep.ecc) - kep.tau_of_u(kep.ecc))
                 assert_equal(period_in_tau, kep.period_in_tau)
         elif ecc >= 1:
-            match = "Only energy < 0 gives a bounded motion where the system has a period, got"
+            match = "Only systems with energy < 0 have a period, got "
             with pytest.raises(TypeError, match=match):
                 _ = kep.period
         else:
@@ -119,9 +119,9 @@ class TestKepler2D:
             assert_equal(kep.phi_of_u_tau(u, tau), phi)
             assert_array_equal(kep.phi_of_u_tau([u], [tau]), [phi])
 
-    _some_numbers: ClassVar[list[float]] = [-7.0, -3.0, -1.0, 1.0, 3.0, 7.0]
+    _some_numbers: ClassVar[list[float]] = [x / 2 - 5 for x in range(20)]
 
-    @pytest.fixture(params=[*_some_numbers, _some_numbers])
+    @pytest.fixture(params=[_some_numbers[0], _some_numbers])
     def t(self, request: pytest.FixtureRequest) -> float | list[float]:
         return request.param
 

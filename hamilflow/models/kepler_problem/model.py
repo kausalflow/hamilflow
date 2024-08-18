@@ -150,7 +150,7 @@ class Kepler2D:
     @cached_property
     def period(self) -> float:
         if self.ene >= 0:
-            msg = f"Only energy < 0 gives a bounded motion where the system has a period, got {self.ene}"
+            msg = f"Only systems with energy < 0 have a period, got {self.ene}"
             raise TypeError(msg)
         return math.pi * self.alpha * math.sqrt(-self.mass / 2 / self.ene**3)
 
@@ -186,9 +186,12 @@ class Kepler2D:
             return np.zeros(tau.shape)
         else:
             if self.ecc < 1:
-                # FIXME this is not right: tau % self.period_in_tau; 2 * period - tau
-                tau = tau % (self.period_in_tau / 2)
-            return u_of_tau(self.ecc, np.abs(tau))
+                p = self.period_in_tau
+                r = tau % p
+                tau = np.where(r <= p / 2, r, p - r)
+            else:
+                tau = np.abs(tau)
+            return u_of_tau(self.ecc, tau)  # type: ignore [arg-type]
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         return self.parameter / (np.array(u, copy=False) + 1)
