@@ -1091,7 +1091,10 @@
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
-<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Kepler problem in two dimensional space.</span>
 
 <span class="sd">    :param system: the Kepler problem system definition</span>
@@ -1175,7 +1178,7 @@
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">period</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ene</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Only energy &lt; 0 gives a bounded motion where the system has a period, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ene</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Only systems with energy &lt; 0 have a period, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ene</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ene</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
 
@@ -1211,9 +1214,12 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tau</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="c1"># FIXME this is not right: tau % self.period_in_tau; 2 * period - tau</span>
-                <span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period_in_tau</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tau</span><span class="p">))</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period_in_tau</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">%</span> <span class="n">p</span>
+                <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span> <span class="o">&lt;=</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]</span>
 
     <span class="k">def</span> <span class="nf">r_of_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
