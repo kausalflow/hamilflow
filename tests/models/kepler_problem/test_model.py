@@ -3,7 +3,13 @@ from typing import TYPE_CHECKING
 
 import pydantic
 import pytest
-from numpy.testing import assert_approx_equal
+from numpy.testing import (
+    assert_almost_equal,
+    assert_approx_equal,
+    assert_array_almost_equal,
+    assert_array_equal,
+    assert_equal,
+)
 
 from hamilflow.models.kepler_problem import Kepler2DIoM, Kepler2DSystem
 from hamilflow.models.kepler_problem.model import Kepler2D
@@ -33,20 +39,10 @@ def kepler_system(system_kwargs: "Mapping[str, float]") -> Kepler2DSystem:
 
 
 @pytest.fixture()
-def kepler_iom(
-    positive_angular_mom: bool,
-    ecc: float,
-    parameter: float,
-    kepler_system: Kepler2DSystem,
-) -> Kepler2DIoM:
-    return Kepler2DIoM.from_geometry(
-        positive_angular_mom, ecc, parameter, kepler_system
-    )
-
-
-# @pytest.fixture
-# def t():
-#     return np.linspace(0, 10, 101)
+def geometries(
+    positive_angular_mom: bool, ecc: float, parameter: float
+) -> dict[str, bool | float]:
+    return dict(positive_angular_mom=positive_angular_mom, ecc=ecc, parameter=parameter)
 
 
 class Test2DSystem:
@@ -60,16 +56,6 @@ class Test2DSystem:
 
 
 class Test2DIoM:
-    def test_from_geometry(
-        self,
-        positive_angular_mom: bool,
-        ecc: float,
-        parameter: float,
-        kepler_system: Kepler2DSystem,
-    ) -> None:
-        assert Kepler2DIoM.from_geometry(
-            positive_angular_mom, ecc, parameter, kepler_system
-        )
 
     def test_raise(self) -> None:
         match = "Only non-zero angular momenta are supported"
@@ -78,27 +64,38 @@ class Test2DIoM:
 
 
 class TestKepler2D:
+    def test_from_geometry(
+        self,
+        system_kwargs: "Mapping[str, float]",
+        geometries: "Mapping[str, bool | float]",
+    ) -> None:
+        kep = Kepler2D.from_geometry(system_kwargs, geometries)
+        assert_almost_equal(kep.ecc, geometries["ecc"])
+        assert_almost_equal(kep.parameter, geometries["parameter"])
+
     @pytest.mark.parametrize("ecc", [0.0])
     def test_minimal_ene(
         self,
         system_kwargs: "Mapping[str, float]",
-        kepler_system: Kepler2DSystem,
-        kepler_iom: Kepler2DIoM,
+        geometries: "Mapping[str, bool | float]",
     ) -> None:
-        kep = Kepler2D(system_kwargs, kepler_iom.model_dump())
-        assert kep.ene == kepler_iom.minimal_ene(kepler_iom.angular_mom, kepler_system)
+        kep = Kepler2D.from_geometry(system_kwargs, geometries)
+        assert_equal(kep.ene, Kepler2D.minimal_ene(kep.angular_mom, system_kwargs))
         with pytest.raises(ValueError):
             Kepler2D(system_kwargs, dict(ene=kep.ene - 1, angular_mom=kep.angular_mom))
 
     def test_period_from_u(
-        self, ecc: float, system_kwargs: "Mapping[str, float]", kepler_iom: Kepler2DIoM
+        self,
+        ecc: float,
+        system_kwargs: "Mapping[str, float]",
+        geometries: "Mapping[str, bool | float]",
     ) -> None:
-        kep = Kepler2D(system_kwargs, kepler_iom.model_dump())
+        kep = Kepler2D.from_geometry(system_kwargs, geometries)
         if ecc >= 0 and ecc < 1:
-            assert_approx_equal(kep.period_in_tau, kep.period * kep.t_to_tau_factor)
+            assert_almost_equal(kep.period_in_tau, kep.period * kep.t_to_tau_factor)
             if ecc > 0:
                 period_in_tau = 2 * (kep.tau_of_u(-kep.ecc) - kep.tau_of_u(kep.ecc))
-                assert_approx_equal(period_in_tau, kep.period_in_tau)
+                assert_equal(period_in_tau, kep.period_in_tau)
         elif ecc >= 1:
             match = "Only energy < 0 gives a bounded motion where the system has a period, got"
             with pytest.raises(TypeError, match=match):
@@ -106,5 +103,18 @@ class TestKepler2D:
         else:
             raise ValueError(f"Expect ecc >= 0, got {ecc}")
 
-    def test_call(self, kepler_system: Kepler2DSystem, kepler_iom: Kepler2DIoM) -> None:
-        pass
+    def test_phi_of_u_tau_naive(
+        self,
+        ecc: float,
+        system_kwargs: "Mapping[str, float]",
+        geometries: "Mapping[str, bool | float]",
+    ) -> None:
+        kep = Kepler2D.from_geometry(system_kwargs, geometries)
+        ecc = kep.ecc  # numeric instability
+        if ecc >= 0 and ecc < 1:
+            us, taus = (ecc, max(-1, -ecc)), (0, kep.period_in_tau / 2)
+        else:
+            us, taus = (ecc,), (0,)  # type: ignore [assignment]
+        for u, tau, phi in zip(us, taus, (0, math.pi)):
+            assert_equal(kep.phi_of_u_tau(u, tau), phi)
+            assert_array_equal(kep.phi_of_u_tau([u], [tau]), [phi])

@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from typing import Collection, Mapping
 
     from numpy import typing as npt
+    from typing_extensions import Self
 
 
 class Kepler2DSystem(BaseModel):
@@ -47,13 +48,14 @@ class Kepler2DIoM(BaseModel):
 
     :cvar ene: the energy
     :cvar angular_mom: the angular momentum
+    :cvar t0: the time at which the radial position is closest to 0, default to 0
+    :cvar phi0: the angle at which the radial position is closest to 0, default to 0
     """
-
-    # :cvar t_0: the time at which the radial position is closest to 0
-    # :cvar phi_0: the angle at which the radial position is closest to 0
 
     ene: float = Field()
     angular_mom: float = Field()
+    t0: float = Field(default=0)
+    phi0: float = Field(ge=0, lt=2 * math.pi, default=0)
 
     # TODO process angular momentum = 0
     @field_validator("angular_mom")
@@ -62,24 +64,6 @@ class Kepler2DIoM(BaseModel):
         if v == 0:
             raise NotImplementedError("Only non-zero angular momenta are supported")
         return v
-
-    @classmethod
-    def from_geometry(
-        cls,
-        positive_angular_mom: bool,
-        ecc: float,
-        parameter: float,
-        system: Kepler2DSystem,
-    ):
-        abs_angular_mom = math.sqrt(system.mass * parameter * system.alpha)
-        return cls(
-            ene=(ecc**2 - 1) * system.alpha / 2 / parameter,
-            angular_mom=abs_angular_mom if positive_angular_mom else -abs_angular_mom,
-        )
-
-    @staticmethod
-    def minimal_ene(angular_mom: float, system: Kepler2DSystem) -> float:
-        return -system.mass * system.alpha**2 / (2 * angular_mom**2)
 
 
 class Kepler2D:
@@ -98,23 +82,12 @@ class Kepler2D:
 
         integrals_of_motion = dict(integrals_of_motion)
         ene = integrals_of_motion["ene"]
-        minimal_ene = Kepler2DIoM.minimal_ene(
-            integrals_of_motion["angular_mom"], self.system
-        )
+        minimal_ene = Kepler2D.minimal_ene(integrals_of_motion["angular_mom"], system)
         if ene < minimal_ene:
-            if math.isclose(ene, minimal_ene):  # numeric instability
-                integrals_of_motion["ene"] = ene = minimal_ene
-            else:
-                msg = f"Energy {ene} less than minimally allowed {minimal_ene}"
-                raise ValueError(msg)
+            msg = f"Energy {ene} less than minimally allowed {minimal_ene}"
+            raise ValueError(msg)
 
         self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
-        # if math.isclose(self.ecc, 1):  # numeric instability
-        #     positive_angular_mom = integrals_of_motion["angular_mom"] > 0
-        #     integrals_of_motion = Kepler2DIoM(
-        #         positive_angular_mom, 1, integrals_of_motion["parameter"], self.system
-        #     )
-        #     self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
 
         if 0 <= self.ecc < 1:
             self.tau_of_u = partial(tau_of_u_elliptic, self.ecc)
@@ -124,6 +97,31 @@ class Kepler2D:
             self.tau_of_u = partial(tau_of_u_hyperbolic, self.ecc)
         else:
             raise RuntimeError
+
+    @classmethod
+    def from_geometry(
+        cls, system: "Mapping[str, float]", geometries: "Mapping[str, bool | float]"
+    ) -> "Self":
+        mass, alpha = system["mass"], system["alpha"]
+        positive_angular_mom = bool(geometries["positive_angular_mom"])
+        ecc, parameter = map(lambda k: float(geometries[k]), ["ecc", "parameter"])
+        abs_angular_mom = math.sqrt(mass * parameter * alpha)
+        # abs_minimal_ene = alpha / 2 / parameter: numerically unstable
+        abs_minimal_ene = mass * alpha**2 / 2 / abs_angular_mom**2
+        ene = (ecc**2 - 1) * abs_minimal_ene
+        iom = dict(
+            ene=ene,
+            angular_mom=abs_angular_mom if positive_angular_mom else -abs_angular_mom,
+        )
+        return cls(system, iom)
+
+    @staticmethod
+    def minimal_ene(
+        angular_mom: float,
+        system: "Mapping[str, float]",
+    ) -> float:
+        mass, alpha = system["mass"], system["alpha"]
+        return -mass * alpha**2 / (2 * angular_mom**2)
 
     @property
     def mass(self) -> float:
@@ -141,6 +139,14 @@ class Kepler2D:
     def angular_mom(self) -> float:
         return self.integrals_of_motion.angular_mom
 
+    @property
+    def t0(self) -> float:
+        return self.integrals_of_motion.t0
+
+    @property
+    def phi0(self) -> float:
+        return self.integrals_of_motion.phi0
+
     @cached_property
     def period(self) -> float:
         if self.ene >= 0:
@@ -151,7 +157,7 @@ class Kepler2D:
     # FIXME is it called parameter in English?
     @cached_property
     def parameter(self) -> float:
-        return self.angular_mom**2 / self.mass * self.alpha
+        return self.angular_mom**2 / self.mass / self.alpha
 
     @cached_property
     def ecc(self) -> float:
@@ -162,10 +168,9 @@ class Kepler2D:
     @cached_property
     def period_in_tau(self) -> float:
         if self.ecc >= 1:
-            msg = (
+            raise TypeError(
                 f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}"
             )
-            raise TypeError(msg)
         return 2 * math.pi / (1 - self.ecc**2) ** 1.5
 
     @property
@@ -173,7 +178,7 @@ class Kepler2D:
         return abs(self.mass * self.alpha**2 / self.angular_mom**3)
 
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
-        return np.array(t, copy=False) * self.t_to_tau_factor
+        return (np.array(t, copy=False) - self.t0) * self.t_to_tau_factor
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         tau = np.array(tau, copy=False)
@@ -187,12 +192,16 @@ class Kepler2D:
         u: "Collection[float] | npt.ArrayLike",
         tau: "Collection[float] | npt.ArrayLike",
     ) -> "npt.ArrayLike":
-        u = np.array(u, copy=False)
-        tau = np.array(tau, copy=False)
+        u, tau = np.array(u, copy=False), np.array(tau, copy=False)
         if self.ecc == 0:
-            return np.zeros(u.shape)
+            phi = 2 * math.pi * tau / self.period_in_tau
         else:
-            return acos_with_shift(u / self.ecc, tau / self.period_in_tau)
+            if self.ecc < 1:
+                shift = tau / self.period_in_tau
+            else:
+                shift = np.where(tau >= 0, 0, -np.pi)
+            phi = acos_with_shift(u / self.ecc, shift)  # type: ignore [assignment]
+        return phi + self.phi0
 
     def __call__(self, t: "Collection[float] | npt.ArrayLike") -> pd.DataFrame:
         tau = self.tau(t)
