@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 from scipy.optimize import OptimizeResult, newton, toms748
@@ -71,10 +71,21 @@ def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeR
     return [toms748(f, max(-1, -ecc), ecc, (ta,), 2, full_output=True) for ta in tau_s]
 
 
-def u_of_tau(ecc: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
-    if ecc == 1:
+def u_of_tau(
+    ecc: float, tau: "npt.ArrayLike", method: Literal["bisect", "newton"] = "bisect"
+) -> "npt.NDArray[np.float64]":
+    tau = np.array(tau, copy=False)
+    if ecc == 0:
+        return np.zeros(tau.shape)
+    elif ecc == 1:
         return esolve_u_from_tau_parabolic(ecc, tau)
     elif ecc > 0:
-        return np.array([s[0] for s in nsolve_u_from_tau_bisect(ecc, tau)])
+        match method:
+            case "bisect":
+                return np.array([s[0] for s in nsolve_u_from_tau_bisect(ecc, tau)])
+            case "newton":
+                return nsolve_u_from_tau_newton(ecc, tau)[0]
+            case _:
+                raise ValueError(f"Expect 'bisect' or 'newton', got {method}")
     else:
-        raise ValueError(f"Expect ecc > 0, got {ecc}")
+        raise ValueError(f"Expect ecc >= 0, got {ecc}")
