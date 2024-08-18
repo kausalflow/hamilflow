@@ -1,11 +1,11 @@
 import math
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
+import numpy as np
 import pydantic
 import pytest
 from numpy.testing import (
     assert_almost_equal,
-    assert_approx_equal,
     assert_array_almost_equal,
     assert_array_equal,
     assert_equal,
@@ -15,7 +15,7 @@ from hamilflow.models.kepler_problem import Kepler2DIoM, Kepler2DSystem
 from hamilflow.models.kepler_problem.model import Kepler2D
 
 if TYPE_CHECKING:
-    from typing import Mapping
+    from typing import Collection, Mapping
 
 
 @pytest.fixture(params=[(1.0, 1.0), (1.0, 2.0), (2.0, 1.0), (2.0, 2.0)])
@@ -118,3 +118,25 @@ class TestKepler2D:
         for u, tau, phi in zip(us, taus, (0, math.pi)):
             assert_equal(kep.phi_of_u_tau(u, tau), phi)
             assert_array_equal(kep.phi_of_u_tau([u], [tau]), [phi])
+
+    _some_numbers: ClassVar[list[float]] = [-7.0, -3.0, -1.0, 1.0, 3.0, 7.0]
+
+    @pytest.fixture(params=[*_some_numbers, _some_numbers])
+    def t(self, request: pytest.FixtureRequest) -> float | list[float]:
+        return request.param
+
+    def test_r_and_phi(
+        self,
+        t: "float | Collection[float]",
+        system_kwargs: "Mapping[str, float]",
+        geometries: "Mapping[str, bool | float]",
+    ) -> None:
+        kep = Kepler2D.from_geometry(system_kwargs, geometries)
+        tau = kep.tau(t)
+        u = kep.u_of_tau(tau)
+        r, phi = kep.r_of_u(u), kep.phi_of_u_tau(u, tau)
+        assert_array_almost_equal(
+            np.array(r, copy=False),
+            kep.parameter / (1 + kep.ecc * np.cos(phi)),
+            err_msg=f"{kep.ecc}, {u}, {tau}",
+        )

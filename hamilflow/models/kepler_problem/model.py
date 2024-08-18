@@ -182,10 +182,15 @@ class Kepler2D:
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         tau = np.array(tau, copy=False)
-        return np.zeros(tau.shape) if self.ecc == 0 else u_of_tau(self.ecc, tau)
+        if self.ecc == 0:
+            return np.zeros(tau.shape)
+        else:
+            if self.ecc < 1:
+                tau = tau % (self.period_in_tau / 2)
+            return u_of_tau(self.ecc, np.abs(tau))
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
-        return (np.array(u, copy=False) + 1) / self.parameter
+        return self.parameter / (np.array(u, copy=False) + 1)
 
     def phi_of_u_tau(
         self,
