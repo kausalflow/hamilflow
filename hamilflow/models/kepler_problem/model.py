@@ -79,10 +79,10 @@ class Kepler2D:
         self.system = Kepler2DSystem.model_validate(system)
         self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
 
-        if self.ene < self.minimal_ene:
-            raise ValueError(
-                f"Energy {self.ene} less than minimally allowed {self.minimal_ene}"
-            )
+        minimal_ene = self.minimal_ene(**system, angular_mom=self.angular_mom)
+        if self.ene < minimal_ene:
+            msg = f"Energy {self.ene} less than minimally allowed {minimal_ene}"
+            raise ValueError(msg)
 
         if 0 <= self.ecc < 1:
             self.tau_of_u = tau_of_u_elliptic
@@ -109,9 +109,9 @@ class Kepler2D:
     def angular_mom(self) -> float:
         return self.integrals_of_motion.angular_mom
 
-    @cached_property
-    def minimal_ene(self) -> float:
-        return -self.mass * self.alpha**2 / (2 * self.angular_mom**2)
+    @staticmethod
+    def minimal_ene(mass: float, alpha: float, angular_mom: float) -> float:
+        return -mass * alpha**2 / (2 * angular_mom**2)
 
     @cached_property
     def period(self) -> float:
@@ -128,7 +128,7 @@ class Kepler2D:
     @cached_property
     def ecc(self) -> float:
         return math.sqrt(
-            1 + 2 * self.ene * self.angular_mom**2 / self.mass * self.alpha**2
+            1 + 2 * self.ene * self.angular_mom**2 / self.mass / self.alpha**2
         )
 
     @cached_property
@@ -147,11 +147,7 @@ class Kepler2D:
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         tau = np.array(tau, copy=False)
-        return (
-            np.zeros(tau.shape, dtype=np.float32)
-            if self.ecc == 0
-            else u_of_tau(self.ecc, tau)
-        )
+        return np.zeros(tau.shape) if self.ecc == 0 else u_of_tau(self.ecc, tau)
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         return (np.array(u, copy=False) + 1) / self.parameter

@@ -1,12 +1,14 @@
 import math
-from typing import Mapping
+from typing import TYPE_CHECKING
 
 import pydantic
 import pytest
 
 from hamilflow.models.kepler_problem import Kepler2DIoM, Kepler2DSystem
+from hamilflow.models.kepler_problem.model import Kepler2D
 
-from .conftest import *
+if TYPE_CHECKING:
+    from typing import Mapping
 
 
 @pytest.fixture(params=[(1.0, 1.0), (1.0, 2.0), (2.0, 1.0), (2.0, 2.0)])
@@ -22,7 +24,7 @@ def parameter(request: pytest.FixtureRequest) -> float:
 @pytest.fixture(params=[-1, 1])
 def iom_kwargs(
     request: pytest.FixtureRequest,
-    system_kwargs: Mapping[str, float],
+    system_kwargs: "Mapping[str, float]",
     ecc: float,
     parameter: float,
 ) -> dict[str, float]:
@@ -39,7 +41,7 @@ def iom_kwargs(
 
 
 class TestKepler2DSystem:
-    def test_init(self, system_kwargs: Mapping[str, float]) -> None:
+    def test_init(self, system_kwargs: "Mapping[str, float]") -> None:
         Kepler2DSystem(**system_kwargs)
 
     @pytest.mark.parametrize(("alpha", "mass"), [(-1, 1), (1, -1), (0, 1), (1, 0)])
@@ -49,7 +51,7 @@ class TestKepler2DSystem:
 
 
 class TestKepler2DIoM:
-    def test_init(self, iom_kwargs: Mapping[str, float]) -> None:
+    def test_init(self, iom_kwargs: "Mapping[str, float]") -> None:
         Kepler2DIoM(**iom_kwargs)
 
     def test_raise(self) -> None:
@@ -59,8 +61,18 @@ class TestKepler2DIoM:
             Kepler2DIoM(ene=1, angular_mom=0)
 
 
+@pytest.fixture(params=[-10, -1, 1, 10])
+def angular_mom(request: pytest.FixtureRequest) -> int:
+    return request.param
+
+
 class TestKepler2D:
-    pass
+    def test_minimal_ene(
+        self, angular_mom: int, system_kwargs: "Mapping[str, float]"
+    ) -> None:
+        minimal_ene = Kepler2D.minimal_ene(**system_kwargs, angular_mom=angular_mom)
+        kep = Kepler2D(system_kwargs, dict(ene=minimal_ene, angular_mom=angular_mom))
+        assert kep.ecc == 0.0
 
 
 # def test_central_field_2d_conserved(
