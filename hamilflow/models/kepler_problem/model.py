@@ -1,5 +1,5 @@
 import math
-from functools import cached_property
+from functools import cached_property, partial
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
@@ -109,19 +109,19 @@ class Kepler2D:
                 raise ValueError(msg)
 
         self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
-        if math.isclose(self.ecc, 1):  # numeric instability
-            positive_angular_mom = integrals_of_motion["angular_mom"] > 0
-            integrals_of_motion = Kepler2DIoM.from_geometry(
-                positive_angular_mom, 1, integrals_of_motion["parameter"], self.system
-            )
-            self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
+        # if math.isclose(self.ecc, 1):  # numeric instability
+        #     positive_angular_mom = integrals_of_motion["angular_mom"] > 0
+        #     integrals_of_motion = Kepler2DIoM(
+        #         positive_angular_mom, 1, integrals_of_motion["parameter"], self.system
+        #     )
+        #     self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
 
         if 0 <= self.ecc < 1:
-            self.tau_of_u = tau_of_u_elliptic
+            self.tau_of_u = partial(tau_of_u_elliptic, self.ecc)
         elif self.ecc == 1:
-            self.tau_of_u = tau_of_u_parabolic
+            self.tau_of_u = partial(tau_of_u_parabolic, self.ecc)
         elif self.ecc > 1:
-            self.tau_of_u = tau_of_u_hyperbolic
+            self.tau_of_u = partial(tau_of_u_hyperbolic, self.ecc)
         else:
             raise RuntimeError
 
@@ -146,7 +146,7 @@ class Kepler2D:
         if self.ene >= 0:
             msg = f"Only energy < 0 gives a bounded motion where the system has a period, got {self.ene}"
             raise TypeError(msg)
-        return math.pi * self.alpha * math.sqrt(self.mass / 2 / self.ene**3)
+        return math.pi * self.alpha * math.sqrt(-self.mass / 2 / self.ene**3)
 
     # FIXME is it called parameter in English?
     @cached_property
@@ -170,7 +170,7 @@ class Kepler2D:
 
     @property
     def t_to_tau_factor(self) -> float:
-        return math.sqrt(self.mass * self.alpha**2 / self.angular_mom**3)
+        return abs(self.mass * self.alpha**2 / self.angular_mom**3)
 
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         return np.array(t, copy=False) * self.t_to_tau_factor

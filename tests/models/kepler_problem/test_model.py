@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 import pydantic
 import pytest
+from numpy.testing import assert_approx_equal
 
 from hamilflow.models.kepler_problem import Kepler2DIoM, Kepler2DSystem
 from hamilflow.models.kepler_problem.model import Kepler2D
@@ -48,7 +49,7 @@ def kepler_iom(
 #     return np.linspace(0, 10, 101)
 
 
-class TestKepler2DSystem:
+class Test2DSystem:
     def test_init(self, system_kwargs: "Mapping[str, float]") -> None:
         Kepler2DSystem(**system_kwargs)
 
@@ -58,7 +59,7 @@ class TestKepler2DSystem:
             Kepler2DSystem(alpha=alpha, mass=mass)
 
 
-class TestKepler2DIoM:
+class Test2DIoM:
     def test_from_geometry(
         self,
         positive_angular_mom: bool,
@@ -71,9 +72,8 @@ class TestKepler2DIoM:
         )
 
     def test_raise(self) -> None:
-        with pytest.raises(
-            NotImplementedError, match="Only non-zero angular momenta are supported"
-        ):
+        match = "Only non-zero angular momenta are supported"
+        with pytest.raises(NotImplementedError, match=match):
             Kepler2DIoM(ene=1, angular_mom=0)
 
 
@@ -90,29 +90,21 @@ class TestKepler2D:
         with pytest.raises(ValueError):
             Kepler2D(system_kwargs, dict(ene=kep.ene - 1, angular_mom=kep.angular_mom))
 
-    def test_period(self, system_kwargs: "Mapping[str, float]") -> None:
-        kep = Kepler2D
+    def test_period_from_u(
+        self, ecc: float, system_kwargs: "Mapping[str, float]", kepler_iom: Kepler2DIoM
+    ) -> None:
+        kep = Kepler2D(system_kwargs, kepler_iom.model_dump())
+        if ecc >= 0 and ecc < 1:
+            assert_approx_equal(kep.period_in_tau, kep.period * kep.t_to_tau_factor)
+            if ecc > 0:
+                period_in_tau = 2 * (kep.tau_of_u(-kep.ecc) - kep.tau_of_u(kep.ecc))
+                assert_approx_equal(period_in_tau, kep.period_in_tau)
+        elif ecc >= 1:
+            match = "Only energy < 0 gives a bounded motion where the system has a period, got"
+            with pytest.raises(TypeError, match=match):
+                _ = kep.period
+        else:
+            raise ValueError(f"Expect ecc >= 0, got {ecc}")
 
-
-# def test_central_field_2d_conserved(
-#     central_field_2d_ic_params, central_field_2d_system_params
-# ):
-#     cf = Kepler2D(
-#         system=central_field_2d_system_params,
-#         initial_condition=central_field_2d_ic_params,
-#     )
-
-#     assert cf._energy == 0.0
-#     assert cf._angular_momentum == 1.0
-
-
-# def test_central_field_2d_orbit(
-#     central_field_2d_ic_params, central_field_2d_system_params, t
-# ):
-
-#     cf = Kepler2D(
-#         system=central_field_2d_system_params,
-#         initial_condition=central_field_2d_ic_params,
-#     )
-
-#     cf(t)
+    def test_call(self, kepler_system: Kepler2DSystem, kepler_iom: Kepler2DIoM) -> None:
+        pass
