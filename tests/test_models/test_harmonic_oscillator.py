@@ -1,7 +1,13 @@
+from typing import Mapping, Sequence
+
+import numpy as np
 import pandas as pd
 import pytest
+from numpy.testing import assert_array_equal
 
 from hamilflow.models.harmonic_oscillator import (
+    ComplexSimpleHarmonicOscillator,
+    ComplexSimpleHarmonicOscillatorIC,
     DampedHarmonicOscillator,
     HarmonicOscillatorSystem,
     SimpleHarmonicOscillator,
@@ -136,3 +142,43 @@ def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
     df = ho(n_periods=1, n_samples_per_period=10)
 
     pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
+
+
+class TestComplexHarmonicOscillatorIC:
+    @pytest.mark.parametrize("kwargs", [dict(x0=(1, 2), phi=(2, 3)), dict(x0=(1, 2))])
+    def test_ic(self, kwargs: Mapping[str, tuple[int, int]]) -> None:
+        assert ComplexSimpleHarmonicOscillatorIC(**kwargs)
+
+
+class TestComplexHarmonicOscillator:
+    def test_complex(self) -> None:
+        assert ComplexSimpleHarmonicOscillator(
+            dict(omega=3), dict(x0=(1, 2), phi=(2, 3))
+        )
+
+    @pytest.mark.parametrize("zeta", [0.5, 1.0, 1.5])
+    def test_raise(self, zeta: float) -> None:
+        with pytest.raises(ValueError):
+            ComplexSimpleHarmonicOscillator(
+                dict(omega=3, zeta=zeta), dict(x0=(2, 3), phi=(3, 4))
+            )
+
+    @pytest.fixture(params=(1, (1,), [1, 2], np.array([2, 3, 5, 7, 11])))
+    def times(self, request: pytest.FixtureRequest) -> int | Sequence[int]:
+        return request.param
+
+    @pytest.mark.parametrize("omega", [3, 5])
+    @pytest.mark.parametrize("x0", [2, 4])
+    @pytest.mark.parametrize("phi", [1, 6])
+    def test_degenerate_real(
+        self, omega: int, x0: int, phi: int, times: int | Sequence[int]
+    ) -> None:
+        csho = ComplexSimpleHarmonicOscillator(
+            dict(omega=omega), dict(x0=(x0, x0), phi=(phi, phi))
+        )
+        sho = SimpleHarmonicOscillator(dict(omega=omega), dict(x0=2 * x0, phi=phi))
+        z = np.array(csho._z(times), copy=False)
+        x = sho._x(times)
+
+        assert np.all(z.imag == 0.0)
+        assert_array_equal(z.real, x)
