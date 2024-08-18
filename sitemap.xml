@@ -21,17 +21,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/central_field/</loc>
+         <lastmod>2024-08-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kausalflow.github.io/hamilflow/references/models/harmonic_oscillator/</loc>
          <lastmod>2024-08-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://kausalflow.github.io/hamilflow/references/models/harmonic_oscillator_chain/</loc>
-         <lastmod>2024-08-18</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://kausalflow.github.io/hamilflow/references/models/kepler_problem/</loc>
          <lastmod>2024-08-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -51,6 +51,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kausalflow.github.io/hamilflow/tutorials/central_force_motion/</loc>
+         <lastmod>2024-08-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kausalflow.github.io/hamilflow/tutorials/complex_harmonic_oscillator/</loc>
          <lastmod>2024-08-18</lastmod>
          <changefreq>daily</changefreq>
@@ -62,11 +67,6 @@
     </url>
     <url>
          <loc>https://kausalflow.github.io/hamilflow/tutorials/harmonic_oscillator_chain/</loc>
-         <lastmod>2024-08-18</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://kausalflow.github.io/hamilflow/tutorials/kepler_problem/</loc>
          <lastmod>2024-08-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
