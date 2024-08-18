@@ -77,12 +77,17 @@ class Kepler2D:
         integrals_of_motion: "Mapping[str, float]",
     ) -> None:
         self.system = Kepler2DSystem.model_validate(system)
+        ene = integrals_of_motion["ene"]
+        minimal_ene = self.minimal_ene(
+            **system, angular_mom=integrals_of_motion["angular_mom"]
+        )
+        if ene < minimal_ene:
+            if math.isclose(ene, minimal_ene):  # numeric instability
+                integrals_of_motion["ene"] = ene = minimal_ene
+            else:
+                msg = f"Energy {ene} less than minimally allowed {minimal_ene}"
+                raise ValueError(msg)
         self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
-
-        minimal_ene = self.minimal_ene(**system, angular_mom=self.angular_mom)
-        if self.ene < minimal_ene:
-            msg = f"Energy {self.ene} less than minimally allowed {minimal_ene}"
-            raise ValueError(msg)
 
         if 0 <= self.ecc < 1:
             self.tau_of_u = tau_of_u_elliptic
@@ -140,10 +145,12 @@ class Kepler2D:
             raise TypeError(msg)
         return 2 * math.pi / (1 - self.ecc**2) ** 1.5
 
+    @property
+    def t_to_tau_factor(self) -> float:
+        return math.sqrt(self.mass * self.alpha**2 / self.angular_mom**3)
+
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
-        return np.array(t, copy=False) * np.sqrt(
-            self.mass * self.alpha**2 / self.angular_mom**3
-        )
+        return np.array(t, copy=False) * self.t_to_tau_factor
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         tau = np.array(tau, copy=False)

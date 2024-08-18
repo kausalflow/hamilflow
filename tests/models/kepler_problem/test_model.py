@@ -67,12 +67,19 @@ def angular_mom(request: pytest.FixtureRequest) -> int:
 
 
 class TestKepler2D:
+    @pytest.mark.parametrize("ecc", [0.0])
     def test_minimal_ene(
+        self, system_kwargs: "Mapping[str, float]", iom_kwargs: "Mapping[str, float]"
+    ) -> None:
+        kep = Kepler2D(system_kwargs, iom_kwargs)
+        assert kep.ene == kep.minimal_ene(**system_kwargs, angular_mom=kep.angular_mom)
+        with pytest.raises(ValueError):
+            Kepler2D(system_kwargs, dict(ene=kep.ene - 1, angular_mom=kep.angular_mom))
+
+    def test_period(
         self, angular_mom: int, system_kwargs: "Mapping[str, float]"
     ) -> None:
-        minimal_ene = Kepler2D.minimal_ene(**system_kwargs, angular_mom=angular_mom)
-        kep = Kepler2D(system_kwargs, dict(ene=minimal_ene, angular_mom=angular_mom))
-        assert kep.ecc == 0.0
+        kep = Kepler2D
 
 
 # def test_central_field_2d_conserved(
