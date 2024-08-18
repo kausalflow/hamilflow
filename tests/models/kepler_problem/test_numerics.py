@@ -1,0 +1,38 @@
+from typing import TYPE_CHECKING, Literal
+
+import numpy as np
+import pytest
+from numpy.testing import assert_array_almost_equal
+
+from hamilflow.models.kepler_problem.numerics import u_of_tau
+
+if TYPE_CHECKING:
+    from typing import Callable
+
+    from numpy import typing as npt
+
+
+class TestUOfTau:
+    @pytest.mark.parametrize(
+        "method",
+        [
+            "bisect",
+            pytest.param(
+                "newton",
+                marks=pytest.mark.xfail(
+                    reason="Newton method gives nan's, possibly because of inefficient initial estimate"
+                ),
+            ),
+        ],
+    )
+    def test_u_of_tau(
+        self,
+        ecc: float,
+        method: Literal["bisect", "newton"],
+        u_s: "npt.ArrayLike",
+        tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]",
+    ) -> None:
+        u_s = np.array(u_s, copy=False)
+        tau = tau_of_u(ecc, u_s)
+        actual = u_of_tau(ecc, tau, method)
+        assert_array_almost_equal(u_s, actual)
