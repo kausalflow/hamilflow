@@ -63,6 +63,24 @@ class Kepler2DIoM(BaseModel):
             raise NotImplementedError("Only non-zero angular momenta are supported")
         return v
 
+    @classmethod
+    def from_geometry(
+        cls,
+        positive_angular_mom: bool,
+        ecc: float,
+        parameter: float,
+        system: Kepler2DSystem,
+    ):
+        abs_angular_mom = math.sqrt(system.mass * parameter * system.alpha)
+        return cls(
+            ene=(ecc**2 - 1) * system.alpha / 2 / parameter,
+            angular_mom=abs_angular_mom if positive_angular_mom else -abs_angular_mom,
+        )
+
+    @staticmethod
+    def minimal_ene(angular_mom: float, system: Kepler2DSystem) -> float:
+        return -system.mass * system.alpha**2 / (2 * angular_mom**2)
+
 
 class Kepler2D:
     r"""Kepler problem in two dimensional space.
@@ -77,9 +95,11 @@ class Kepler2D:
         integrals_of_motion: "Mapping[str, float]",
     ) -> None:
         self.system = Kepler2DSystem.model_validate(system)
+
+        integrals_of_motion = dict(integrals_of_motion)
         ene = integrals_of_motion["ene"]
-        minimal_ene = self.minimal_ene(
-            **system, angular_mom=integrals_of_motion["angular_mom"]
+        minimal_ene = Kepler2DIoM.minimal_ene(
+            integrals_of_motion["angular_mom"], self.system
         )
         if ene < minimal_ene:
             if math.isclose(ene, minimal_ene):  # numeric instability
@@ -87,7 +107,14 @@ class Kepler2D:
             else:
                 msg = f"Energy {ene} less than minimally allowed {minimal_ene}"
                 raise ValueError(msg)
+
         self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
+        if math.isclose(self.ecc, 1):  # numeric instability
+            positive_angular_mom = integrals_of_motion["angular_mom"] > 0
+            integrals_of_motion = Kepler2DIoM.from_geometry(
+                positive_angular_mom, 1, integrals_of_motion["parameter"], self.system
+            )
+            self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
 
         if 0 <= self.ecc < 1:
             self.tau_of_u = tau_of_u_elliptic
@@ -113,10 +140,6 @@ class Kepler2D:
     @property
     def angular_mom(self) -> float:
         return self.integrals_of_motion.angular_mom
-
-    @staticmethod
-    def minimal_ene(mass: float, alpha: float, angular_mom: float) -> float:
-        return -mass * alpha**2 / (2 * angular_mom**2)
 
     @cached_property
     def period(self) -> float:

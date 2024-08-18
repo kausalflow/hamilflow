@@ -21,17 +21,25 @@ def parameter(request: pytest.FixtureRequest) -> float:
     return request.param
 
 
-@pytest.fixture(params=[-1, 1])
-def iom_kwargs(
-    request: pytest.FixtureRequest,
-    system_kwargs: "Mapping[str, float]",
+@pytest.fixture(params=[False, True])
+def positive_angular_mom(request: pytest.FixtureRequest) -> bool:
+    return request.param
+
+
+@pytest.fixture()
+def kepler_system(system_kwargs: "Mapping[str, float]") -> Kepler2DSystem:
+    return Kepler2DSystem(**system_kwargs)
+
+
+@pytest.fixture()
+def kepler_iom(
+    positive_angular_mom: bool,
     ecc: float,
     parameter: float,
-) -> dict[str, float]:
-    alpha, mass = system_kwargs["alpha"], system_kwargs["mass"]
-    return dict(
-        ene=(ecc**2 - 1) * alpha / 2 / parameter,
-        angular_mom=request.param * math.sqrt(mass * parameter * alpha),
+    kepler_system: Kepler2DSystem,
+) -> Kepler2DIoM:
+    return Kepler2DIoM.from_geometry(
+        positive_angular_mom, ecc, parameter, kepler_system
     )
 
 
@@ -51,8 +59,16 @@ class TestKepler2DSystem:
 
 
 class TestKepler2DIoM:
-    def test_init(self, iom_kwargs: "Mapping[str, float]") -> None:
-        Kepler2DIoM(**iom_kwargs)
+    def test_from_geometry(
+        self,
+        positive_angular_mom: bool,
+        ecc: float,
+        parameter: float,
+        kepler_system: Kepler2DSystem,
+    ) -> None:
+        assert Kepler2DIoM.from_geometry(
+            positive_angular_mom, ecc, parameter, kepler_system
+        )
 
     def test_raise(self) -> None:
         with pytest.raises(
@@ -61,24 +77,20 @@ class TestKepler2DIoM:
             Kepler2DIoM(ene=1, angular_mom=0)
 
 
-@pytest.fixture(params=[-10, -1, 1, 10])
-def angular_mom(request: pytest.FixtureRequest) -> int:
-    return request.param
-
-
 class TestKepler2D:
     @pytest.mark.parametrize("ecc", [0.0])
     def test_minimal_ene(
-        self, system_kwargs: "Mapping[str, float]", iom_kwargs: "Mapping[str, float]"
+        self,
+        system_kwargs: "Mapping[str, float]",
+        kepler_system: Kepler2DSystem,
+        kepler_iom: Kepler2DIoM,
     ) -> None:
-        kep = Kepler2D(system_kwargs, iom_kwargs)
-        assert kep.ene == kep.minimal_ene(**system_kwargs, angular_mom=kep.angular_mom)
+        kep = Kepler2D(system_kwargs, kepler_iom.model_dump())
+        assert kep.ene == kepler_iom.minimal_ene(kepler_iom.angular_mom, kepler_system)
         with pytest.raises(ValueError):
             Kepler2D(system_kwargs, dict(ene=kep.ene - 1, angular_mom=kep.angular_mom))
 
-    def test_period(
-        self, angular_mom: int, system_kwargs: "Mapping[str, float]"
-    ) -> None:
+    def test_period(self, system_kwargs: "Mapping[str, float]") -> None:
         kep = Kepler2D
 
 
