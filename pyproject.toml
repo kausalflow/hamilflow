@@ -65,6 +65,23 @@ build-backend = "poetry.core.masonry.api"
 formats = "ipynb,py:percent"
 
 
+[tool.ruff]
+line-length = 120
+
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D", "FA", "PLR", "S", "PD", "SLF", "PT", "FBT", "C", "ANN", "EM", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "E", "SIM", "RUF", "RET"]
+
+
+[tool.ruff.lint.isort]
+known-first-party = ["hamilflow"]
+
+
+[tool.black]
+line-length = 120
+
+
 [tool.mypy]
 plugins = ["numpy.typing.mypy_plugin"]
 
