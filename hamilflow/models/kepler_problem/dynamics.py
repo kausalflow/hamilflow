@@ -11,7 +11,8 @@ _1_3 = 1 / 3
 
 
 def _tau_of_u_exact_elliptic(
-    ecc: float, u: "npt.NDArray[np.float64]"
+    ecc: float,
+    u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     cosqr, eusqrt = 1 - ecc**2, np.sqrt(ecc**2 - u**2)
     trig_numer = np.pi / 2 - np.arctan((ecc**2 + u) / np.sqrt(cosqr) / eusqrt)
@@ -19,7 +20,8 @@ def _tau_of_u_exact_elliptic(
 
 
 def _tau_of_e_plus_u_elliptic(
-    ecc: float, u: "npt.NDArray[np.float64]"
+    ecc: float,
+    u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     epu = np.sqrt(2 * (ecc + u) / ecc)
     const = np.pi / (1 - ecc**2) ** 1.5
@@ -27,7 +29,8 @@ def _tau_of_e_plus_u_elliptic(
 
 
 def _tau_of_e_minus_u_elliptic(
-    ecc: float, u: "npt.NDArray[np.float64]"
+    ecc: float,
+    u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     emu = np.sqrt(2 * (ecc - u) / ecc)
     return emu / (1 + ecc) ** 2 - emu**3 * (1 + 9 * ecc) / 24 / (1 + ecc) ** 3
@@ -49,7 +52,8 @@ def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float6
 
 
 def _tau_of_u_exact_hyperbolic(
-    ecc: float, u: "npt.ArrayLike"
+    ecc: float,
+    u: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
     u = np.array(u, copy=False)
     cosqr, eusqrt = ecc**2 - 1, np.sqrt(ecc**2 - u**2)
@@ -58,7 +62,8 @@ def _tau_of_u_exact_hyperbolic(
 
 
 def _tau_of_1_plus_u_hyperbolic(
-    ecc: float, u: "npt.NDArray[np.float64]"
+    ecc: float,
+    u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     cosqr = ecc**2 - 1
     up1 = ecc * (1 + u) / 2 / cosqr
@@ -68,7 +73,8 @@ def _tau_of_1_plus_u_hyperbolic(
 
 
 def _tau_of_e_minus_u_hyperbolic(
-    ecc: float, u: "npt.NDArray[np.float64]"
+    ecc: float,
+    u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     emu = np.sqrt(2 * (ecc - u) / ecc)
     return emu / (1 + ecc) ** 2 + emu**3 * (1 + 9 * ecc) / 24 / (1 + ecc) ** 3
@@ -96,7 +102,8 @@ def tau_of_u_prime2(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]"
 
 
 def esolve_u_from_tau_parabolic(
-    ecc: float, tau: "npt.ArrayLike"
+    ecc: float,
+    tau: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
     tau = np.array(tau, copy=False)
     tau_3 = 3 * tau

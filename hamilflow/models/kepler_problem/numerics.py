@@ -16,7 +16,8 @@ if TYPE_CHECKING:
 
 
 def _u0_elliptic(
-    ecc: float, tau: "npt.NDArray[np.float64]"
+    ecc: float,
+    tau: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     cosqr = 1 - ecc**2
     cot = 1 / np.tan(cosqr**1.5 * tau)
@@ -24,7 +25,8 @@ def _u0_elliptic(
 
 
 def _u0_hyperbolic(
-    ecc: float, tau: "npt.NDArray[np.float64]"
+    ecc: float,
+    tau: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
     cosqr, tau2 = ecc**2 - 1, tau**2
     numer = -(cosqr**2) * tau2 + np.sqrt(ecc**2 + cosqr**3 * tau2)
@@ -64,15 +66,15 @@ def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeR
         raise ValueError(f"Expect ecc > 0, ecc != 1, got {ecc}")
 
     def f(u: float, tau: float) -> np.float64:
-        return (
-            np.finfo(np.float64).max if u == -1 else np.float64(tau_of_u(ecc, u) - tau)
-        )
+        return np.finfo(np.float64).max if u == -1 else np.float64(tau_of_u(ecc, u) - tau)
 
     return [toms748(f, max(-1, -ecc), ecc, (ta,), 2, full_output=True) for ta in tau_s]
 
 
 def u_of_tau(
-    ecc: float, tau: "npt.ArrayLike", method: Literal["bisect", "newton"] = "bisect"
+    ecc: float,
+    tau: "npt.ArrayLike",
+    method: Literal["bisect", "newton"] = "bisect",
 ) -> "npt.NDArray[np.float64]":
     tau = np.array(tau, copy=False)
     if ecc == 0:

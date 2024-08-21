@@ -159,7 +159,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
         super().__init__(system, initial_condition)
         if self.system.type != "simple":
             raise ValueError(
-                f"System is not a Simple Harmonic Oscillator: {self.system}"
+                f"System is not a Simple Harmonic Oscillator: {self.system}",
             )
 
     def _x(self, t: "Sequence[float] | npt.ArrayLike") -> np.ndarray:
@@ -170,7 +170,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
         $$
         """
         return self.initial_condition.x0 * np.cos(
-            self.system.omega * np.array(t, copy=False) + self.initial_condition.phi
+            self.system.omega * np.array(t, copy=False) + self.initial_condition.phi,
         )
 
 
@@ -232,7 +232,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         if self.system.type == "simple":
             raise ValueError(
                 f"System is not a Damped Harmonic Oscillator: {self.system}\n"
-                f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`."
+                f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`.",
             )
 
     def _x_under_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
@@ -253,10 +253,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
         return (
             self.initial_condition.x0 * np.cos(omega_damp * t)
-            + (
-                self.system.zeta * self.system.omega * self.initial_condition.x0
-                + self.initial_condition.v0
-            )
+            + (self.system.zeta * self.system.omega * self.initial_condition.x0 + self.initial_condition.v0)
             / omega_damp
             * np.sin(omega_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
@@ -277,7 +274,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         """
         t = np.array(t, copy=False)
         return self.initial_condition.x0 * np.exp(
-            -self.system.zeta * self.system.omega * t
+            -self.system.zeta * self.system.omega * t,
         )
 
     def _x_over_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
@@ -299,10 +296,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
 
         return (
             self.initial_condition.x0 * np.cosh(gamma_damp * t)
-            + (
-                self.system.zeta * self.system.omega * self.initial_condition.x0
-                + self.initial_condition.v0
-            )
+            + (self.system.zeta * self.system.omega * self.initial_condition.x0 + self.initial_condition.v0)
             / gamma_damp
             * np.sinh(gamma_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
@@ -318,7 +312,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             x = self._x_critical_damped(t)
         else:
             raise ValueError(
-                "System type is not damped harmonic oscillator: {self.system.type}"
+                "System type is not damped harmonic oscillator: {self.system.type}",
             )
 
         return x
@@ -349,11 +343,11 @@ class ComplexSimpleHarmonicOscillator:
     ) -> None:
         self.system = HarmonicOscillatorSystem.model_validate(system)
         self.initial_condition = ComplexSimpleHarmonicOscillatorIC.model_validate(
-            initial_condition
+            initial_condition,
         )
         if self.system.type != "simple":
             raise ValueError(
-                f"System is not a Simple Harmonic Oscillator: {self.system}"
+                f"System is not a Simple Harmonic Oscillator: {self.system}",
             )
 
     @cached_property

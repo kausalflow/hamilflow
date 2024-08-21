@@ -46,7 +46,7 @@ def test_simple_harmonic_oscillator_instantiation(zeta):
                 {"t": 10.053096491487338, "x": 0.30901699437494723},
                 {"t": 11.309733552923255, "x": 0.8090169943749473},
             ],
-        )
+        ),
     ],
 )
 def test_simple_harmonic_oscillator(omega, expected):
@@ -153,14 +153,16 @@ class TestComplexHarmonicOscillatorIC:
 class TestComplexHarmonicOscillator:
     def test_complex(self) -> None:
         assert ComplexSimpleHarmonicOscillator(
-            dict(omega=3), dict(x0=(1, 2), phi=(2, 3))
+            dict(omega=3),
+            dict(x0=(1, 2), phi=(2, 3)),
         )
 
     @pytest.mark.parametrize("zeta", [0.5, 1.0, 1.5])
     def test_raise(self, zeta: float) -> None:
         with pytest.raises(ValueError):
             ComplexSimpleHarmonicOscillator(
-                dict(omega=3, zeta=zeta), dict(x0=(2, 3), phi=(3, 4))
+                dict(omega=3, zeta=zeta),
+                dict(x0=(2, 3), phi=(3, 4)),
             )
 
     @pytest.fixture(params=(1, (1,), [1, 2], np.array([2, 3, 5, 7, 11])))
@@ -171,10 +173,15 @@ class TestComplexHarmonicOscillator:
     @pytest.mark.parametrize("x0", [2, 4])
     @pytest.mark.parametrize("phi", [1, 6])
     def test_degenerate_real(
-        self, omega: int, x0: int, phi: int, times: int | Sequence[int]
+        self,
+        omega: int,
+        x0: int,
+        phi: int,
+        times: int | Sequence[int],
     ) -> None:
         csho = ComplexSimpleHarmonicOscillator(
-            dict(omega=omega), dict(x0=(x0, x0), phi=(phi, phi))
+            dict(omega=omega),
+            dict(x0=(x0, x0), phi=(phi, phi)),
         )
         sho = SimpleHarmonicOscillator(dict(omega=omega), dict(x0=2 * x0, phi=phi))
         z = np.array(csho._z(times), copy=False)

@@ -20,7 +20,7 @@ class TestUOfTau:
             pytest.param(
                 "newton",
                 marks=pytest.mark.xfail(
-                    reason="Newton method gives nan's, possibly because of inefficient initial estimate"
+                    reason="Newton method gives nan's, possibly because of inefficient initial estimate",
                 ),
             ),
         ],

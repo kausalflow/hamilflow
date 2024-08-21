@@ -1,4 +1,3 @@
-from functools import partial
 from typing import TYPE_CHECKING
 
 import numpy as np

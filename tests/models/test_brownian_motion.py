@@ -14,14 +14,14 @@ from hamilflow.models.brownian_motion import (
     [(0.1, np.array(0.1)), (1, np.array(1.0)), ([1, 2], np.array([1, 2]))],
 )
 def test_brownian_motion_ic(x0, expected):
-
     brownian_motion_ic = BrownianMotionIC(x0=x0)
 
     np.testing.assert_equal(brownian_motion_ic.x0, expected)
 
 
 @pytest.mark.parametrize(
-    "sigma, delta_t, gaussian_scale", [(1, 1, 1), (1, 2, 2), (2, 1, 4)]
+    "sigma, delta_t, gaussian_scale",
+    [(1, 1, 1), (1, 2, 2), (2, 1, 4)],
 )
 def test_brownian_motion_system(sigma, delta_t, gaussian_scale):
     bms = BrownianMotionSystem(sigma=sigma, delta_t=delta_t)
@@ -64,7 +64,6 @@ def test_brownian_motion_system_failed_spec(sigma, delta_t):
     ],
 )
 def test_brownian_motion_generate_from(sigma, x0, expected):
-
     system = {
         "sigma": sigma,
         "delta_t": 1,
@@ -119,7 +118,6 @@ def test_brownian_motion_generate_from(sigma, x0, expected):
     ],
 )
 def test_brownian_motion(sigma, x0, t, expected):
-
     system = {
         "sigma": sigma,
         "delta_t": 1,

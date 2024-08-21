@@ -10,15 +10,21 @@ from hamilflow.models.free_particle import FreeParticle, FreeParticleIC
 class TestFreeParticleIC:
     @pytest.mark.parametrize(("x0", "v0"), [(1, 2), ((1,), (2,)), ((1, 2), (2, 3))])
     def test_constructor(
-        self, x0: int | Sequence[int], v0: int | Sequence[int]
+        self,
+        x0: int | Sequence[int],
+        v0: int | Sequence[int],
     ) -> None:
         assert FreeParticleIC(x0=x0, v0=v0)
 
     @pytest.mark.parametrize(
-        ("x0", "v0", "expected"), [(1, (2,), TypeError), ((1,), (2, 3), ValueError)]
+        ("x0", "v0", "expected"),
+        [(1, (2,), TypeError), ((1,), (2, 3), ValueError)],
     )
     def test_raise(
-        self, x0: int | Sequence[int], v0: Sequence[int], expected: type[Exception]
+        self,
+        x0: int | Sequence[int],
+        v0: Sequence[int],
+        expected: type[Exception],
     ) -> None:
         with pytest.raises(expected):
             FreeParticleIC(x0=x0, v0=v0)

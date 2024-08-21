@@ -100,7 +100,9 @@ class Kepler2D:
 
     @classmethod
     def from_geometry(
-        cls, system: "Mapping[str, float]", geometries: "Mapping[str, bool | float]"
+        cls,
+        system: "Mapping[str, float]",
+        geometries: "Mapping[str, bool | float]",
     ) -> "Self":
         mass, alpha = system["mass"], system["alpha"]
         positive_angular_mom = bool(geometries["positive_angular_mom"])
@@ -162,14 +164,14 @@ class Kepler2D:
     @cached_property
     def ecc(self) -> float:
         return math.sqrt(
-            1 + 2 * self.ene * self.angular_mom**2 / self.mass / self.alpha**2
+            1 + 2 * self.ene * self.angular_mom**2 / self.mass / self.alpha**2,
         )
 
     @cached_property
     def period_in_tau(self) -> float:
         if self.ecc >= 1:
             raise TypeError(
-                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}"
+                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}",
             )
         return 2 * math.pi / (1 - self.ecc**2) ** 1.5
 

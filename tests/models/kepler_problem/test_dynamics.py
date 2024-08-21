@@ -30,7 +30,9 @@ _EPS_SQRT = 1e-16
 @pytest.mark.usefixtures("ecc", "u_s", "tau_of_u")
 class TestTauOfU:
     def test_const(
-        self, ecc: float, tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]"
+        self,
+        ecc: float,
+        tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]",
     ) -> None:
         # There are dividends sqrt(e**2 - u**2) and (u + 1),
         # hence u cannot be too close to +e / -e / -1
@@ -54,7 +56,8 @@ class TestTauOfU:
 
     @pytest.fixture()
     def exact_and_approx_tau_s(
-        self, ecc: float
+        self,
+        ecc: float,
     ) -> "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]":
         if ecc == 1 or ecc == 0:
             c = "Parabolic" if ecc else "Circular"

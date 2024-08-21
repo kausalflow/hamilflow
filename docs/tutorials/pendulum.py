@@ -47,7 +47,8 @@ pen = Pendulum(system=omega0, initial_condition=theta0)
 
 # %%
 df_pen = pen.generate_from(
-    n_periods=n_periods, n_samples_per_period=n_samples_per_period
+    n_periods=n_periods,
+    n_samples_per_period=n_samples_per_period,
 )
 df_pen.head()
 
@@ -62,7 +63,7 @@ px.line(
     df_pen,
     x="t",
     y="x",
-    title=r"Simple Harmonic Oscillator ($\omega_0 = {:.4f})$".format(omega0),
+    title=rf"Simple Harmonic Oscillator ($\omega_0 = {omega0:.4f})$",
     labels=dict(x=r"Angle $\theta(t)$", t=r"Time $t$"),
 )
 

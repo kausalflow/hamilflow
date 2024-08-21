@@ -147,9 +147,7 @@ class BrownianMotion:
     def __init__(
         self,
         system: Mapping[str, float],
-        initial_condition: (
-            Mapping[str, "Sequence[float] | npt.ArrayLike"] | None
-        ) = None,
+        initial_condition: Mapping[str, "Sequence[float] | npt.ArrayLike"] | None = None,
     ):
         initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)
@@ -181,7 +179,7 @@ class BrownianMotion:
         )
 
         step_history = np.concatenate(
-            (np.expand_dims(self.initial_condition.x0, axis=0), step_history)
+            (np.expand_dims(self.initial_condition.x0, axis=0), step_history),
         )
 
         trajectory = np.cumsum(step_history, axis=0)
