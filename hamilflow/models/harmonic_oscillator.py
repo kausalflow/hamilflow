@@ -312,7 +312,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             x = self._x_critical_damped(t)
         else:
             raise ValueError(
-                "System type is not damped harmonic oscillator: {self.system.type}",
+                f"System type is not damped harmonic oscillator: {self.system.type}",
             )
 
         return x
