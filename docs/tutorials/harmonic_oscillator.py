@@ -95,7 +95,9 @@ for s_name, s in dho_systems.items():
         DampedHarmonicOscillator(system=s)(
             n_periods=n_periods,
             n_samples_per_period=n_samples_per_period,
-        ).assign(system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})"),
+        ).assign(
+            system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})",
+        ),
     )
 
 fig = px.line(

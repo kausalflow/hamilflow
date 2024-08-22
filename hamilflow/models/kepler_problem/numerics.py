@@ -66,7 +66,9 @@ def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeR
         raise ValueError(f"Expect ecc > 0, ecc != 1, got {ecc}")
 
     def f(u: float, tau: float) -> np.float64:
-        return np.finfo(np.float64).max if u == -1 else np.float64(tau_of_u(ecc, u) - tau)
+        return (
+            np.finfo(np.float64).max if u == -1 else np.float64(tau_of_u(ecc, u) - tau)
+        )
 
     return [toms748(f, max(-1, -ecc), ecc, (ta,), 2, full_output=True) for ta in tau_s]
 

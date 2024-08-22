@@ -77,14 +77,18 @@ class HarmonicOscillatorsChain:
         self,
     ) -> dict[
         str,
-        float | dict[str, dict[str, float | list[float]]] | list[dict[str, dict[str, float | tuple[float, float]]]],
+        float
+        | dict[str, dict[str, float | list[float]]]
+        | list[dict[str, dict[str, float | tuple[float, float]]]],
     ]:
         """model params and initial conditions defined as a dictionary."""
         return dict(
             omega=self.omega,
             n_dof=self.n_dof,
             free_mode=self.free_mode.definition,
-            independent_csho_modes=[rwm.definition for rwm in self.independent_csho_modes],
+            independent_csho_modes=[
+                rwm.definition for rwm in self.independent_csho_modes
+            ],
         )
 
     def _z(

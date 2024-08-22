@@ -147,7 +147,9 @@ class BrownianMotion:
     def __init__(
         self,
         system: Mapping[str, float],
-        initial_condition: Mapping[str, "Sequence[float] | npt.ArrayLike"] | None = None,
+        initial_condition: (
+            Mapping[str, "Sequence[float] | npt.ArrayLike"] | None
+        ) = None,
     ):
         initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)

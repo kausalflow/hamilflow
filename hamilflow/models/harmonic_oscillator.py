@@ -253,7 +253,10 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
         return (
             self.initial_condition.x0 * np.cos(omega_damp * t)
-            + (self.system.zeta * self.system.omega * self.initial_condition.x0 + self.initial_condition.v0)
+            + (
+                self.system.zeta * self.system.omega * self.initial_condition.x0
+                + self.initial_condition.v0
+            )
             / omega_damp
             * np.sin(omega_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
@@ -296,7 +299,10 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
 
         return (
             self.initial_condition.x0 * np.cosh(gamma_damp * t)
-            + (self.system.zeta * self.system.omega * self.initial_condition.x0 + self.initial_condition.v0)
+            + (
+                self.system.zeta * self.system.omega * self.initial_condition.x0
+                + self.initial_condition.v0
+            )
             / gamma_damp
             * np.sinh(gamma_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)

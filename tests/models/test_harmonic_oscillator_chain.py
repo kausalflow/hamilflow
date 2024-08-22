@@ -26,7 +26,9 @@ class TestHarmonicOscillatorChain:
         return dict(zip(("x0", "v0"), request.param))
 
     @pytest.fixture(
-        params=chain.from_iterable(product(_possible_wave_modes, repeat=r) for r in range(3)),
+        params=chain.from_iterable(
+            product(_possible_wave_modes, repeat=r) for r in range(3)
+        ),
     )
     def wave_modes(
         self,
