@@ -44,6 +44,7 @@ plotly = "^5.23.0"
 
 [tool.poetry.group.dev.dependencies]
 commitizen = "*"
+pre-commit = "*"
 
 
 [tool.commitizen]
@@ -66,7 +67,7 @@ formats = "ipynb,py:percent"
 
 
 [tool.ruff]
-line-length = 120
+line-length = 88  # black default
 
 
 [tool.ruff.lint]
@@ -79,7 +80,7 @@ known-first-party = ["hamilflow"]
 
 
 [tool.black]
-line-length = 120
+line-length = 88  # black default
 
 
 [tool.mypy]
