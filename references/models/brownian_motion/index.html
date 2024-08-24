@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.30">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
     
     
       
@@ -503,7 +503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/central_force_motion/" class="md-nav__link">
+      <a href="../../../tutorials/kepler_problem/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -850,11 +850,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../central_field/" class="md-nav__link">
+      <a href="../kepler_problem/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Central Field
+    Kepler Problem
   </span>
   
 
@@ -1443,7 +1443,7 @@ the dimension of the initial condition.</p>
         <span class="p">)</span>
 
         <span class="n">step_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">step_history</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">step_history</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">trajectory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">step_history</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>

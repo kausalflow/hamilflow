@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.30">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
     
     
       
@@ -503,7 +503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/central_force_motion/" class="md-nav__link">
+      <a href="../../../tutorials/kepler_problem/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,11 +919,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../central_field/" class="md-nav__link">
+      <a href="../kepler_problem/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Central Field
+    Kepler Problem
   </span>
   
 
@@ -1338,11 +1338,11 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">HarmonicOscillatorSystem</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span> <span class="o">=</span> <span class="n">ComplexSimpleHarmonicOscillatorIC</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span>
-            <span class="n">initial_condition</span>
+            <span class="n">initial_condition</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;simple&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;System is not a Simple Harmonic Oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;System is not a Simple Harmonic Oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
@@ -1905,7 +1905,7 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;simple&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;System is not a Damped Harmonic Oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`.&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_x_under_damped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
@@ -1950,7 +1950,7 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
-            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">zeta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">zeta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_x_over_damped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
@@ -1991,7 +1991,7 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_critical_damped</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;System type is not damped harmonic oscillator: </span><span class="si">{self.system.type}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;System type is not damped harmonic oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">x</span>
@@ -2805,7 +2805,7 @@ x(t) = A \cos(\omega t + \phi),
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">initial_condition</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;simple&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;System is not a Simple Harmonic Oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;System is not a Simple Harmonic Oscillator: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -2816,7 +2816,7 @@ x(t) = A \cos(\omega t + \phi),
 <span class="sd">        $$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">phi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>

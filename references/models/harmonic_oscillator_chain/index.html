@@ -13,14 +13,14 @@
         <link rel="canonical" href="https://kausalflow.github.io/hamilflow/references/models/harmonic_oscillator_chain/">
       
       
-        <link rel="prev" href="../central_field/">
+        <link rel="prev" href="../kepler_problem/">
       
       
         <link rel="next" href="../../../changelog/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.30">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
     
     
       
@@ -503,7 +503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/central_force_motion/" class="md-nav__link">
+      <a href="../../../tutorials/kepler_problem/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -726,11 +726,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../central_field/" class="md-nav__link">
+      <a href="../kepler_problem/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Central Field
+    Kepler Problem
   </span>
   
 
@@ -1197,7 +1197,13 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorsChain</span><span class="p">:</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorsChain</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a coupled harmonic oscillator chain</span>
 <span class="sd">    with periodic boundary condition.</span>
 
@@ -1279,23 +1285,27 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_z</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]&quot;</span><span class="p">:</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">all_travelling_waves</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">free_mode</span><span class="o">.</span><span class="n">_x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span><span class="p">:</span>
             <span class="n">independent_cshos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">_z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">_z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span><span class="p">],</span>
+                <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">all_travelling_waves</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">independent_cshos</span><span class="p">,</span> <span class="n">independent_cshos</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">odd_dof</span>
-                <span class="k">else</span> <span class="p">(</span>
-                    <span class="n">independent_cshos</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                    <span class="n">independent_cshos</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
-                    <span class="n">independent_cshos</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span>
-                <span class="p">)</span>
+                <span class="p">(</span>
+                    <span class="p">(</span><span class="n">independent_cshos</span><span class="p">,</span> <span class="n">independent_cshos</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">odd_dof</span>
+                    <span class="k">else</span> <span class="p">(</span>
+                        <span class="n">independent_cshos</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">independent_cshos</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+                        <span class="n">independent_cshos</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
             <span class="p">)</span>
 
         <span class="n">travelling_waves</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_travelling_waves</span><span class="p">)</span>
@@ -1303,7 +1313,8 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="k">return</span> <span class="n">original_zs</span><span class="p">,</span> <span class="n">travelling_waves</span>
 
     <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;tuple[npt.NDArray[np.float64], npt.NDArray[np.complex64]]&quot;</span><span class="p">:</span>
         <span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
@@ -1320,7 +1331,8 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># type: ignore [var-annotated]</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">cast</span><span class="p">(</span>
-                <span class="s2">&quot;npt.NDArray[np.float64] | npt.NDArray[np.complex64]&quot;</span><span class="p">,</span> <span class="n">values</span>
+                <span class="s2">&quot;npt.NDArray[np.float64] | npt.NDArray[np.complex64]&quot;</span><span class="p">,</span>
+                <span class="n">values</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">xs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]</span>
@@ -1412,12 +1424,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator_chain.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
@@ -1429,7 +1436,13 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate time series data for the harmonic oscillator chain.</span>
 
 <span class="sd">    Returns float(s) representing the displacement at the given time(s).</span>
@@ -1440,7 +1453,8 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
     <span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># type: ignore [var-annotated]</span>
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">cast</span><span class="p">(</span>
-            <span class="s2">&quot;npt.NDArray[np.float64] | npt.NDArray[np.complex64]&quot;</span><span class="p">,</span> <span class="n">values</span>
+            <span class="s2">&quot;npt.NDArray[np.float64] | npt.NDArray[np.complex64]&quot;</span><span class="p">,</span>
+            <span class="n">values</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">xs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]</span>
