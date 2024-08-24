@@ -92,23 +92,27 @@ class HarmonicOscillatorsChain:
         )
 
     def _z(
-        self, t: "Sequence[float] | npt.ArrayLike"
+        self,
+        t: "Sequence[float] | npt.ArrayLike",
     ) -> "tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]":
         t = np.array(t, copy=False).reshape(-1)
         all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]
 
         if self.independent_csho_modes:
             independent_cshos = np.array(
-                [o._z(t) for o in self.independent_csho_modes], copy=False
+                [o._z(t) for o in self.independent_csho_modes],
+                copy=False,
             )
             all_travelling_waves.extend(
-                (independent_cshos, independent_cshos[::-1].conj())
-                if self.odd_dof
-                else (
-                    independent_cshos[:-1],
-                    independent_cshos[[-1]],
-                    independent_cshos[-2::-1].conj(),
-                )
+                (
+                    (independent_cshos, independent_cshos[::-1].conj())
+                    if self.odd_dof
+                    else (
+                        independent_cshos[:-1],
+                        independent_cshos[[-1]],
+                        independent_cshos[-2::-1].conj(),
+                    )
+                ),
             )
 
         travelling_waves = np.concatenate(all_travelling_waves)
@@ -116,7 +120,8 @@ class HarmonicOscillatorsChain:
         return original_zs, travelling_waves
 
     def _x(
-        self, t: "Sequence[float] | npt.ArrayLike"
+        self,
+        t: "Sequence[float] | npt.ArrayLike",
     ) -> "tuple[npt.NDArray[np.float64], npt.NDArray[np.complex64]]":
         original_xs, travelling_waves = self._z(t)
 
@@ -133,7 +138,8 @@ class HarmonicOscillatorsChain:
         original_xs, travelling_waves = self._x(t)
         data = {  # type: ignore [var-annotated]
             f"{name}{i}": cast(
-                "npt.NDArray[np.float64] | npt.NDArray[np.complex64]", values
+                "npt.NDArray[np.float64] | npt.NDArray[np.complex64]",
+                values,
             )
             for name, xs in zip(("x", "y"), (original_xs, travelling_waves))
             for i, values in enumerate(xs)  # type: ignore [arg-type]

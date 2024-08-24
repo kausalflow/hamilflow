@@ -52,7 +52,10 @@ class TestPendulum:
         assert pytest.approx(p.period) == period
 
     def test_transf(
-        self, omega0: float, theta0: float, times: "Sequence[float] | npt.ArrayLike"
+        self,
+        omega0: float,
+        theta0: float,
+        times: "Sequence[float] | npt.ArrayLike",
     ) -> None:
         p = Pendulum(omega0, theta0)
         arr_times = np.asarray(times)
@@ -62,7 +65,10 @@ class TestPendulum:
         assert_array_almost_equal(theta_terms, sin_u)
 
     def test_period_dynamic_theta(
-        self, omega0: float, theta0: float, times: "Sequence[float] | npt.ArrayLike"
+        self,
+        omega0: float,
+        theta0: float,
+        times: "Sequence[float] | npt.ArrayLike",
     ) -> None:
         p = Pendulum(omega0, theta0)
         arr_times_1 = np.array(times, copy=False) + p.period

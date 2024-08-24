@@ -44,6 +44,7 @@ plotly = "^5.23.0"
 
 [tool.poetry.group.dev.dependencies]
 commitizen = "*"
+pre-commit = "*"
 
 
 [tool.commitizen]
@@ -63,6 +64,23 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.jupytext]
 formats = "ipynb,py:percent"
+
+
+[tool.ruff]
+line-length = 88  # black default
+
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D", "FA", "PLR", "S", "PD", "SLF", "PT", "FBT", "C", "ANN", "EM", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "E", "SIM", "RUF", "RET"]
+
+
+[tool.ruff.lint.isort]
+known-first-party = ["hamilflow"]
+
+
+[tool.black]
+line-length = 88  # black default
 
 
 [tool.mypy]

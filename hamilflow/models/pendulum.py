@@ -106,7 +106,8 @@ class Pendulum:
         return 4 * ellipk(self._math_m) / self.omega0
 
     def _math_u(
-        self, t: "Sequence[float] | npt.ArrayLike"
+        self,
+        t: "Sequence[float] | npt.ArrayLike",
     ) -> "npt.NDArray[np.float64]":
         return self.omega0 * np.array(t, copy=False)
 

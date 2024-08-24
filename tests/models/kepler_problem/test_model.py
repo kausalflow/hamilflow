@@ -40,7 +40,9 @@ def kepler_system(system_kwargs: "Mapping[str, float]") -> Kepler2DSystem:
 
 @pytest.fixture()
 def geometries(
-    positive_angular_mom: bool, ecc: float, parameter: float
+    positive_angular_mom: bool,
+    ecc: float,
+    parameter: float,
 ) -> dict[str, bool | float]:
     return dict(positive_angular_mom=positive_angular_mom, ecc=ecc, parameter=parameter)
 
@@ -56,7 +58,6 @@ class Test2DSystem:
 
 
 class Test2DIoM:
-
     def test_raise(self) -> None:
         match = "Only non-zero angular momenta are supported"
         with pytest.raises(NotImplementedError, match=match):

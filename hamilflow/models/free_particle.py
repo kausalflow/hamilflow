@@ -39,7 +39,8 @@ class FreeParticle:
     """
 
     def __init__(
-        self, initial_condition: Mapping[str, float | Sequence[float]]
+        self,
+        initial_condition: Mapping[str, float | Sequence[float]],
     ) -> None:
         self.initial_condition = FreeParticleIC.model_validate(initial_condition)
 

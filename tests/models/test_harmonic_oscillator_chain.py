@@ -1,5 +1,5 @@
 from itertools import chain, product
-from typing import Iterable, Mapping, Sequence, cast
+from typing import Iterable, Mapping, Sequence
 
 import numpy as np
 import pytest
@@ -28,10 +28,11 @@ class TestHarmonicOscillatorChain:
     @pytest.fixture(
         params=chain.from_iterable(
             product(_possible_wave_modes, repeat=r) for r in range(3)
-        )
+        ),
     )
     def wave_modes(
-        self, request: pytest.FixtureRequest
+        self,
+        request: pytest.FixtureRequest,
     ) -> list[dict[str, tuple[int, int]]]:
         return request.param
 
@@ -41,7 +42,9 @@ class TestHarmonicOscillatorChain:
 
     @pytest.fixture()
     def legal_wave_modes_and_odd_def(
-        self, wave_modes: Iterable[Mapping[str, tuple[int, int]]], odd_dof: bool
+        self,
+        wave_modes: Iterable[Mapping[str, tuple[int, int]]],
+        odd_dof: bool,
     ) -> tuple[Iterable[Mapping[str, tuple[int, int]]], bool]:
         return wave_modes if odd_dof else chain(wave_modes, [dict(amp=(1, 1))]), odd_dof
 
@@ -54,7 +57,8 @@ class TestHarmonicOscillatorChain:
         omega: int,
         free_mode: Mapping[str, int],
         legal_wave_modes_and_odd_def: tuple[
-            Iterable[Mapping[str, tuple[int, int]]], bool
+            Iterable[Mapping[str, tuple[int, int]]],
+            bool,
         ],
     ) -> None:
         wave_modes, odd_dof = legal_wave_modes_and_odd_def
@@ -66,7 +70,8 @@ class TestHarmonicOscillatorChain:
         omega: int,
         free_mode: Mapping[str, int],
         legal_wave_modes_and_odd_def: tuple[
-            Iterable[Mapping[str, tuple[int, int]]], bool
+            Iterable[Mapping[str, tuple[int, int]]],
+            bool,
         ],
         times: int | Sequence[int],
     ) -> tuple[HarmonicOscillatorsChain, np.ndarray, np.ndarray]:
@@ -75,20 +80,25 @@ class TestHarmonicOscillatorChain:
         return (hoc, *hoc._z(times))
 
     def test_real(
-        self, hoc_and_zs: tuple[HarmonicOscillatorsChain, np.ndarray, np.ndarray]
+        self,
+        hoc_and_zs: tuple[HarmonicOscillatorsChain, np.ndarray, np.ndarray],
     ) -> None:
         _, original_zs, _ = hoc_and_zs
         assert np.all(original_zs.imag == 0.0)
 
     def test_dof(
-        self, hoc_and_zs: tuple[HarmonicOscillatorsChain, np.ndarray, np.ndarray]
+        self,
+        hoc_and_zs: tuple[HarmonicOscillatorsChain, np.ndarray, np.ndarray],
     ) -> None:
         hoc, original_zs, _ = hoc_and_zs
         assert original_zs.shape[0] == hoc.n_dof
 
     @pytest.mark.parametrize("wave_mode", [None, *_possible_wave_modes[1:]])
     def test_raise(
-        self, omega: int, free_mode: Mapping[str, int], wave_mode: Mapping[str, int]
+        self,
+        omega: int,
+        free_mode: Mapping[str, int],
+        wave_mode: Mapping[str, int],
     ) -> None:
         ics = [free_mode, *([wave_mode] if wave_mode else [])]
         with pytest.raises(ValueError):

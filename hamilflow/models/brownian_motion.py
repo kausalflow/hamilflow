@@ -181,7 +181,7 @@ class BrownianMotion:
         )
 
         step_history = np.concatenate(
-            (np.expand_dims(self.initial_condition.x0, axis=0), step_history)
+            (np.expand_dims(self.initial_condition.x0, axis=0), step_history),
         )
 
         trajectory = np.cumsum(step_history, axis=0)
