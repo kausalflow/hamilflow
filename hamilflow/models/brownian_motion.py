@@ -1,3 +1,5 @@
+"""Main module for Brownian motion."""
+
 from functools import cached_property
 from typing import Mapping, Sequence
 
@@ -11,7 +13,7 @@ from hamilflow.models.utils.typing import TypeTime
 
 
 class BrownianMotionSystem(BaseModel):
-    r"""Definition of the Brownian Motion system
+    r"""Definition of the Brownian Motion system.
 
     For consistency, we always use
     $\mathbf x$ for displacement, and
@@ -24,8 +26,8 @@ class BrownianMotionSystem(BaseModel):
     \end{align}
     $$
 
-    References:
-
+    References
+    ----------
     1. Brownian motion and random walks. [cited 13 Mar 2024].
         Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html
     2. Contributors to Wikimedia projects. Brownian motion.
@@ -35,6 +37,7 @@ class BrownianMotionSystem(BaseModel):
     :cvar sigma: base standard deviation
         to be used to compute the variance
     :cvar delta_t: time granunality of the motion
+
     """
 
     sigma: float = Field(ge=0.0)
@@ -43,14 +46,12 @@ class BrownianMotionSystem(BaseModel):
     @computed_field  # type: ignore[misc]
     @cached_property
     def gaussian_scale(self) -> float:
-        """The scale (standard deviation) of the Gaussian term
-        in Brownian motion
-        """
+        """The scale (standard deviation) of the Gaussian term in Brownian motion."""
         return self.sigma**2 * self.delta_t
 
 
 class BrownianMotionIC(BaseModel):
-    """The initial condition for a Brownian motion
+    """The initial condition for a Brownian motion.
 
     :cvar x0: initial displacement of the particle,
         the diminsion of this initial condition determines
@@ -61,7 +62,7 @@ class BrownianMotionIC(BaseModel):
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(cls, v: float | Sequence[float]) -> float | Sequence[float]:
+    def _check_x0_types(cls, v: float | Sequence[float]) -> float | Sequence[float]:
         if not isinstance(v, (float, int, Sequence)):
             # TODO I do not think this raise can be reached
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
@@ -70,8 +71,8 @@ class BrownianMotionIC(BaseModel):
 
 
 class BrownianMotion:
-    r"""Brownian motion describes motion of small particles
-    with stochastic forces applied to them.
+    r"""Brownian motion describes motion of small particles with stochastic forces applied to them.
+
     The math of Brownian motion can be modeled
     with Wiener process.
 
@@ -86,8 +87,8 @@ class BrownianMotion:
     \end{align}
     $$
 
-    References:
-
+    References
+    ----------
     1. Brownian motion and random walks. [cited 13 Mar 2024].
         Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html
     2. Contributors to Wikimedia projects. Brownian motion.
@@ -142,6 +143,7 @@ class BrownianMotion:
 
     :param system: the Brownian motion system definition
     :param initial_condition: the initial condition for the simulation
+
     """
 
     def __init__(
@@ -157,7 +159,7 @@ class BrownianMotion:
 
     @property
     def dim(self) -> int:
-        """Dimension of the Brownian motion"""
+        """Dimension of the Brownian motion."""
         return np.array(self.initial_condition.x0, copy=False).size
 
     @property
@@ -165,7 +167,7 @@ class BrownianMotion:
         return [f"x_{i}" for i in range(self.dim)]
 
     def _trajectory(self, n_new_steps: int, seed: int) -> "npt.NDArray[np.float64]":
-        """The trajectory of the particle.
+        """Give the trajectory of the particle.
 
         We first compute the delta displacement in each step.
         With the displacement at each step, we perform a cumsum
@@ -189,7 +191,7 @@ class BrownianMotion:
         return trajectory
 
     def generate_from(self, n_steps: int, seed: int = 42) -> pd.DataFrame:
-        """generate data from a set of interpretable params for this model
+        """Generate data from a set of interpretable params for this model.
 
         :param n_steps: total number of steps to be simulated, including the inital step.
         :param seed: random generator seed for the stochastic process.
@@ -200,7 +202,7 @@ class BrownianMotion:
         return self(t=time_steps, seed=seed)
 
     def __call__(self, t: TypeTime, seed: int = 42) -> pd.DataFrame:
-        """Simulate the coordinates of the particle
+        """Simulate the coordinates of the particle.
 
         :param t: the time sequence to be used to generate data, 1-D array like
         :param seed: random generator seed for the stochastic process.

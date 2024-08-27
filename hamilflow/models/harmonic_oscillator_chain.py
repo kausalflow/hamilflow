@@ -1,3 +1,5 @@
+"""Main module for a harmonic oscillator chain."""
+
 from functools import cached_property
 from typing import Mapping, Sequence, cast
 
@@ -11,8 +13,7 @@ from .harmonic_oscillator import ComplexSimpleHarmonicOscillator
 
 
 class HarmonicOscillatorsChain:
-    r"""Generate time series data for a coupled harmonic oscillator chain
-    with periodic boundary condition.
+    r"""Generate time series data for a coupled harmonic oscillator chain with periodic boundary condition.
 
     A one-dimensional circle of $N$ interacting harmonic oscillators can be described by the Lagrangian action
     $$S_L[x_i] = \int_{t_0}^{t_1}\mathbb{d} t \left\{ \sum_{i=0}^{N-1} \frac{1}{2}m \dot x_i^2 - \frac{1}{2}m\omega^2\left(x_i - x_{i+1}\right)^2 \right\}\,,$$
@@ -81,7 +82,7 @@ class HarmonicOscillatorsChain:
         | dict[str, dict[str, float | list[float]]]
         | list[dict[str, dict[str, float | tuple[float, float]]]],
     ]:
-        """model params and initial conditions defined as a dictionary."""
+        """Model params and initial conditions defined as a dictionary."""
         return dict(
             omega=self.omega,
             n_dof=self.n_dof,

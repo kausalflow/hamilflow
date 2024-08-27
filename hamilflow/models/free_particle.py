@@ -1,3 +1,5 @@
+"""Main module for a free particle."""
+
 from functools import cached_property
 from typing import Mapping, Sequence, cast
 
@@ -13,7 +15,7 @@ except ImportError:
 
 
 class FreeParticleIC(BaseModel):
-    """The initial condition for a free particle
+    """The initial condition for a free particle.
 
     :cvar x0: the initial displacement
     :cvar v0: the initial velocity
@@ -23,7 +25,7 @@ class FreeParticleIC(BaseModel):
     v0: float | Sequence[float] = Field()
 
     @model_validator(mode="after")
-    def check_dimensions_match(self) -> Self:
+    def _check_dimensions_match(self) -> Self:
         if (x0_seq := isinstance(self.x0, Sequence)) != isinstance(self.v0, Sequence):
             raise TypeError("x0 and v0 need both to be scalars or Sequences")
         elif x0_seq and len(cast(Sequence, self.x0)) != len(cast(Sequence, self.v0)):
@@ -46,7 +48,7 @@ class FreeParticle:
 
     @cached_property
     def definition(self) -> dict[str, dict[str, float | list[float]]]:
-        """model params and initial conditions defined as a dictionary."""
+        """Model params and initial conditions defined as a dictionary."""
         return dict(initial_condition=self.initial_condition.model_dump())
 
     def _x(self, t: "Sequence[float] |  npt.ArrayLike") -> "npt.NDArray[np.float64]":
@@ -60,7 +62,6 @@ class FreeParticle:
 
         :param t: time(s).
         """
-
         data = self._x(t)
         columns = [f"x{i+1}" for i in range(data.shape[1])]
 

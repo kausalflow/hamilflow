@@ -1,3 +1,5 @@
+"""Trigonometric functions."""
+
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -12,6 +14,7 @@ def acos_with_shift(
     x: "Collection[float] | npt.ArrayLike",
     shift: "Collection[float] | npt.ArrayLike | None" = None,
 ) -> "npt.ArrayLike":
+    """Arccos with shift."""
     x = np.array(x, copy=False)
     value = np.arccos(x)
     shift = np.array(shift, copy=False)
