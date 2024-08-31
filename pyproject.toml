@@ -73,9 +73,15 @@ line-length = 88  # black default
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "D107", # undocumented-public-init (D107): we document the class instead
+    "D107", # undocumented-public-init: we document the class instead
     "FA", "PLR", "S", "PD", "SLF", "PT", "FBT", "C", "ANN", "EM", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "E", "SIM", "RUF", "RET"
-    ]
+]
+
+
+[tool.ruff.lint.per-file-ignores]
+"docs/**/*.py" = [
+    "D100",  # undocumented-public-module: we keep tutorials clean and do not include doc strings
+]
 
 
 [tool.ruff.lint.isort]
