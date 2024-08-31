@@ -1,1 +1,1 @@
-"""Utilities."""
+"""Package for utilities."""

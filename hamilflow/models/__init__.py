@@ -1,1 +1,1 @@
-"""Models."""
+"""Package for the models."""

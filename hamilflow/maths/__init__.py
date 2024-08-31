@@ -1,4 +1,4 @@
-"""Mathematical functions."""
+"""Package for mathematical functions."""
 
 from .trigonometrics import acos_with_shift
 

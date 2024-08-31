@@ -1,1 +1,1 @@
-"""Tests for the Kepler problem module."""
+"""Package for tests for the Kepler problem module."""

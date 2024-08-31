@@ -1,1 +1,1 @@
-"""Tests for the math modules."""
+"""Package for tests for the math modules."""
