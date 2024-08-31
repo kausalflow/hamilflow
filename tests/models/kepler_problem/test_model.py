@@ -137,7 +137,7 @@ class TestKepler2D:
         u = kep.u_of_tau(tau)
         r, phi = kep.r_of_u(u), kep.phi_of_u_tau(u, tau)
         assert_array_almost_equal(
-            np.array(r, copy=False),
+            np.asarray(r),
             kep.parameter / (1 + kep.ecc * np.cos(phi)),
             err_msg=f"{kep.ecc}, {u}, {tau}",
         )

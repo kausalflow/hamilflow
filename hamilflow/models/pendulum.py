@@ -109,7 +109,7 @@ class Pendulum:
         self,
         t: "Sequence[float] | npt.ArrayLike",
     ) -> "npt.NDArray[np.float64]":
-        return self.omega0 * np.array(t, copy=False)
+        return self.omega0 * np.asarray(t)
 
     def u(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
         r"""The convenient generalised coordinate $u$,

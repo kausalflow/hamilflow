@@ -158,7 +158,7 @@ class BrownianMotion:
     @property
     def dim(self) -> int:
         """Dimension of the Brownian motion"""
-        return np.array(self.initial_condition.x0, copy=False).size
+        return np.asarray(self.initial_condition.x0).size
 
     @property
     def _axis_names(self) -> list[str]:

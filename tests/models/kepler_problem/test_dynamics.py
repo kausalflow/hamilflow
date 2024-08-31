@@ -36,7 +36,7 @@ class TestTauOfU:
     ) -> None:
         # There are dividends sqrt(e**2 - u**2) and (u + 1),
         # hence u cannot be too close to +e / -e / -1
-        res = np.array(tau_of_u(ecc, ecc * (1 - _EPS_SQRT)), copy=False)
+        res = np.asarray(tau_of_u(ecc, ecc * (1 - _EPS_SQRT)))
         desired = np.full(res.shape, _EPS_SQRT)
         assert_array_almost_equal(desired, res)
 
@@ -49,10 +49,10 @@ class TestTauOfU:
         def integrand(u: "npt.ArrayLike") -> "npt.ArrayLike":
             return tau_of_u_prime(ecc, u)
 
-        u_s = np.array(u_s, copy=False).reshape(-1)
+        u_s = np.asarray(u_s).reshape(-1)
         rets = [quad(integrand, ecc, u) for u in u_s]
         integrals = np.array([ret[0] for ret in rets])
-        assert_allclose(integrals, np.array(tau_of_u(ecc, u_s), copy=False))
+        assert_allclose(integrals, np.asarray(tau_of_u(ecc, u_s)))
 
     @pytest.fixture()
     def exact_and_approx_tau_s(
@@ -89,7 +89,7 @@ class TestTauOfU:
         factor = 1 - epsilon
         f, g_s = exact_and_approx_tau_s[0], exact_and_approx_tau_s[1:]
         for u, g in zip((max(-1, -ecc) * factor, ecc * factor), g_s):
-            u_s = np.array(u, copy=False)
+            u_s = np.asarray(u)
             desired, actual = f(ecc, u_s), g(ecc, u_s)
             if not np.isinf(desired):
                 assert_approx_equal(actual, desired, err_msg=f"ecc={ecc}, u={u_s}")

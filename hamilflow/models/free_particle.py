@@ -50,9 +50,9 @@ class FreeParticle:
         return dict(initial_condition=self.initial_condition.model_dump())
 
     def _x(self, t: "Sequence[float] |  npt.ArrayLike") -> "npt.NDArray[np.float64]":
-        t = np.array(t, copy=False)
-        v0 = np.array(self.initial_condition.v0, copy=False)
-        x0 = np.array(self.initial_condition.x0, copy=False)
+        t = np.asarray(t)
+        v0 = np.asarray(self.initial_condition.v0)
+        x0 = np.asarray(self.initial_condition.x0)
         return np.outer(t, v0) + x0
 
     def __call__(self, t: "Sequence[float] |  npt.ArrayLike") -> pd.DataFrame:
