@@ -88,7 +88,7 @@ class TestPendulum:
     ) -> None:
         """Test theta of t has the theory-predicted period."""
         p = Pendulum(omega0, theta0)
-        arr_times_1 = np.array(times, copy=False) + p.period
+        arr_times_1 = np.asarray(times) + p.period
 
         theta, theta_1 = p.theta(times), p.theta(arr_times_1)
 

@@ -169,7 +169,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
         $$
         """
         return self.initial_condition.x0 * np.cos(
-            self.system.omega * np.array(t, copy=False) + self.initial_condition.phi,
+            self.system.omega * np.asarray(t) + self.initial_condition.phi,
         )
 
 
@@ -248,7 +248,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Omega = \omega\sqrt{ 1 - \zeta^2}.
         $$
         """
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
         return (
             self.initial_condition.x0 * np.cos(omega_damp * t)
@@ -274,7 +274,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Omega = \omega\sqrt{ 1 - \zeta^2}.
         $$
         """
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         return self.initial_condition.x0 * np.exp(
             -self.system.zeta * self.system.omega * t,
         )
@@ -293,7 +293,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Gamma = \omega\sqrt{ \zeta^2 - 1 }.
         $$
         """
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         gamma_damp = self.system.omega * np.sqrt(self.system.zeta - 1)
 
         return (
@@ -308,7 +308,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
 
     def _x(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to damped harmonic oscillators."""
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         if self.system.type == "under_damped":
             x = self._x_under_damped(t)
         elif self.system.type == "over_damped":
@@ -372,7 +372,7 @@ class ComplexSimpleHarmonicOscillator:
         x(t) = x_+ \exp(-\mathbb{i} (\omega t + \phi_+)) + x_- \exp(+\mathbb{i} (\omega t + \phi_-)).
         $$
         """
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         omega = self.system.omega
         x0, phi = self.initial_condition.x0, self.initial_condition.phi
         phases = -omega * t - phi[0], omega * t + phi[1]
@@ -385,7 +385,7 @@ class ComplexSimpleHarmonicOscillator:
 
         :param t: time(s).
         """
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         data = self._z(t)
 
         return pd.DataFrame({"t": t, "z": data})

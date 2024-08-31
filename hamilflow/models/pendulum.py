@@ -112,7 +112,7 @@ class Pendulum:
         self,
         t: "Sequence[float] | npt.ArrayLike",
     ) -> "npt.NDArray[np.float64]":
-        return self.omega0 * np.array(t, copy=False)
+        return self.omega0 * np.asarray(t)
 
     def u(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
         r"""Give the convenient generalised coordinate $u$, $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.

@@ -24,6 +24,6 @@ class TestAcosWithShift:
 
     def test_acos_with_shift(self, phi: "float | Collection[float]") -> None:
         """Test arccos with shift."""
-        phi = np.array(phi, copy=False)
-        actual = np.array(acos_with_shift(np.cos(phi), phi / 2 / np.pi), copy=False)
+        phi = np.asarray(phi)
+        actual = np.asarray(acos_with_shift(np.cos(phi), phi / 2 / np.pi))
         assert_array_almost_equal(phi, actual)

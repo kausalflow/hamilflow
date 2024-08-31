@@ -61,7 +61,7 @@ def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float6
     :param u: convenient radial inverse
     :return: scaled time tau
     """
-    u = np.array(u, copy=False)
+    u = np.asarray(u)
     return np.sqrt(1 - u) * (2 + u) / 3 / (1 + u) ** 1.5
 
 
@@ -69,7 +69,7 @@ def _tau_of_u_exact_hyperbolic(
     ecc: float,
     u: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
-    u = np.array(u, copy=False)
+    u = np.asarray(u)
     cosqr, eusqrt = ecc**2 - 1, np.sqrt(ecc**2 - u**2)
     trig_numer = np.arctanh(np.sqrt(cosqr) * eusqrt / (ecc**2 + u))
     return eusqrt / cosqr / (1 + u) - trig_numer / cosqr**1.5
@@ -117,7 +117,7 @@ def tau_of_u_prime(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
     :param u: convenient radial inverse
     :return: the first derivative scaled time tau with respect to u
     """
-    u = np.array(u, copy=False)
+    u = np.asarray(u)
     return -1 / (1 + u) ** 2 / np.sqrt(ecc**2 - u**2)
 
 
@@ -128,7 +128,7 @@ def tau_of_u_prime2(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]"
     :param u: convenient radial inverse
     :return: the second derivative scaled time tau with respect to u
     """
-    u = np.array(u, copy=False)
+    u = np.asarray(u)
     u2 = u**2
     return (2 * ecc**2 - u - 3 * u2) / (1 + u) ** 3 / (ecc**2 - u2) ** 1.5
 
@@ -143,7 +143,7 @@ def esolve_u_from_tau_parabolic(
     :param tau: scaled time
     :return: convenient radial inverse u
     """
-    tau = np.array(tau, copy=False)
+    tau = np.asarray(tau)
     tau_3 = 3 * tau
     term = 1 + tau_3**2  # 1 + 9 * tau**2
     term1_5 = term**1.5  # (1 + 9 * tau**2)**1.5
@@ -159,7 +159,7 @@ def _approximate_at_termina(
     left: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
     right: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
 ):
-    u = np.array(u, copy=False)
+    u = np.asarray(u)
     u_s = u.reshape(-1)
     res = exact(ecc, u_s)
     mask = np.isnan(res)

@@ -37,7 +37,7 @@ class TestUOfTau:
         tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]",
     ) -> None:
         """Test numeric evaluation of u from tau."""
-        u_s = np.array(u_s, copy=False)
+        u_s = np.asarray(u_s)
         tau = tau_of_u(ecc, u_s)
         actual = u_of_tau(ecc, tau, method)
         assert_array_almost_equal(u_s, actual)

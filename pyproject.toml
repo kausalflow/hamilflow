@@ -12,13 +12,12 @@ packages = [{include = "hamilflow"}]
 python = ">=3.10,<3.13"
 
 # data
-pandas = {version = "^2.2.2", extras = ["performance", "computation"]}
-pydantic = "^2.6.1"
+pandas = {version = "^2.2.2", extras = ["computation"]}
+pydantic = "^2.8.2"
 
 # numerics
-numpy = "^1.26.3"
-scipy = "^1.12.0"
-numba = "^0.60.0"
+numpy = "^2.1.0"
+scipy = "^1.14.1"
 
 # logging
 loguru = "^0.7.2"

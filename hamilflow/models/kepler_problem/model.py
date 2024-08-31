@@ -208,11 +208,11 @@ class Kepler2D:
 
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         """Give the scaled time tau from t."""
-        return (np.array(t, copy=False) - self.t0) * self.t_to_tau_factor
+        return (np.asarray(t) - self.t0) * self.t_to_tau_factor
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         """Give the convenient radial inverse u from tau."""
-        tau = np.array(tau, copy=False)
+        tau = np.asarray(tau)
         if self.ecc == 0:
             return np.zeros(tau.shape)
         else:
@@ -226,7 +226,7 @@ class Kepler2D:
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
         """Give the radial r from u."""
-        return self.parameter / (np.array(u, copy=False) + 1)
+        return self.parameter / (np.asarray(u) + 1)
 
     def phi_of_u_tau(
         self,
@@ -234,7 +234,7 @@ class Kepler2D:
         tau: "Collection[float] | npt.ArrayLike",
     ) -> "npt.ArrayLike":
         """Give the angular phi from u and tau."""
-        u, tau = np.array(u, copy=False), np.array(tau, copy=False)
+        u, tau = np.asarray(u), np.asarray(tau)
         if self.ecc == 0:
             phi = 2 * math.pi * tau / self.period_in_tau
         else:

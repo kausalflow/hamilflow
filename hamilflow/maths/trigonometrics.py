@@ -15,9 +15,9 @@ def acos_with_shift(
     shift: "Collection[float] | npt.ArrayLike | None" = None,
 ) -> "npt.ArrayLike":
     """Arccos with shift."""
-    x = np.array(x, copy=False)
+    x = np.asarray(x)
     value = np.arccos(x)
-    shift = np.array(shift, copy=False)
+    shift = np.asarray(shift)
     period_shift = (div := np.floor(shift)) * 2 * np.pi
     remainder = shift - div
     value = np.where(remainder <= 0.5, value, 2 * np.pi - value)

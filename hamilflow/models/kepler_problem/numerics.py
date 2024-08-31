@@ -43,7 +43,7 @@ def nsolve_u_from_tau_newton(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult
     :raises ValueError: when `ecc` is invalid
     :return: numeric OptimizeResult from scipy
     """
-    tau = np.array(tau, copy=False)
+    tau = np.asarray(tau)
     if 0 < ecc < 1:
         tau_of_u = tau_of_u_elliptic
         u0 = _u0_elliptic(ecc, tau)
@@ -72,7 +72,7 @@ def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeR
     :param tau: scaled time
     :return: numeric OptimizeResult from scipy
     """
-    tau_s = np.array(tau, copy=False).reshape(-1)
+    tau_s = np.asarray(tau).reshape(-1)
     if 0 < ecc < 1:
         tau_of_u = tau_of_u_elliptic
     elif ecc > 1:
@@ -102,7 +102,7 @@ def u_of_tau(
     :raises ValueError: when `ecc` is invalid
     :return: convenient radial inverse u
     """
-    tau = np.array(tau, copy=False)
+    tau = np.asarray(tau)
     if ecc == 0:
         return np.zeros(tau.shape)
     elif ecc == 1:
