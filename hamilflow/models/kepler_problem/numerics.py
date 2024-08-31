@@ -36,6 +36,13 @@ def _u0_hyperbolic(
 
 
 def nsolve_u_from_tau_newton(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult:
+    """Calculate the convenient radial inverse u from tau in the elliptic or parabolic case, using the Newton method.
+
+    :param ecc: eccentricity, ecc > 0, ecc != 1
+    :param tau: scaled time
+    :raises ValueError: when `ecc` is invalid
+    :return: numeric OptimizeResult from scipy
+    """
     tau = np.array(tau, copy=False)
     if 0 < ecc < 1:
         tau_of_u = tau_of_u_elliptic
@@ -59,6 +66,12 @@ def nsolve_u_from_tau_newton(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult
 
 
 def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeResult]:
+    """Calculate the convenient radial inverse u from tau in the elliptic or parabolic case, using the bisect method.
+
+    :param ecc: eccentricity, ecc > 0, ecc != 1
+    :param tau: scaled time
+    :return: numeric OptimizeResult from scipy
+    """
     tau_s = np.array(tau, copy=False).reshape(-1)
     if 0 < ecc < 1:
         tau_of_u = tau_of_u_elliptic
@@ -80,6 +93,15 @@ def u_of_tau(
     tau: "npt.ArrayLike",
     method: Literal["bisect", "newton"] = "bisect",
 ) -> "npt.NDArray[np.float64]":
+    """Calculate the convenient radial inverse u from tau, using numeric methods.
+
+    :param ecc: eccentricity, ecc >= 0
+    :param tau: scaled time
+    :param method: "newton" or "bisect" numeric methods, defaults to "bisect"
+    :raises ValueError: when `method` is invalid
+    :raises ValueError: when `ecc` is invalid
+    :return: convenient radial inverse u
+    """
     tau = np.array(tau, copy=False)
     if ecc == 0:
         return np.zeros(tau.shape)

@@ -16,19 +16,24 @@ from hamilflow.models.harmonic_oscillator import (
 )
 
 
-@pytest.mark.parametrize("zeta", [(-0.5), (-2.0)])
-def test_harmonic_oscillator_system_damping_zeta(zeta):
-    with pytest.raises(ValueError):
-        HarmonicOscillatorSystem(omega=1, zeta=zeta)
-
-    with pytest.raises(ValueError):
-        SimpleHarmonicOscillator(system={"omega": 1, "zeta": zeta})
+@pytest.fixture
+def omega() -> int:
+    """Give omega."""
+    return 1
 
 
-@pytest.mark.parametrize("zeta", [(0.5), (1.0)])
-def test_simple_harmonic_oscillator_instantiation(zeta):
+@pytest.mark.parametrize("zeta", [-0.5, -2.0])
+def test_system_damping_zeta(omega: int, zeta: float) -> None:
+    """Test raises from HarmonicOscillatorSystem upon illegal zeta."""
     with pytest.raises(ValueError):
-        SimpleHarmonicOscillator(system={"omega": 1, "zeta": zeta})
+        HarmonicOscillatorSystem(omega=omega, zeta=zeta)
+
+
+@pytest.mark.parametrize("zeta", [-2.0, -0.5, 0.5, 1.0])
+def test_oscillator_damping_zeta(omega: int, zeta: float) -> None:
+    """Test raises from SimpleHarmonicOscillator upon illegal zeta."""
+    with pytest.raises(ValueError):
+        SimpleHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
 
 @pytest.mark.parametrize(
@@ -52,6 +57,7 @@ def test_simple_harmonic_oscillator_instantiation(zeta):
     ],
 )
 def test_simple_harmonic_oscillator(omega, expected):
+    """Test SimpleHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = SimpleHarmonicOscillator(system={"omega": omega})
 
     df = ho(n_periods=1, n_samples_per_period=10)
@@ -81,6 +87,7 @@ def test_simple_harmonic_oscillator(omega, expected):
     ],
 )
 def test_underdamped_harmonic_oscillator(omega, zeta, expected):
+    """Test under DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
     df = ho(n_periods=1, n_samples_per_period=10)
@@ -110,6 +117,7 @@ def test_underdamped_harmonic_oscillator(omega, zeta, expected):
     ],
 )
 def test_overdamped_harmonic_oscillator(omega, zeta, expected):
+    """Test over DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
     df = ho(n_periods=1, n_samples_per_period=10)
@@ -139,6 +147,7 @@ def test_overdamped_harmonic_oscillator(omega, zeta, expected):
     ],
 )
 def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
+    """Test critical DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
     df = ho(n_periods=1, n_samples_per_period=10)
@@ -151,6 +160,7 @@ class TestComplexHarmonicOscillatorIC:
 
     @pytest.mark.parametrize("kwargs", [dict(x0=(1, 2), phi=(2, 3)), dict(x0=(1, 2))])
     def test_ic(self, kwargs: Mapping[str, tuple[int, int]]) -> None:
+        """Test initialising ComplexSimpleHarmonicOscillatorIC."""
         assert ComplexSimpleHarmonicOscillatorIC(**kwargs)
 
 
@@ -158,6 +168,7 @@ class TestComplexHarmonicOscillator:
     """Tests for the class ComplexHarmonicOscillator."""
 
     def test_complex(self) -> None:
+        """Test initialising ComplexSimpleHarmonicOscillator."""
         assert ComplexSimpleHarmonicOscillator(
             dict(omega=3),
             dict(x0=(1, 2), phi=(2, 3)),
@@ -165,6 +176,7 @@ class TestComplexHarmonicOscillator:
 
     @pytest.mark.parametrize("zeta", [0.5, 1.0, 1.5])
     def test_raise(self, zeta: float) -> None:
+        """Test raises from ComplexSimpleHarmonicOscillator upon illegal zeta."""
         with pytest.raises(ValueError):
             ComplexSimpleHarmonicOscillator(
                 dict(omega=3, zeta=zeta),
@@ -173,6 +185,7 @@ class TestComplexHarmonicOscillator:
 
     @pytest.fixture(params=(1, (1,), [1, 2], np.array([2, 3, 5, 7, 11])))
     def times(self, request: pytest.FixtureRequest) -> int | Sequence[int]:
+        """Give scalar time, Sequences of and numpy array of times."""
         return request.param
 
     @pytest.mark.parametrize("omega", [3, 5])
@@ -185,6 +198,7 @@ class TestComplexHarmonicOscillator:
         phi: int,
         times: int | Sequence[int],
     ) -> None:
+        """Test the degenerate case where ComplexSimpleHarmonicOscillator reduces to SimpleHarmonicOscillator."""
         csho = ComplexSimpleHarmonicOscillator(
             dict(omega=omega),
             dict(x0=(x0, x0), phi=(phi, phi)),

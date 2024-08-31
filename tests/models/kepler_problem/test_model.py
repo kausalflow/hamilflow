@@ -22,21 +22,25 @@ if TYPE_CHECKING:
 
 @pytest.fixture(params=[(1.0, 1.0), (1.0, 2.0), (2.0, 1.0), (2.0, 2.0)])
 def system_kwargs(request: pytest.FixtureRequest) -> dict[str, float]:
+    """Keyword arguments initialising a KeplerSystem."""
     return dict(zip(("alpha", "mass"), request.param))
 
 
 @pytest.fixture(params=[1.0, 2.0])
 def parameter(request: pytest.FixtureRequest) -> float:
+    """Parameter for a conic section in polar coordinates."""
     return request.param
 
 
 @pytest.fixture(params=[False, True])
 def positive_angular_mom(request: pytest.FixtureRequest) -> bool:
+    """Whether the angular momentum is positive."""
     return request.param
 
 
 @pytest.fixture()
 def kepler_system(system_kwargs: "Mapping[str, float]") -> Kepler2DSystem:
+    """Give a Kepler system from the keyword argument."""
     return Kepler2DSystem(**system_kwargs)
 
 
@@ -46,6 +50,7 @@ def geometries(
     ecc: float,
     parameter: float,
 ) -> dict[str, bool | float]:
+    """Give geometric characteristics for initialising a KeplerSystem."""
     return dict(positive_angular_mom=positive_angular_mom, ecc=ecc, parameter=parameter)
 
 
@@ -53,6 +58,7 @@ class Test2DSystem:
     """Tests for the class Kepler2DSystem."""
 
     def test_init(self, system_kwargs: "Mapping[str, float]") -> None:
+        """Test initialising a KeplerSystem."""
         Kepler2DSystem(**system_kwargs)
 
     @pytest.mark.parametrize(("alpha", "mass"), [(-1, 1), (1, -1), (0, 1), (1, 0)])
