@@ -1,3 +1,5 @@
+"""Tests for the Kepler model classes."""
+
 import math
 from typing import TYPE_CHECKING, ClassVar
 

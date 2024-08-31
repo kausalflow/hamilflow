@@ -1,3 +1,5 @@
+"""Tests for the trigonometrics module."""
+
 from typing import TYPE_CHECKING, ClassVar
 
 import numpy as np

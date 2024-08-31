@@ -1,3 +1,5 @@
+"""Tests for the Brownian motion main module."""
+
 import numpy as np
 import pandas as pd
 import pytest

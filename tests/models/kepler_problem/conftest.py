@@ -1,3 +1,5 @@
+"""Share fixtures across multiple files."""
+
 from typing import TYPE_CHECKING
 
 import numpy as np

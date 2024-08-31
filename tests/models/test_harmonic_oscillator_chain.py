@@ -1,3 +1,5 @@
+"""Tests for the harmonic oscillator chain main module."""
+
 from itertools import chain, product
 from typing import Iterable, Mapping, Sequence
 

@@ -1,3 +1,5 @@
+"""Tests for the free particle main module."""
+
 from typing import Mapping, Sequence
 
 import pandas as pd

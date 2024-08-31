@@ -1,3 +1,5 @@
+"""Tests for the Kepler numerics module."""
+
 from typing import TYPE_CHECKING, Literal
 
 import numpy as np
