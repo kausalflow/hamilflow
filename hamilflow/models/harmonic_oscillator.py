@@ -1,3 +1,5 @@
+"""Main module for undamped and damped hamornic oscillators."""
+
 from abc import ABC, abstractmethod
 from functools import cached_property
 from typing import Literal, Mapping, Sequence
@@ -9,7 +11,7 @@ from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class HarmonicOscillatorSystem(BaseModel):
-    """The params for the harmonic oscillator
+    """The params for the harmonic oscillator.
 
     :cvar omega: angular frequency of the harmonic oscillator
     :cvar zeta: damping ratio
@@ -21,13 +23,13 @@ class HarmonicOscillatorSystem(BaseModel):
     @computed_field  # type: ignore[misc]
     @cached_property
     def period(self) -> float:
-        """period of the oscillator"""
+        """Period of the oscillator."""
         return 2 * np.pi / self.omega
 
     @computed_field  # type: ignore[misc]
     @cached_property
     def frequency(self) -> float:
-        """frequency of the oscillator"""
+        """Frequency of the oscillator."""
         return 1 / self.period
 
     @computed_field  # type: ignore[misc]
@@ -35,7 +37,7 @@ class HarmonicOscillatorSystem(BaseModel):
     def type(
         self,
     ) -> Literal["simple", "under_damped", "critical_damped", "over_damped"]:
-        """which type of harmonic oscillators"""
+        """Which type of harmonic oscillators."""
         if self.zeta == 0:
             return "simple"
         elif self.zeta < 1:
@@ -47,7 +49,7 @@ class HarmonicOscillatorSystem(BaseModel):
 
     @field_validator("zeta")
     @classmethod
-    def check_zeta_non_negative(cls, v: float) -> float:
+    def _check_zeta_non_negative(cls, v: float) -> float:
         if v < 0:
             raise ValueError(f"Value of zeta should be positive: {v=}")
 
@@ -55,7 +57,7 @@ class HarmonicOscillatorSystem(BaseModel):
 
 
 class HarmonicOscillatorIC(BaseModel):
-    """The initial condition for a harmonic oscillator
+    """The initial condition for a harmonic oscillator.
 
     :cvar x0: the initial displacement
     :cvar v0: the initial velocity
@@ -68,8 +70,7 @@ class HarmonicOscillatorIC(BaseModel):
 
 
 class HarmonicOscillatorBase(ABC):
-    r"""Base class to generate time series data
-    for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
+    r"""Base class to generate time series data for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
     :param system: all the params that defines the harmonic oscillator.
     :param initial_condition: the initial condition of the harmonic oscillator.
@@ -86,7 +87,7 @@ class HarmonicOscillatorBase(ABC):
 
     @cached_property
     def definition(self) -> dict[str, dict[str, float]]:
-        """model params and initial conditions defined as a dictionary."""
+        """Model params and initial conditions defined as a dictionary."""
         return {
             "system": self.system.model_dump(),
             "initial_condition": self.initial_condition.model_dump(),
@@ -114,9 +115,7 @@ class HarmonicOscillatorBase(ABC):
 
 
 class SimpleHarmonicOscillator(HarmonicOscillatorBase):
-    r"""Generate time series data for a
-    [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
-
+    r"""Generate time series data for a [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
     In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
 
@@ -163,7 +162,7 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
             )
 
     def _x(self, t: "Sequence[float] | npt.ArrayLike") -> np.ndarray:
-        r"""Solution to simple harmonic oscillators:
+        r"""Solution to simple harmonic oscillators.
 
         $$
         x(t) = x_0 \cos(\omega t + \phi).
@@ -236,7 +235,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             )
 
     def _x_under_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
-        r"""Solution to under damped harmonic oscillators:
+        r"""Solution to under damped harmonic oscillators.
 
         $$
         x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
@@ -262,7 +261,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
     def _x_critical_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
-        r"""Solution to critical damped harmonic oscillators:
+        r"""Solution to critical damped harmonic oscillators.
 
         $$
         x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
@@ -281,7 +280,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         )
 
     def _x_over_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
-        r"""Solution to over harmonic oscillators:
+        r"""Solution to over harmonic oscillators.
 
         $$
         x(t) = \left( x_0 \cosh(\Gamma t) + \frac{\zeta \omega x_0 + v_0}{\Gamma} \sinh(\Gamma t) \right)
@@ -325,7 +324,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
 
 
 class ComplexSimpleHarmonicOscillatorIC(BaseModel):
-    """The initial condition for a complex harmonic oscillator
+    """The initial condition for a complex harmonic oscillator.
 
     :cvar x0: the initial displacements
     :cvar phi: initial phases
@@ -360,15 +359,14 @@ class ComplexSimpleHarmonicOscillator:
     def definition(
         self,
     ) -> dict[str, dict[str, float | tuple[float, float]]]:
-        """model params and initial conditions defined as a dictionary."""
-
+        """Model params and initial conditions defined as a dictionary."""
         return dict(
             system=self.system.model_dump(),
             initial_condition=self.initial_condition.model_dump(),
         )
 
     def _z(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
-        r"""Solution to complex simple harmonic oscillators:
+        r"""Solution to complex simple harmonic oscillators.
 
         $$
         x(t) = x_+ \exp(-\mathbb{i} (\omega t + \phi_+)) + x_- \exp(+\mathbb{i} (\omega t + \phi_-)).

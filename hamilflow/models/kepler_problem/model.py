@@ -1,3 +1,5 @@
+"""Main module for Kepler problem."""
+
 import math
 from functools import cached_property, partial
 from typing import TYPE_CHECKING, Any
@@ -18,7 +20,7 @@ if TYPE_CHECKING:
 
 
 class Kepler2DSystem(BaseModel):
-    r"""Definition of the Kepler problem
+    r"""Definition of the Kepler problem.
 
     Potential:
 
@@ -44,7 +46,7 @@ class Kepler2DSystem(BaseModel):
 
 
 class Kepler2DIoM(BaseModel):
-    """The integrals of motion for a Kepler problem
+    """The integrals of motion for a Kepler problem.
 
     :cvar ene: the energy
     :cvar angular_mom: the angular momentum
@@ -60,17 +62,17 @@ class Kepler2DIoM(BaseModel):
     # TODO process angular momentum = 0
     @field_validator("angular_mom")
     @classmethod
-    def angular_mom_non_zero(cls, v: Any) -> float:
+    def _angular_mom_non_zero(cls, v: Any) -> float:
         if v == 0:
             raise NotImplementedError("Only non-zero angular momenta are supported")
         return v
 
 
 class Kepler2D:
-    r"""Kepler problem in two dimensional space.
+    """Kepler problem in two dimensional space.
 
-    :param system: the Kepler problem system definition
-    :param initial_condition: the initial condition for the simulation
+    :param system: the Kepler problem system specification
+    :param integrals_of_motion: the integrals of motion for the system.
     """
 
     def __init__(
@@ -104,6 +106,14 @@ class Kepler2D:
         system: "Mapping[str, float]",
         geometries: "Mapping[str, bool | float]",
     ) -> "Self":
+        """Alternative initialiser from system and geometry specifications.
+
+        :param system: the Kepler problem system specification
+        :param geometries: geometric specifications
+            `positive_angular_mom`: whether the angular momentum is positive
+            `ecc`: eccentricity of the conic section
+            `parameter`: parameter of the conic section
+        """
         mass, alpha = system["mass"], system["alpha"]
         positive_angular_mom = bool(geometries["positive_angular_mom"])
         ecc, parameter = map(lambda k: float(geometries[k]), ["ecc", "parameter"])
@@ -122,35 +132,48 @@ class Kepler2D:
         angular_mom: float,
         system: "Mapping[str, float]",
     ) -> float:
+        """Minimal possible energy from the system specification and an angular momentum.
+
+        :param angular_mom: angular momentum
+        :param system: system specification
+        :return: minimal possible energy
+        """
         mass, alpha = system["mass"], system["alpha"]
         return -mass * alpha**2 / (2 * angular_mom**2)
 
     @property
     def mass(self) -> float:
+        """Mass parameter from the system specification."""
         return self.system.mass
 
     @property
     def alpha(self) -> float:
+        """Alpha parameter from the system specification."""
         return self.system.alpha
 
     @property
     def ene(self) -> float:
+        """Energy of the Kepler problem."""
         return self.integrals_of_motion.ene
 
     @property
     def angular_mom(self) -> float:
+        """Angular momentum of the Kepler problem."""
         return self.integrals_of_motion.angular_mom
 
     @property
     def t0(self) -> float:
+        """t0 of the Kepler problem."""
         return self.integrals_of_motion.t0
 
     @property
     def phi0(self) -> float:
+        """phi0 of the Kepler problem."""
         return self.integrals_of_motion.phi0
 
     @cached_property
     def period(self) -> float:
+        """Perior of the Kepler problem."""
         if self.ene >= 0:
             msg = f"Only systems with energy < 0 have a period, got {self.ene}"
             raise TypeError(msg)
@@ -159,16 +182,19 @@ class Kepler2D:
     # FIXME is it called parameter in English?
     @cached_property
     def parameter(self) -> float:
+        """Conic section parameter of the Kepler problem."""
         return self.angular_mom**2 / self.mass / self.alpha
 
     @cached_property
     def ecc(self) -> float:
+        """Sonic section eccentricity of the Kepler problem."""
         return math.sqrt(
             1 + 2 * self.ene * self.angular_mom**2 / self.mass / self.alpha**2,
         )
 
     @cached_property
     def period_in_tau(self) -> float:
+        """Period in the scaled time tau."""
         if self.ecc >= 1:
             raise TypeError(
                 f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}",
@@ -177,12 +203,15 @@ class Kepler2D:
 
     @property
     def t_to_tau_factor(self) -> float:
+        """Scale factor from t to tau."""
         return abs(self.mass * self.alpha**2 / self.angular_mom**3)
 
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
+        """Give the scaled time tau from t."""
         return (np.array(t, copy=False) - self.t0) * self.t_to_tau_factor
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
+        """Give the convenient radial inverse u from tau."""
         tau = np.array(tau, copy=False)
         if self.ecc == 0:
             return np.zeros(tau.shape)
@@ -196,6 +225,7 @@ class Kepler2D:
             return u_of_tau(self.ecc, tau)  # type: ignore [arg-type]
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
+        """Give the radial r from u."""
         return self.parameter / (np.array(u, copy=False) + 1)
 
     def phi_of_u_tau(
@@ -203,6 +233,7 @@ class Kepler2D:
         u: "Collection[float] | npt.ArrayLike",
         tau: "Collection[float] | npt.ArrayLike",
     ) -> "npt.ArrayLike":
+        """Give the angular phi from u and tau."""
         u, tau = np.array(u, copy=False), np.array(tau, copy=False)
         if self.ecc == 0:
             phi = 2 * math.pi * tau / self.period_in_tau
@@ -215,6 +246,7 @@ class Kepler2D:
         return phi + self.phi0
 
     def __call__(self, t: "Collection[float] | npt.ArrayLike") -> pd.DataFrame:
+        """Give a DataFrame of tau, u, r and phi from t."""
         tau = self.tau(t)
         u = self.u_of_tau(tau)
         r = self.r_of_u(u)

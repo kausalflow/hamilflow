@@ -1,3 +1,5 @@
+"""Main module for a pendulum."""
+
 import math
 from functools import cached_property
 from typing import Any, Mapping, Sequence
@@ -77,6 +79,7 @@ class Pendulum:
 
     @property
     def omega0(self) -> float:
+        """Original angular frequency of the system."""
         return self.system.omega0
 
     @property
@@ -112,8 +115,7 @@ class Pendulum:
         return self.omega0 * np.array(t, copy=False)
 
     def u(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
-        r"""The convenient generalised coordinate $u$,
-        $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
+        r"""Give the convenient generalised coordinate $u$, $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
         :param t: time
         :return: $u(t) = \mathrm{am}\!\big(\omega_0 t + K(k^2), k^2\big)$, where
@@ -136,7 +138,7 @@ class Pendulum:
         return 2 * np.arcsin(cn / dn * self._k)
 
     def generate_from(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
-        """generate the time sequence from more interpretable params
+        """Generate the time sequence from more interpretable params.
 
         :param n_periods: number of periods to include
         :param n_samples_per_period: number of samples in each period
@@ -148,7 +150,7 @@ class Pendulum:
         return self(time_steps)
 
     def __call__(self, t: TypeTime) -> pd.DataFrame:
-        """generate the variables of the pendulum in time together with the time steps
+        """Generate the variables of the pendulum in time together with the time steps.
 
         :param t: time steps
         :return: values of the variables

@@ -1,3 +1,5 @@
+"""Exact solution of Kepler dynamics."""
+
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -37,6 +39,12 @@ def _tau_of_e_minus_u_elliptic(
 
 
 def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    """Calculate the scaled time tau from u in the elliptic case.
+
+    :param ecc: eccentricity, 0 < ecc < 1 (unchecked)
+    :param u: convenient radial inverse
+    :return: scaled time tau
+    """
     return _approximate_at_termina(
         ecc,
         u,
@@ -47,6 +55,12 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64
 
 
 def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    """Calculate the scaled time tau from u in the parabolic case.
+
+    :param ecc: eccentricity, ecc == 1 (unchecked, unused)
+    :param u: convenient radial inverse
+    :return: scaled time tau
+    """
     u = np.array(u, copy=False)
     return np.sqrt(1 - u) * (2 + u) / 3 / (1 + u) ** 1.5
 
@@ -81,6 +95,12 @@ def _tau_of_e_minus_u_hyperbolic(
 
 
 def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    """Calculate the scaled time tau from u in the hyperbolic case.
+
+    :param ecc: eccentricity, ecc > 1 (unchecked)
+    :param u: convenient radial inverse
+    :return: scaled time tau
+    """
     return _approximate_at_termina(
         ecc,
         u,
@@ -91,11 +111,23 @@ def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float
 
 
 def tau_of_u_prime(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    """Calculate the first derivative of scaled time tau with respect to u.
+
+    :param ecc: eccentricity, ecc >= 0 (unchecked)
+    :param u: convenient radial inverse
+    :return: the first derivative scaled time tau with respect to u
+    """
     u = np.array(u, copy=False)
     return -1 / (1 + u) ** 2 / np.sqrt(ecc**2 - u**2)
 
 
 def tau_of_u_prime2(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    """Calculate the second derivative of scaled time tau with respect to u.
+
+    :param ecc: eccentricity, ecc >= 0 (unchecked)
+    :param u: convenient radial inverse
+    :return: the second derivative scaled time tau with respect to u
+    """
     u = np.array(u, copy=False)
     u2 = u**2
     return (2 * ecc**2 - u - 3 * u2) / (1 + u) ** 3 / (ecc**2 - u2) ** 1.5
@@ -105,6 +137,12 @@ def esolve_u_from_tau_parabolic(
     ecc: float,
     tau: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
+    """Calculate the convenient radial inverse u from tau in the parabolic case, using the exact solution.
+
+    :param ecc: eccentricity, ecc = 0 (unchecked, unused)
+    :param tau: scaled time
+    :return: convenient radial inverse u
+    """
     tau = np.array(tau, copy=False)
     tau_3 = 3 * tau
     term = 1 + tau_3**2  # 1 + 9 * tau**2

@@ -1,3 +1,5 @@
+"""Tests for the Kepler numerics module."""
+
 from typing import TYPE_CHECKING, Literal
 
 import numpy as np
@@ -13,6 +15,8 @@ if TYPE_CHECKING:
 
 
 class TestUOfTau:
+    """Tests for calculating u from tau."""
+
     @pytest.mark.parametrize(
         "method",
         [
@@ -32,6 +36,7 @@ class TestUOfTau:
         u_s: "npt.ArrayLike",
         tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]",
     ) -> None:
+        """Test numeric evaluation of u from tau."""
         u_s = np.array(u_s, copy=False)
         tau = tau_of_u(ecc, u_s)
         actual = u_of_tau(ecc, tau, method)

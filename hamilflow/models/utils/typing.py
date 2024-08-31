@@ -1,3 +1,5 @@
+"""Typing."""
+
 from typing import Sequence, TypeVar
 
 from numpy.typing import ArrayLike
