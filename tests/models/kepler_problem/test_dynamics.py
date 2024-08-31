@@ -1,3 +1,5 @@
+"""Tests for the Kepler dynamics module."""
+
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -29,13 +31,18 @@ _EPS_SQRT = 1e-16
 
 @pytest.mark.usefixtures("ecc", "u_s", "tau_of_u")
 class TestTauOfU:
+    """Tests for calculating tau from u."""
+
     def test_const(
         self,
         ecc: float,
         tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]",
     ) -> None:
-        # There are dividends sqrt(e**2 - u**2) and (u + 1),
-        # hence u cannot be too close to +e / -e / -1
+        """Test that tau at u = ecc should be 0.
+
+        There are dividends sqrt(e**2 - u**2) and (u + 1),
+        hence u cannot be too close to +e / -e / -1.
+        """
         res = np.asarray(tau_of_u(ecc, ecc * (1 - _EPS_SQRT)))
         desired = np.full(res.shape, _EPS_SQRT)
         assert_array_almost_equal(desired, res)
@@ -46,6 +53,11 @@ class TestTauOfU:
         u_s: "npt.ArrayLike",
         tau_of_u: "Callable[[float, npt.ArrayLike], npt.ArrayLike]",
     ) -> None:
+        """Test that tau from u is consistent with the integral from its first derivative.
+
+        The integral constant has been tested in another test.
+        """
+
         def integrand(u: "npt.ArrayLike") -> "npt.ArrayLike":
             return tau_of_u_prime(ecc, u)
 
@@ -59,6 +71,11 @@ class TestTauOfU:
         self,
         ecc: float,
     ) -> "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]":
+        """Give approximate and exact solutions for the elliptic and hyperbolic cases.
+
+        The exact solutions have removable singularities at the boundary of domain,
+        hence approximate solutions are needed.
+        """
         if ecc == 1 or ecc == 0:
             c = "Parabolic" if ecc else "Circular"
             pytest.skip(f"{c} case is exact")
@@ -84,6 +101,11 @@ class TestTauOfU:
         epsilon: float,
         exact_and_approx_tau_s: "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]",
     ) -> None:
+        """Test that the approximate solutions near the booundary of domain are close to the exact solution.
+
+        The exact solutions have removable singularities at the boundary of domain,
+        hence approximate solutions are needed.
+        """
         if ecc == 0.0 or ecc == 1.0:
             pytest.skip(f"Test applies to ecc > 0, ecc != 1, got {ecc}")
         factor = 1 - epsilon

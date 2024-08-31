@@ -1,3 +1,5 @@
+"""Tests for the free particle main module."""
+
 from typing import Mapping, Sequence
 
 import pandas as pd
@@ -8,12 +10,15 @@ from hamilflow.models.free_particle import FreeParticle, FreeParticleIC
 
 
 class TestFreeParticleIC:
+    """Tests for the class FreeParticleIC."""
+
     @pytest.mark.parametrize(("x0", "v0"), [(1, 2), ((1,), (2,)), ((1, 2), (2, 3))])
     def test_constructor(
         self,
         x0: int | Sequence[int],
         v0: int | Sequence[int],
     ) -> None:
+        """Test initialising a FreeParticleIC."""
         assert FreeParticleIC(x0=x0, v0=v0)
 
     @pytest.mark.parametrize(
@@ -26,11 +31,14 @@ class TestFreeParticleIC:
         v0: Sequence[int],
         expected: type[Exception],
     ) -> None:
+        """Test raise upon inconsistent initial conditions."""
         with pytest.raises(expected):
             FreeParticleIC(x0=x0, v0=v0)
 
 
 class TestFreeParticle:
+    """Tests for the class FreeParticle."""
+
     @pytest.mark.parametrize(
         ("x0", "v0", "expected"),
         [
@@ -44,6 +52,7 @@ class TestFreeParticle:
         v0: int | Sequence[int],
         expected: Mapping[str, Mapping[str, int | Sequence[int]]],
     ) -> None:
+        """Test the definition property."""
         assert FreeParticle(initial_condition=dict(x0=x0, v0=v0)).definition == expected
 
     @pytest.mark.parametrize(
@@ -65,6 +74,7 @@ class TestFreeParticle:
         t: int | Sequence[int],
         expected: pd.DataFrame,
     ) -> None:
+        """Test the __call__ interface."""
         assert_frame_equal(
             FreeParticle(initial_condition=dict(x0=x0, v0=v0))(t).astype(float),
             expected.astype(float),
