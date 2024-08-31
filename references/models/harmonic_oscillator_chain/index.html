@@ -973,6 +973,8 @@
 
 <a id="hamilflow.models.harmonic_oscillator_chain"></a>
   <div class="doc doc-contents first">
+  
+      <p>Main module for a harmonic oscillator chain.</p>
 
   
 
@@ -999,8 +1001,7 @@
   <div class="doc doc-contents ">
 
   
-      <p>Generate time series data for a coupled harmonic oscillator chain
-with periodic boundary condition.</p>
+      <p>Generate time series data for a coupled harmonic oscillator chain with periodic boundary condition.</p>
 <p>A one-dimensional circle of <span class="arithmatex">\(N\)</span> interacting harmonic oscillators can be described by the Lagrangian action
 <span class="arithmatex">\(<span class="arithmatex">\(S_L[x_i] = \int_{t_0}^{t_1}\mathbb{d} t \left\{ \sum_{i=0}^{N-1} \frac{1}{2}m \dot x_i^2 - \frac{1}{2}m\omega^2\left(x_i - x_{i+1}\right)^2 \right\}\,,\)</span>\)</span>
 where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
@@ -1068,9 +1069,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator_chain.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 13</span>
-<span class="normal"> 14</span>
-<span class="normal"> 15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
 <span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
@@ -1203,9 +1202,9 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorsChain</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a coupled harmonic oscillator chain</span>
-<span class="sd">    with periodic boundary condition.</span>
+<span class="normal">148</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorsChain</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a coupled harmonic oscillator chain with periodic boundary condition.</span>
 
 <span class="sd">    A one-dimensional circle of $N$ interacting harmonic oscillators can be described by the Lagrangian action</span>
 <span class="sd">    $$S_L[x_i] = \int_{t_0}^{t_1}\mathbb{d} t \left\{ \sum_{i=0}^{N-1} \frac{1}{2}m \dot x_i^2 - \frac{1}{2}m\omega^2\left(x_i - x_{i+1}\right)^2 \right\}\,,$$</span>
@@ -1274,7 +1273,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span>
         <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]],</span>
     <span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;model params and initial conditions defined as a dictionary.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Model params and initial conditions defined as a dictionary.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">omega</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">omega</span><span class="p">,</span>
             <span class="n">n_dof</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span>
@@ -1369,7 +1368,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
   <div class="doc doc-contents ">
   
-      <p>model params and initial conditions defined as a dictionary.</p>
+      <p>Model params and initial conditions defined as a dictionary.</p>
   </div>
 
 </div>
@@ -1424,8 +1423,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator_chain.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
-<span class="normal">131</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
@@ -1442,7 +1440,8 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal">148</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate time series data for the harmonic oscillator chain.</span>
 
 <span class="sd">    Returns float(s) representing the displacement at the given time(s).</span>

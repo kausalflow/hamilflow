@@ -749,6 +749,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#hamilflow.models.brownian_motion.BrownianMotion--references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hamilflow.models.brownian_motion.BrownianMotion.dim" class="md-nav__link">
     <span class="md-ellipsis">
       dim
@@ -798,6 +807,15 @@
   
     <nav class="md-nav" aria-label="BrownianMotionSystem">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hamilflow.models.brownian_motion.BrownianMotionSystem--references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#hamilflow.models.brownian_motion.BrownianMotionSystem.gaussian_scale" class="md-nav__link">
@@ -966,6 +984,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#hamilflow.models.brownian_motion.BrownianMotion--references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hamilflow.models.brownian_motion.BrownianMotion.dim" class="md-nav__link">
     <span class="md-ellipsis">
       dim
@@ -1017,6 +1044,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#hamilflow.models.brownian_motion.BrownianMotionSystem--references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hamilflow.models.brownian_motion.BrownianMotionSystem.gaussian_scale" class="md-nav__link">
     <span class="md-ellipsis">
       gaussian_scale
@@ -1057,6 +1093,8 @@
 
 <a id="hamilflow.models.brownian_motion"></a>
   <div class="doc doc-contents first">
+  
+      <p>Main module for Brownian motion.</p>
 
   
 
@@ -1083,9 +1121,8 @@
   <div class="doc doc-contents ">
 
   
-      <p>Brownian motion describes motion of small particles
-with stochastic forces applied to them.
-The math of Brownian motion can be modeled
+      <p>Brownian motion describes motion of small particles with stochastic forces applied to them.</p>
+<p>The math of Brownian motion can be modeled
 with Wiener process.</p>
 <p>For consistency, we always use
 <span class="arithmatex">\(\mathbf x\)</span> for displacement, and
@@ -1096,7 +1133,7 @@ with Wiener process.</p>
 \mathcal{N}(\mu=0, \sigma=\sigma \sqrt{\mathrm d t})
 \end{align}
 \]</div>
-<p>References:</p>
+<h4 id="hamilflow.models.brownian_motion.BrownianMotion--references">References<a class="headerlink" href="#hamilflow.models.brownian_motion.BrownianMotion--references" title="Permanent link">¤</a></h4>
 <ol>
 <li>Brownian motion and random walks. [cited 13 Mar 2024].
     Available: <a href="https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html">https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html</a></li>
@@ -1188,8 +1225,7 @@ the dimension of the initial condition.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/brownian_motion.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
-<span class="normal"> 73</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 73</span>
 <span class="normal"> 74</span>
 <span class="normal"> 75</span>
 <span class="normal"> 76</span>
@@ -1331,9 +1367,11 @@ the dimension of the initial condition.</p>
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
-<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BrownianMotion</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Brownian motion describes motion of small particles</span>
-<span class="sd">    with stochastic forces applied to them.</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BrownianMotion</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Brownian motion describes motion of small particles with stochastic forces applied to them.</span>
+
 <span class="sd">    The math of Brownian motion can be modeled</span>
 <span class="sd">    with Wiener process.</span>
 
@@ -1348,8 +1386,8 @@ the dimension of the initial condition.</p>
 <span class="sd">    \end{align}</span>
 <span class="sd">    $$</span>
 
-<span class="sd">    References:</span>
-
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
 <span class="sd">    1. Brownian motion and random walks. [cited 13 Mar 2024].</span>
 <span class="sd">        Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html</span>
 <span class="sd">    2. Contributors to Wikimedia projects. Brownian motion.</span>
@@ -1404,6 +1442,7 @@ the dimension of the initial condition.</p>
 
 <span class="sd">    :param system: the Brownian motion system definition</span>
 <span class="sd">    :param initial_condition: the initial condition for the simulation</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -1419,7 +1458,7 @@ the dimension of the initial condition.</p>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dimension of the Brownian motion&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dimension of the Brownian motion.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
 
     <span class="nd">@property</span>
@@ -1427,7 +1466,7 @@ the dimension of the initial condition.</p>
         <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_new_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The trajectory of the particle.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Give the trajectory of the particle.</span>
 
 <span class="sd">        We first compute the delta displacement in each step.</span>
 <span class="sd">        With the displacement at each step, we perform a cumsum</span>
@@ -1451,7 +1490,7 @@ the dimension of the initial condition.</p>
         <span class="k">return</span> <span class="n">trajectory</span>
 
     <span class="k">def</span> <span class="nf">generate_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;generate data from a set of interpretable params for this model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate data from a set of interpretable params for this model.</span>
 
 <span class="sd">        :param n_steps: total number of steps to be simulated, including the inital step.</span>
 <span class="sd">        :param seed: random generator seed for the stochastic process.</span>
@@ -1462,7 +1501,7 @@ the dimension of the initial condition.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">TypeTime</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simulate the coordinates of the particle</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simulate the coordinates of the particle.</span>
 
 <span class="sd">        :param t: the time sequence to be used to generate data, 1-D array like</span>
 <span class="sd">        :param seed: random generator seed for the stochastic process.</span>
@@ -1504,7 +1543,7 @@ the dimension of the initial condition.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Dimension of the Brownian motion</p>
+      <p>Dimension of the Brownian motion.</p>
   </div>
 
 </div>
@@ -1524,7 +1563,7 @@ the dimension of the initial condition.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Simulate the coordinates of the particle</p>
+      <p>Simulate the coordinates of the particle.</p>
 
 
 
@@ -1572,9 +1611,7 @@ the dimension of the initial condition.</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/brownian_motion.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
@@ -1585,8 +1622,10 @@ the dimension of the initial condition.</p>
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
-<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">TypeTime</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate the coordinates of the particle</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">TypeTime</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate the coordinates of the particle.</span>
 
 <span class="sd">    :param t: the time sequence to be used to generate data, 1-D array like</span>
 <span class="sd">    :param seed: random generator seed for the stochastic process.</span>
@@ -1618,7 +1657,7 @@ the dimension of the initial condition.</p>
 
   <div class="doc doc-contents ">
   
-      <p>generate data from a set of interpretable params for this model</p>
+      <p>Generate data from a set of interpretable params for this model.</p>
 
 
 
@@ -1666,17 +1705,17 @@ the dimension of the initial condition.</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/brownian_motion.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
 <span class="normal">194</span>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span>
-<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;generate data from a set of interpretable params for this model</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate data from a set of interpretable params for this model.</span>
 
 <span class="sd">    :param n_steps: total number of steps to be simulated, including the inital step.</span>
 <span class="sd">    :param seed: random generator seed for the stochastic process.</span>
@@ -1716,7 +1755,7 @@ the dimension of the initial condition.</p>
             Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
-      <p>The initial condition for a Brownian motion</p>
+      <p>The initial condition for a Brownian motion.</p>
 
 
 
@@ -1746,8 +1785,7 @@ the dimension of the initial condition.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/brownian_motion.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
-<span class="normal">53</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
@@ -1763,8 +1801,9 @@ the dimension of the initial condition.</p>
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
-<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BrownianMotionIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The initial condition for a Brownian motion</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BrownianMotionIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The initial condition for a Brownian motion.</span>
 
 <span class="sd">    :cvar x0: initial displacement of the particle,</span>
 <span class="sd">        the diminsion of this initial condition determines</span>
@@ -1775,7 +1814,7 @@ the dimension of the initial condition.</p>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;x0&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">check_x0_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_check_x0_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)):</span>
             <span class="c1"># TODO I do not think this raise can be reached</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value of x0 should be int/float/list of int/float: </span><span class="si">{</span><span class="n">v</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1821,7 +1860,7 @@ the dimension of the initial condition.</p>
             Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
-      <p>Definition of the Brownian Motion system</p>
+      <p>Definition of the Brownian Motion system.</p>
 <p>For consistency, we always use
 <span class="arithmatex">\(\mathbf x\)</span> for displacement, and
 <span class="arithmatex">\(t\)</span> for steps. The model we are using is</p>
@@ -1831,7 +1870,7 @@ the dimension of the initial condition.</p>
 \mathcal{N}(\mu=0, \sigma=\sigma \sqrt{\mathrm d t})
 \end{align}
 \]</div>
-<p>References:</p>
+<h4 id="hamilflow.models.brownian_motion.BrownianMotionSystem--references">References<a class="headerlink" href="#hamilflow.models.brownian_motion.BrownianMotionSystem--references" title="Permanent link">¤</a></h4>
 <ol>
 <li>Brownian motion and random walks. [cited 13 Mar 2024].
     Available: <a href="https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html">https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html</a></li>
@@ -1879,9 +1918,7 @@ the dimension of the initial condition.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/brownian_motion.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -1915,8 +1952,9 @@ the dimension of the initial condition.</p>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
-<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BrownianMotionSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Definition of the Brownian Motion system</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BrownianMotionSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Definition of the Brownian Motion system.</span>
 
 <span class="sd">    For consistency, we always use</span>
 <span class="sd">    $\mathbf x$ for displacement, and</span>
@@ -1929,8 +1967,8 @@ the dimension of the initial condition.</p>
 <span class="sd">    \end{align}</span>
 <span class="sd">    $$</span>
 
-<span class="sd">    References:</span>
-
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
 <span class="sd">    1. Brownian motion and random walks. [cited 13 Mar 2024].</span>
 <span class="sd">        Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html</span>
 <span class="sd">    2. Contributors to Wikimedia projects. Brownian motion.</span>
@@ -1940,6 +1978,7 @@ the dimension of the initial condition.</p>
 <span class="sd">    :cvar sigma: base standard deviation</span>
 <span class="sd">        to be used to compute the variance</span>
 <span class="sd">    :cvar delta_t: time granunality of the motion</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
@@ -1948,9 +1987,7 @@ the dimension of the initial condition.</p>
     <span class="nd">@computed_field</span>  <span class="c1"># type: ignore[misc]</span>
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">gaussian_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The scale (standard deviation) of the Gaussian term</span>
-<span class="sd">        in Brownian motion</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The scale (standard deviation) of the Gaussian term in Brownian motion.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -1982,8 +2019,7 @@ the dimension of the initial condition.</p>
 
   <div class="doc doc-contents ">
   
-      <p>The scale (standard deviation) of the Gaussian term
-in Brownian motion</p>
+      <p>The scale (standard deviation) of the Gaussian term in Brownian motion.</p>
   </div>
 
 </div>
