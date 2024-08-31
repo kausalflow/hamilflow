@@ -18,6 +18,7 @@ class TestFreeParticleIC:
         x0: int | Sequence[int],
         v0: int | Sequence[int],
     ) -> None:
+        """Test initialising a FreeParticleIC."""
         assert FreeParticleIC(x0=x0, v0=v0)
 
     @pytest.mark.parametrize(
@@ -30,6 +31,7 @@ class TestFreeParticleIC:
         v0: Sequence[int],
         expected: type[Exception],
     ) -> None:
+        """Test raise upon inconsistent initial conditions."""
         with pytest.raises(expected):
             FreeParticleIC(x0=x0, v0=v0)
 
@@ -50,6 +52,7 @@ class TestFreeParticle:
         v0: int | Sequence[int],
         expected: Mapping[str, Mapping[str, int | Sequence[int]]],
     ) -> None:
+        """Test the definition property."""
         assert FreeParticle(initial_condition=dict(x0=x0, v0=v0)).definition == expected
 
     @pytest.mark.parametrize(
@@ -71,6 +74,7 @@ class TestFreeParticle:
         t: int | Sequence[int],
         expected: pd.DataFrame,
     ) -> None:
+        """Test the __call__ interface."""
         assert_frame_equal(
             FreeParticle(initial_condition=dict(x0=x0, v0=v0))(t).astype(float),
             expected.astype(float),

@@ -19,9 +19,11 @@ class TestAcosWithShift:
 
     @pytest.fixture(params=[_some_numbers[0], _some_numbers])
     def phi(self, request: pytest.FixtureRequest) -> float | list[float]:
+        """Give scalar phi and a list of phi's."""
         return request.param
 
     def test_acos_with_shift(self, phi: "float | Collection[float]") -> None:
+        """Test arccos with shift."""
         phi = np.array(phi, copy=False)
         actual = np.array(acos_with_shift(np.cos(phi), phi / 2 / np.pi), copy=False)
         assert_array_almost_equal(phi, actual)
