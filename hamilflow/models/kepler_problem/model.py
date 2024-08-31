@@ -1,3 +1,5 @@
+""""""
+
 import math
 from functools import cached_property, partial
 from typing import TYPE_CHECKING, Any
@@ -18,7 +20,7 @@ if TYPE_CHECKING:
 
 
 class Kepler2DSystem(BaseModel):
-    r"""Definition of the Kepler problem
+    r"""Definition of the Kepler problem.
 
     Potential:
 
@@ -44,7 +46,7 @@ class Kepler2DSystem(BaseModel):
 
 
 class Kepler2DIoM(BaseModel):
-    """The integrals of motion for a Kepler problem
+    """The integrals of motion for a Kepler problem.
 
     :cvar ene: the energy
     :cvar angular_mom: the angular momentum

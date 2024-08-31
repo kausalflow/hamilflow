@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 
 class TestAcosWithShift:
+    """Tests for arccos with shift."""
+
     _some_numbers: ClassVar[list[float]] = [x / 2 - 5 for x in range(20)]
 
     @pytest.fixture(params=[_some_numbers[0], _some_numbers])

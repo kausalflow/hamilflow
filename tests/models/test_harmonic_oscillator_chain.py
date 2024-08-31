@@ -19,6 +19,8 @@ _possible_wave_modes: list[dict[str, tuple[int, int]]] = [
 
 
 class TestHarmonicOscillatorChain:
+    """Tests for the class harmonic oscillator chain."""
+
     @pytest.fixture(params=(1, 2))
     def omega(self, request: pytest.FixtureRequest) -> int:
         return request.param

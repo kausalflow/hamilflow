@@ -50,6 +50,8 @@ def geometries(
 
 
 class Test2DSystem:
+    """Tests for the class Kepler2DSystem."""
+
     def test_init(self, system_kwargs: "Mapping[str, float]") -> None:
         Kepler2DSystem(**system_kwargs)
 
@@ -60,6 +62,8 @@ class Test2DSystem:
 
 
 class Test2DIoM:
+    """Tests for the class Kepler2DIoM."""
+
     def test_raise(self) -> None:
         match = "Only non-zero angular momenta are supported"
         with pytest.raises(NotImplementedError, match=match):
@@ -67,6 +71,8 @@ class Test2DIoM:
 
 
 class TestKepler2D:
+    """Tests for the class Kepler2D."""
+
     def test_from_geometry(
         self,
         system_kwargs: "Mapping[str, float]",

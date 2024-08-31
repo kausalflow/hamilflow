@@ -1,3 +1,5 @@
+"""Numerics for the Kepler problem."""
+
 from typing import TYPE_CHECKING, Literal
 
 import numpy as np

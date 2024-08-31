@@ -1,3 +1,5 @@
+"""Tests for the harmonic oscillator main module."""
+
 from typing import Mapping, Sequence
 
 import numpy as np
@@ -145,12 +147,16 @@ def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
 
 
 class TestComplexHarmonicOscillatorIC:
+    """Tests for the class ComplexHarmonicOscillatorIC."""
+
     @pytest.mark.parametrize("kwargs", [dict(x0=(1, 2), phi=(2, 3)), dict(x0=(1, 2))])
     def test_ic(self, kwargs: Mapping[str, tuple[int, int]]) -> None:
         assert ComplexSimpleHarmonicOscillatorIC(**kwargs)
 
 
 class TestComplexHarmonicOscillator:
+    """Tests for the class ComplexHarmonicOscillator."""
+
     def test_complex(self) -> None:
         assert ComplexSimpleHarmonicOscillator(
             dict(omega=3),

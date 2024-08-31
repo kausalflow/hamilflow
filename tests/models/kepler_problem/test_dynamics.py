@@ -31,6 +31,8 @@ _EPS_SQRT = 1e-16
 
 @pytest.mark.usefixtures("ecc", "u_s", "tau_of_u")
 class TestTauOfU:
+    """Tests for calculating tau from u."""
+
     def test_const(
         self,
         ecc: float,

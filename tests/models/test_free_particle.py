@@ -10,6 +10,8 @@ from hamilflow.models.free_particle import FreeParticle, FreeParticleIC
 
 
 class TestFreeParticleIC:
+    """Tests for the class FreeParticleIC."""
+
     @pytest.mark.parametrize(("x0", "v0"), [(1, 2), ((1,), (2,)), ((1, 2), (2, 3))])
     def test_constructor(
         self,
@@ -33,6 +35,8 @@ class TestFreeParticleIC:
 
 
 class TestFreeParticle:
+    """Tests for the class FreeParticle."""
+
     @pytest.mark.parametrize(
         ("x0", "v0", "expected"),
         [

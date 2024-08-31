@@ -15,6 +15,8 @@ if TYPE_CHECKING:
 
 
 class TestUOfTau:
+    """Tests for calculating u from tau."""
+
     @pytest.mark.parametrize(
         "method",
         [
