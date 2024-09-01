@@ -1333,8 +1333,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
-<span class="normal">155</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
 <span class="normal">158</span>
@@ -1349,7 +1348,8 @@
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
-<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">esolve_u_from_tau_parabolic</span><span class="p">(</span>
+<span class="normal">170</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">esolve_u_from_tau_parabolic</span><span class="p">(</span>
     <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
@@ -1386,14 +1386,13 @@
   <div class="doc doc-contents ">
   
       <p>Expansion for tau of u in the ellpitic case at <span class="arithmatex">\(u = +e-0\)</span>.</p>
-<p>$$$ \tau = \frac{1}{(1+e)^2}\left(\frac{2(e-u)}{e}\right)^\frac{1}{2}
+<div class="arithmatex">\[ \tau = \frac{1}{(1+e)^2}\left(\frac{2(e-u)}{e}\right)^\frac{1}{2}
 - \frac{1+9e}{24(1+e)^3}\left(\frac{2(e-u)}{e}\right)^\frac{3}{2}
-+ O\left((u-e)^\frac{5}{2}\right)\,.</p>
++ O\left((e-u)^\frac{5}{2}\right)\,. \]</div>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
-<span class="normal">46</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
@@ -1403,15 +1402,16 @@
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
-<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_e_minus_u_elliptic</span><span class="p">(</span>
+<span class="normal">56</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_e_minus_u_elliptic</span><span class="p">(</span>
     <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Expansion for tau of u in the ellpitic case at $u = +e-0$.</span>
 
-<span class="sd">    $$$ \tau = \frac{1}{(1+e)^2}\left(\frac{2(e-u)}{e}\right)^\frac{1}{2}</span>
+<span class="sd">    $$ \tau = \frac{1}{(1+e)^2}\left(\frac{2(e-u)}{e}\right)^\frac{1}{2}</span>
 <span class="sd">    - \frac{1+9e}{24(1+e)^3}\left(\frac{2(e-u)}{e}\right)^\frac{3}{2}</span>
-<span class="sd">    + O\left((u-e)^\frac{5}{2}\right)\,.</span>
+<span class="sd">    + O\left((e-u)^\frac{5}{2}\right)\,. $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">emu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">ecc</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="n">ecc</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">emu</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ecc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">emu</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">9</span> <span class="o">*</span> <span class="n">ecc</span><span class="p">)</span> <span class="o">/</span> <span class="mi">24</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ecc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span>
@@ -1438,12 +1438,11 @@
 <div class="arithmatex">\[ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}
 - \frac{1}{(1-e)^2}\left(\frac{2(e+u)}{e}\right)^\frac{1}{2}
 - \frac{1-9e}{24(1-e)^3}\left(\frac{2(e+u)}{e}\right)^\frac{3}{2}
-+ O\left((u+e)^\frac{5}{2}\right)\,. \]</div>
++ O\left((e+u)^\frac{5}{2}\right)\,. \]</div>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
-<span class="normal">30</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
@@ -1455,7 +1454,8 @@
 <span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
-<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_e_plus_u_elliptic</span><span class="p">(</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_e_plus_u_elliptic</span><span class="p">(</span>
     <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
@@ -1464,7 +1464,7 @@
 <span class="sd">    $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}</span>
 <span class="sd">    - \frac{1}{(1-e)^2}\left(\frac{2(e+u)}{e}\right)^\frac{1}{2}</span>
 <span class="sd">    - \frac{1-9e}{24(1-e)^3}\left(\frac{2(e+u)}{e}\right)^\frac{3}{2}</span>
-<span class="sd">    + O\left((u+e)^\frac{5}{2}\right)\,. $$</span>
+<span class="sd">    + O\left((e+u)^\frac{5}{2}\right)\,. $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">epu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">ecc</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="n">ecc</span><span class="p">)</span>
     <span class="n">const</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ecc</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">1.5</span>
@@ -1560,8 +1560,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
-<span class="normal">60</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
@@ -1573,7 +1572,8 @@
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_elliptic</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="normal">72</span>
+<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_elliptic</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the scaled time tau from u in the elliptic case.</span>
 
 <span class="sd">    :param ecc: eccentricity, 0 &lt; ecc &lt; 1 (unchecked)</span>
@@ -1607,8 +1607,9 @@
   <div class="doc doc-contents ">
   
       <p>Exact solution for tau of u in the elliptic case.</p>
-<div class="arithmatex">\[ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)} + (1-e^2)^{-frac{3}{2}} \cdot
-\left(\frac{pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right)\,. \]</div>
+<div class="arithmatex">\[ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)} +
+\left(\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right) /
+(1-e^2)^{\frac{3}{2}}\,. \]</div>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
@@ -1623,14 +1624,16 @@
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_exact_elliptic</span><span class="p">(</span>
+<span class="normal">26</span>
+<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_exact_elliptic</span><span class="p">(</span>
     <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Exact solution for tau of u in the elliptic case.</span>
 
-<span class="sd">    $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)} + (1-e^2)^{-frac{3}{2}} \cdot</span>
-<span class="sd">    \left(\frac{pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right)\,. $$</span>
+<span class="sd">    $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)} +</span>
+<span class="sd">    \left(\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right) /</span>
+<span class="sd">    (1-e^2)^{\frac{3}{2}}\,. $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cosqr</span><span class="p">,</span> <span class="n">eusqrt</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">ecc</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">trig_numer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cosqr</span><span class="p">)</span> <span class="o">/</span> <span class="n">eusqrt</span><span class="p">)</span>
@@ -1726,8 +1729,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
-<span class="normal">116</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
@@ -1739,7 +1741,8 @@
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_hyperbolic</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_hyperbolic</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the scaled time tau from u in the hyperbolic case.</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt; 1 (unchecked)</span>
@@ -1844,15 +1847,15 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
-<span class="normal">76</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
-<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_parabolic</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_parabolic</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the scaled time tau from u in the parabolic case.</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc == 1 (unchecked, unused)</span>
@@ -1952,15 +1955,15 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
-<span class="normal">132</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="normal">139</span>
+<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the first derivative of scaled time tau with respect to u.</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt;= 0 (unchecked)</span>
@@ -2060,8 +2063,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">142</span>
-<span class="normal">143</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
@@ -2069,7 +2071,8 @@
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime2</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="normal">151</span>
+<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime2</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the second derivative of scaled time tau with respect to u.</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt;= 0 (unchecked)</span>
