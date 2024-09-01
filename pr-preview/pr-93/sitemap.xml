@@ -16,6 +16,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://kausalflow.github.io/hamilflow/references/maths/trigonometrics/</loc>
+         <lastmod>2024-09-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://kausalflow.github.io/hamilflow/references/models/brownian_motion/</loc>
          <lastmod>2024-09-01</lastmod>
          <changefreq>daily</changefreq>
@@ -31,12 +36,22 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://kausalflow.github.io/hamilflow/references/models/kepler_problem/</loc>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/pendulum/</loc>
          <lastmod>2024-09-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://kausalflow.github.io/hamilflow/references/models/pendulum/</loc>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/kepler_problem/dynamics/</loc>
+         <lastmod>2024-09-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/kepler_problem/model/</loc>
+         <lastmod>2024-09-01</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://kausalflow.github.io/hamilflow/references/models/kepler_problem/numerics/</loc>
          <lastmod>2024-09-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
