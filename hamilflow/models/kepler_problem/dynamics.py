@@ -33,10 +33,14 @@ def tau_of_e_plus_u_elliptic(
 ) -> "npt.NDArray[np.float64]":
     r"""Expansion for tau of u in the ellpitic case at $u = -e+0$.
 
+    The exact solution has a removable singularity at $u = -e$, hence this
+    expansion helps with numerics.
+
+    Let $\epsilon = \sqrt{\frac{2(e+u)}{e}\right}$,
     $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}
-    - \frac{1}{(1-e)^2}\left(\frac{2(e+u)}{e}\right)^\frac{1}{2}
-    - \frac{1-9e}{24(1-e)^3}\left(\frac{2(e+u)}{e}\right)^\frac{3}{2}
-    + O\left((e+u)^\frac{5}{2}\right)\,. $$
+    - \frac{1}{(1-e)^2}\epsilon
+    - \frac{1-9e}{24(1-e)^3}\epsilon^3
+    + O\left(\epsilon^5\right)\,. $$
     """
     epu = np.sqrt(2 * (ecc + u) / ecc)
     const = np.pi / (1 - ecc**2) ** 1.5
@@ -49,9 +53,13 @@ def tau_of_e_minus_u_elliptic(
 ) -> "npt.NDArray[np.float64]":
     r"""Expansion for tau of u in the ellpitic case at $u = +e-0$.
 
-    $$ \tau = \frac{1}{(1+e)^2}\left(\frac{2(e-u)}{e}\right)^\frac{1}{2}
-    - \frac{1+9e}{24(1+e)^3}\left(\frac{2(e-u)}{e}\right)^\frac{3}{2}
-    + O\left((e-u)^\frac{5}{2}\right)\,. $$
+    The exact solution has a removable singularity at $u = +e$, hence this
+    expansion helps with numerics.
+
+    Let $\epsilon = \sqrt{\frac{2(e-u)}{e}\right}$,
+    $$ \tau = \frac{1}{(1+e)^2}\epsilon
+    - \frac{1+9e}{24(1+e)^3}\epsilon^3
+    + O\left(\epsilon^5\right)\,. $$
     """
     emu = np.sqrt(2 * (ecc - u) / ecc)
     return emu / (1 + ecc) ** 2 - emu**3 * (1 + 9 * ecc) / 24 / (1 + ecc) ** 3
