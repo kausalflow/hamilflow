@@ -82,7 +82,9 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64
 
 
 def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
-    """Calculate the scaled time tau from u in the parabolic case.
+    r"""Calculate the scaled time tau from u in the parabolic case.
+
+    $$ \tau = \frac{\sqrt{1-u}(2+u)}{3(1+u)^\frac{3}{2}}\,. $$
 
     :param ecc: eccentricity, ecc == 1 (unchecked, unused)
     :param u: convenient radial inverse
@@ -164,7 +166,12 @@ def esolve_u_from_tau_parabolic(
     ecc: float,
     tau: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
-    """Calculate the convenient radial inverse u from tau in the parabolic case, using the exact solution.
+    r"""Calculate the convenient radial inverse u from tau in the parabolic case, using the exact solution.
+
+    Let $T = 1+9\tau^2$,
+    $$ u = -1
+    + \left(\frac{3\tau}{T^\frac{3}{2}} + \frac{1}{T}\right)^\frac{1}{3}
+    + \left(\frac{1}{3\tau T^\frac{3}{2}+T^2}\right)^\frac{1}{3}\,. $$
 
     :param ecc: eccentricity, ecc = 0 (unchecked, unused)
     :param tau: scaled time
