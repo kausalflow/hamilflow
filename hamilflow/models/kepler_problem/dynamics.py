@@ -147,7 +147,9 @@ def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float
 
 
 def tau_of_u_prime(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
-    """Calculate the first derivative of scaled time tau with respect to u.
+    r"""Calculate the first derivative of scaled time tau with respect to u.
+
+    $$ \tau'(u) = -\frac{1}{(1+u)^2\sqrt{e^2-u^2}}\,. $$
 
     :param ecc: eccentricity, ecc >= 0 (unchecked)
     :param u: convenient radial inverse
@@ -158,7 +160,9 @@ def tau_of_u_prime(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
 
 
 def tau_of_u_prime2(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
-    """Calculate the second derivative of scaled time tau with respect to u.
+    r"""Calculate the second derivative of scaled time tau with respect to u.
+
+    $$ \tau''(u) = \frac{2e^2 - u - 3u^2}{(1+u)^3 (e^2-u^2)^\frac{3}{2}} $$
 
     :param ecc: eccentricity, ecc >= 0 (unchecked)
     :param u: convenient radial inverse
