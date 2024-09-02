@@ -18,9 +18,9 @@ def tau_of_u_exact_elliptic(
 ) -> "npt.NDArray[np.float64]":
     r"""Exact solution for tau of u in the elliptic case.
 
-    $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)} +
-    \left(\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right) /
-    (1-e^2)^{\frac{3}{2}}\,. $$
+    For $-e \le u \le e$,
+    $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}
+    + \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right}{(1-e^2)^{\frac{3}{2}}}\,. $$
     """
     cosqr, eusqrt = 1 - ecc**2, np.sqrt(ecc**2 - u**2)
     trig_numer = np.pi / 2 - np.arctan((ecc**2 + u) / np.sqrt(cosqr) / eusqrt)
@@ -84,6 +84,7 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64
 def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
     r"""Calculate the scaled time tau from u in the parabolic case.
 
+    For $-1 < u \le 1$,
     $$ \tau = \frac{\sqrt{1-u}(2+u)}{3(1+u)^\frac{3}{2}}\,. $$
 
     :param ecc: eccentricity, ecc == 1 (unchecked, unused)
@@ -98,6 +99,12 @@ def _tau_of_u_exact_hyperbolic(
     ecc: float,
     u: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
+    r"""Exact solution for tau of u in the hyperbolic case.
+
+    For $-1 < u \le e$,
+    $$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}
+    - \frac{\arctanh\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$
+    """
     u = np.asarray(u)
     cosqr, eusqrt = ecc**2 - 1, np.sqrt(ecc**2 - u**2)
     trig_numer = np.arctanh(np.sqrt(cosqr) * eusqrt / (ecc**2 + u))
