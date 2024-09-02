@@ -889,6 +889,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hamilflow.models.kepler_problem.dynamics.tau_of_u_exact_hyperbolic" class="md-nav__link">
+    <span class="md-ellipsis">
+      tau_of_u_exact_hyperbolic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hamilflow.models.kepler_problem.dynamics.tau_of_u_hyperbolic" class="md-nav__link">
     <span class="md-ellipsis">
       tau_of_u_hyperbolic
@@ -1171,6 +1180,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hamilflow.models.kepler_problem.dynamics.tau_of_u_exact_hyperbolic" class="md-nav__link">
+    <span class="md-ellipsis">
+      tau_of_u_exact_hyperbolic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#hamilflow.models.kepler_problem.dynamics.tau_of_u_hyperbolic" class="md-nav__link">
     <span class="md-ellipsis">
       tau_of_u_hyperbolic
@@ -1402,7 +1420,7 @@ $$ u = -1
       <p>Expansion for tau of u in the ellpitic case at <span class="arithmatex">\(u = +e-0\)</span>.</p>
 <p>The exact solution has a removable singularity at <span class="arithmatex">\(u = +e\)</span>, hence this
 expansion helps with numerics.</p>
-<p>Let <span class="arithmatex">\(\epsilon = \sqrt{\frac{2(e-u)}{e}\right}\)</span>,
+<p>Let <span class="arithmatex">\(\epsilon = \sqrt{\frac{2(e-u)}{e}}\)</span>,
 $$ \tau = \frac{1}{(1+e)^2}\epsilon
 - \frac{1+9e}{24(1+e)^3}\epsilon^3
 + O\left(\epsilon^5\right)\,. $$</p>
@@ -1433,7 +1451,7 @@ $$ \tau = \frac{1}{(1+e)^2}\epsilon
 <span class="sd">    The exact solution has a removable singularity at $u = +e$, hence this</span>
 <span class="sd">    expansion helps with numerics.</span>
 
-<span class="sd">    Let $\epsilon = \sqrt{\frac{2(e-u)}{e}\right}$,</span>
+<span class="sd">    Let $\epsilon = \sqrt{\frac{2(e-u)}{e}}$,</span>
 <span class="sd">    $$ \tau = \frac{1}{(1+e)^2}\epsilon</span>
 <span class="sd">    - \frac{1+9e}{24(1+e)^3}\epsilon^3</span>
 <span class="sd">    + O\left(\epsilon^5\right)\,. $$</span>
@@ -1462,7 +1480,7 @@ $$ \tau = \frac{1}{(1+e)^2}\epsilon
       <p>Expansion for tau of u in the ellpitic case at <span class="arithmatex">\(u = -e+0\)</span>.</p>
 <p>The exact solution has a removable singularity at <span class="arithmatex">\(u = -e\)</span>, hence this
 expansion helps with numerics.</p>
-<p>Let <span class="arithmatex">\(\epsilon = \sqrt{\frac{2(e+u)}{e}\right}\)</span>,
+<p>Let <span class="arithmatex">\(\epsilon = \sqrt{\frac{2(e+u)}{e}}\)</span>,
 $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}
 - \frac{1}{(1-e)^2}\epsilon
 - \frac{1-9e}{24(1-e)^3}\epsilon^3
@@ -1496,7 +1514,7 @@ $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}
 <span class="sd">    The exact solution has a removable singularity at $u = -e$, hence this</span>
 <span class="sd">    expansion helps with numerics.</span>
 
-<span class="sd">    Let $\epsilon = \sqrt{\frac{2(e+u)}{e}\right}$,</span>
+<span class="sd">    Let $\epsilon = \sqrt{\frac{2(e+u)}{e}}$,</span>
 <span class="sd">    $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}</span>
 <span class="sd">    - \frac{1}{(1-e)^2}\epsilon</span>
 <span class="sd">    - \frac{1-9e}{24(1-e)^3}\epsilon^3</span>
@@ -1645,7 +1663,7 @@ $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}
       <p>Exact solution for tau of u in the elliptic case.</p>
 <p>For <span class="arithmatex">\(-e \le u \le e\)</span>,
 $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}
-+ \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right}{(1-e^2)^{\frac{3}{2}}}\,. $$</p>
++ \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}}{(1-e^2)^{\frac{3}{2}}}\,. $$</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
@@ -1669,11 +1687,64 @@ $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}
 
 <span class="sd">    For $-e \le u \le e$,</span>
 <span class="sd">    $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}</span>
-<span class="sd">    + \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right}{(1-e^2)^{\frac{3}{2}}}\,. $$</span>
+<span class="sd">    + \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}}{(1-e^2)^{\frac{3}{2}}}\,. $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cosqr</span><span class="p">,</span> <span class="n">eusqrt</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">ecc</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">trig_numer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cosqr</span><span class="p">)</span> <span class="o">/</span> <span class="n">eusqrt</span><span class="p">)</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">eusqrt</span> <span class="o">/</span> <span class="n">cosqr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="o">+</span> <span class="n">trig_numer</span> <span class="o">/</span> <span class="n">cosqr</span><span class="o">**</span><span class="mf">1.5</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="hamilflow.models.kepler_problem.dynamics.tau_of_u_exact_hyperbolic" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">tau_of_u_exact_hyperbolic</span><span class="p">(</span><span class="n">ecc</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span></code>
+
+<a href="#hamilflow.models.kepler_problem.dynamics.tau_of_u_exact_hyperbolic" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Exact solution for tau of u in the hyperbolic case.</p>
+<p>For <span class="arithmatex">\(-1 &lt; u \le e\)</span>,
+$$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}
+- \frac{\arctanh\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$</p>
+
+          <details class="quote">
+            <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_exact_hyperbolic</span><span class="p">(</span>
+    <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Exact solution for tau of u in the hyperbolic case.</span>
+
+<span class="sd">    For $-1 &lt; u \le e$,</span>
+<span class="sd">    $$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}</span>
+<span class="sd">    - \frac{\arctanh\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">cosqr</span><span class="p">,</span> <span class="n">eusqrt</span> <span class="o">=</span> <span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">trig_numer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cosqr</span><span class="p">)</span> <span class="o">*</span> <span class="n">eusqrt</span> <span class="o">/</span> <span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">eusqrt</span> <span class="o">/</span> <span class="n">cosqr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="o">-</span> <span class="n">trig_numer</span> <span class="o">/</span> <span class="n">cosqr</span><span class="o">**</span><span class="mf">1.5</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -1788,7 +1859,7 @@ $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}
     <span class="k">return</span> <span class="n">_approximate_at_termina</span><span class="p">(</span>
         <span class="n">ecc</span><span class="p">,</span>
         <span class="n">u</span><span class="p">,</span>
-        <span class="n">_tau_of_u_exact_hyperbolic</span><span class="p">,</span>
+        <span class="n">tau_of_u_exact_hyperbolic</span><span class="p">,</span>
         <span class="n">_tau_of_1_plus_u_hyperbolic</span><span class="p">,</span>
         <span class="n">_tau_of_e_minus_u_hyperbolic</span><span class="p">,</span>
     <span class="p">)</span>
