@@ -103,7 +103,7 @@ def tau_of_u_exact_hyperbolic(
 
     For $-1 < u \le e$,
     $$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}
-    - \frac{\arctanh\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$
+    - \frac{\mathrm{artanh}\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$
     """
     u = np.asarray(u)
     cosqr, eusqrt = ecc**2 - 1, np.sqrt(ecc**2 - u**2)
