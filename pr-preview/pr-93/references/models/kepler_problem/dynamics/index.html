@@ -1355,11 +1355,7 @@ $$ u = -1
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
@@ -1376,7 +1372,11 @@ $$ u = -1
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
-<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">esolve_u_from_tau_parabolic</span><span class="p">(</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">esolve_u_from_tau_parabolic</span><span class="p">(</span>
     <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
@@ -1714,7 +1714,7 @@ $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}
       <p>Exact solution for tau of u in the hyperbolic case.</p>
 <p>For <span class="arithmatex">\(-1 &lt; u \le e\)</span>,
 $$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}
-- \frac{\arctanh\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$</p>
+- \frac{\mathrm{artanh}\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
@@ -1739,7 +1739,7 @@ $$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}
 
 <span class="sd">    For $-1 &lt; u \le e$,</span>
 <span class="sd">    $$ \tau = \frac{\sqrt{e^2-u^2}}{(e^2-1)(1+u)}</span>
-<span class="sd">    - \frac{\arctanh\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$</span>
+<span class="sd">    - \frac{\mathrm{artanh}\frac{e^2+u}{\sqrt{(e^2-1)(e^2-u^2)}}}{(e^2-1)^{\frac{3}{2}}}\,. $$</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
     <span class="n">cosqr</span><span class="p">,</span> <span class="n">eusqrt</span> <span class="o">=</span> <span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -1999,6 +1999,7 @@ $$ \tau = \frac{\sqrt{1-u}(2+u)}{3(1+u)^\frac{3}{2}}\,. $$</p>
   <div class="doc doc-contents ">
   
       <p>Calculate the first derivative of scaled time tau with respect to u.</p>
+<div class="arithmatex">\[ \tau'(u) = -\frac{1}{(1+u)^2\sqrt{e^2-u^2}}\,. \]</div>
 
 
 
@@ -2078,8 +2079,12 @@ $$ \tau = \frac{\sqrt{1-u}(2+u)}{3(1+u)^\frac{3}{2}}\,. $$</p>
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
-<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the first derivative of scaled time tau with respect to u.</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the first derivative of scaled time tau with respect to u.</span>
+
+<span class="sd">    $$ \tau&#39;(u) = -\frac{1}{(1+u)^2\sqrt{e^2-u^2}}\,. $$</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt;= 0 (unchecked)</span>
 <span class="sd">    :param u: convenient radial inverse</span>
@@ -2107,6 +2112,7 @@ $$ \tau = \frac{\sqrt{1-u}(2+u)}{3(1+u)^\frac{3}{2}}\,. $$</p>
   <div class="doc doc-contents ">
   
       <p>Calculate the second derivative of scaled time tau with respect to u.</p>
+<div class="arithmatex">\[ \tau''(u) = \frac{2e^2 - u - 3u^2}{(1+u)^3 (e^2-u^2)^\frac{3}{2}} \]</div>
 
 
 
@@ -2178,17 +2184,21 @@ $$ \tau = \frac{\sqrt{1-u}(2+u)}{3(1+u)^\frac{3}{2}}\,. $$</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/dynamics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
-<span class="normal">169</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime2</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the second derivative of scaled time tau with respect to u.</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau_of_u_prime2</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the second derivative of scaled time tau with respect to u.</span>
+
+<span class="sd">    $$ \tau&#39;&#39;(u) = \frac{2e^2 - u - 3u^2}{(1+u)^3 (e^2-u^2)^\frac{3}{2}} $$</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt;= 0 (unchecked)</span>
 <span class="sd">    :param u: convenient radial inverse</span>
