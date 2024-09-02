@@ -14,10 +14,10 @@ from scipy.integrate import quad
 from hamilflow.models.kepler_problem.dynamics import (
     _tau_of_1_plus_u_hyperbolic,
     _tau_of_e_minus_u_hyperbolic,
-    _tau_of_u_exact_hyperbolic,
     tau_of_e_minus_u_elliptic,
     tau_of_e_plus_u_elliptic,
     tau_of_u_exact_elliptic,
+    tau_of_u_exact_hyperbolic,
     tau_of_u_prime,
 )
 
@@ -87,7 +87,7 @@ class TestTauOfU:
             )
         elif ecc > 1:
             return (
-                _tau_of_u_exact_hyperbolic,
+                tau_of_u_exact_hyperbolic,
                 _tau_of_1_plus_u_hyperbolic,
                 _tau_of_e_minus_u_hyperbolic,
             )

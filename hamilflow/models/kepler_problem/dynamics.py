@@ -20,7 +20,7 @@ def tau_of_u_exact_elliptic(
 
     For $-e \le u \le e$,
     $$ \tau = -\frac{\sqrt{e^2-u^2}}{(1-e^2)(1+u)}
-    + \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}\right}{(1-e^2)^{\frac{3}{2}}}\,. $$
+    + \frac{\frac{\pi}{2} - \arctan\frac{e^2+u}{\sqrt{(1-e^2)(e^2-u^2)}}}{(1-e^2)^{\frac{3}{2}}}\,. $$
     """
     cosqr, eusqrt = 1 - ecc**2, np.sqrt(ecc**2 - u**2)
     trig_numer = np.pi / 2 - np.arctan((ecc**2 + u) / np.sqrt(cosqr) / eusqrt)
@@ -36,7 +36,7 @@ def tau_of_e_plus_u_elliptic(
     The exact solution has a removable singularity at $u = -e$, hence this
     expansion helps with numerics.
 
-    Let $\epsilon = \sqrt{\frac{2(e+u)}{e}\right}$,
+    Let $\epsilon = \sqrt{\frac{2(e+u)}{e}}$,
     $$ \tau = \frac{\pi}{(1-e^2)^\frac{3}{2}}
     - \frac{1}{(1-e)^2}\epsilon
     - \frac{1-9e}{24(1-e)^3}\epsilon^3
@@ -56,7 +56,7 @@ def tau_of_e_minus_u_elliptic(
     The exact solution has a removable singularity at $u = +e$, hence this
     expansion helps with numerics.
 
-    Let $\epsilon = \sqrt{\frac{2(e-u)}{e}\right}$,
+    Let $\epsilon = \sqrt{\frac{2(e-u)}{e}}$,
     $$ \tau = \frac{1}{(1+e)^2}\epsilon
     - \frac{1+9e}{24(1+e)^3}\epsilon^3
     + O\left(\epsilon^5\right)\,. $$
@@ -95,7 +95,7 @@ def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float6
     return np.sqrt(1 - u) * (2 + u) / 3 / (1 + u) ** 1.5
 
 
-def _tau_of_u_exact_hyperbolic(
+def tau_of_u_exact_hyperbolic(
     ecc: float,
     u: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
@@ -140,7 +140,7 @@ def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float
     return _approximate_at_termina(
         ecc,
         u,
-        _tau_of_u_exact_hyperbolic,
+        tau_of_u_exact_hyperbolic,
         _tau_of_1_plus_u_hyperbolic,
         _tau_of_e_minus_u_hyperbolic,
     )
