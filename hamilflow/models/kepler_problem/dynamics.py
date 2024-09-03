@@ -111,10 +111,20 @@ def tau_of_u_exact_hyperbolic(
     return eusqrt / cosqr / (1 + u) - trig_numer / cosqr**1.5
 
 
-def _tau_of_1_plus_u_hyperbolic(
+def tau_of_1_plus_u_hyperbolic(
     ecc: float,
     u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
+    r"""Expansion for tau of u in the hyperbolic case at $u = -1+0$.
+
+    The exact solution has a logarithmic singularity at $u = -1$, hence this
+    expansion helps with numerics.
+
+    Let $\epsilon = \frac{e(1+u)}{2(e^2-1)}$,
+    $$ \tau = \ln \epsilon + \frac{e}{2\epsilon}
+    + 1 - \frac{e^2+2}{e}\epsilon + \left(3+\frac{2}{e^2}\right)\epsilon^2
+    + O(\epsilon^3)\,. $$
+    """
     cosqr = ecc**2 - 1
     up1 = ecc * (1 + u) / 2 / cosqr
     diverge = np.log(up1) + ecc / 2 / up1
@@ -122,10 +132,20 @@ def _tau_of_1_plus_u_hyperbolic(
     return (diverge + regular) / cosqr**1.5
 
 
-def _tau_of_e_minus_u_hyperbolic(
+def tau_of_e_minus_u_hyperbolic(
     ecc: float,
     u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
+    r"""Expansion for tau of u in the ellpitic case at $u = +e-0$.
+
+    The exact solution has a removable singularity at $u = +e$, hence this
+    expansion helps with numerics.
+
+    Let $\epsilon = \sqrt{\frac{2(e-u)}{e}}$,
+    $$ \tau = \frac{1}{(1+e)^2}\epsilon
+    + \frac{1+9e}{24(1+e)^3}\epsilon^3
+    + O\left(\epsilon^5\right)\,. $$
+    """
     emu = np.sqrt(2 * (ecc - u) / ecc)
     return emu / (1 + ecc) ** 2 + emu**3 * (1 + 9 * ecc) / 24 / (1 + ecc) ** 3
 
@@ -141,8 +161,8 @@ def tau_of_u_hyperbolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float
         ecc,
         u,
         tau_of_u_exact_hyperbolic,
-        _tau_of_1_plus_u_hyperbolic,
-        _tau_of_e_minus_u_hyperbolic,
+        tau_of_1_plus_u_hyperbolic,
+        tau_of_e_minus_u_hyperbolic,
     )
 
 
