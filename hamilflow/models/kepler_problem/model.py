@@ -46,12 +46,12 @@ class Kepler2DSystem(BaseModel):
 
 
 class Kepler2DIoM(BaseModel):
-    """The integrals of motion for a Kepler problem.
+    r"""The integrals of motion for a Kepler problem.
 
-    :cvar ene: the energy
-    :cvar angular_mom: the angular momentum
-    :cvar t0: the time at which the radial position is closest to 0, default to 0
-    :cvar phi0: the angle at which the radial position is closest to 0, default to 0
+    :cvar ene: the energy $E$
+    :cvar angular_mom: the angular momentum $l$
+    :cvar t0: the time $t_0$ at which the radial position is closest to 0, defaults to 0
+    :cvar phi0: the angle $\phi_0$ at which the radial position is closest to 0, defaults to 0
     """
 
     ene: float = Field()
@@ -173,7 +173,10 @@ class Kepler2D:
 
     @cached_property
     def period(self) -> float:
-        """Perior of the Kepler problem."""
+        r"""Perior of the Kepler problem.
+
+        $$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$
+        """
         if self.ene >= 0:
             msg = f"Only systems with energy < 0 have a period, got {self.ene}"
             raise TypeError(msg)
@@ -182,19 +185,28 @@ class Kepler2D:
     # FIXME is it called parameter in English?
     @cached_property
     def parameter(self) -> float:
-        """Conic section parameter of the Kepler problem."""
+        r"""Conic section parameter of the Kepler problem.
+
+        $$ p = \frac{l^2}{\alpha m}\,. $$
+        """
         return self.angular_mom**2 / self.mass / self.alpha
 
     @cached_property
     def ecc(self) -> float:
-        """Sonic section eccentricity of the Kepler problem."""
+        r"""Conic section eccentricity of the Kepler problem.
+
+        $$ e = \sqrt{1 + \frac{2El}{\alpha^2 m}}\,. $$
+        """
         return math.sqrt(
             1 + 2 * self.ene * self.angular_mom**2 / self.mass / self.alpha**2,
         )
 
     @cached_property
     def period_in_tau(self) -> float:
-        """Period in the scaled time tau."""
+        r"""Period in the scaled time tau.
+
+        $$ T_\tau = \frac{2\pi}{(1-e^2)^\frac{3}{2}}\,. $$
+        """
         if self.ecc >= 1:
             raise TypeError(
                 f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}",
@@ -203,7 +215,10 @@ class Kepler2D:
 
     @property
     def t_to_tau_factor(self) -> float:
-        """Scale factor from t to tau."""
+        r"""Scale factor from t to tau.
+
+        $$ \tau = \frac{\alpha^2 m}{|l|^3} t\,. $$
+        """
         return abs(self.mass * self.alpha**2 / self.angular_mom**3)
 
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
@@ -225,7 +240,10 @@ class Kepler2D:
             return u_of_tau(self.ecc, tau)  # type: ignore [arg-type]
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
-        """Give the radial r from u."""
+        r"""Give the radial r from u.
+
+        $$ r = \frac{p}{u+1}\,. $$
+        """
         return self.parameter / (np.asarray(u) + 1)
 
     def phi_of_u_tau(
@@ -233,7 +251,13 @@ class Kepler2D:
         u: "Collection[float] | npt.ArrayLike",
         tau: "Collection[float] | npt.ArrayLike",
     ) -> "npt.ArrayLike":
-        """Give the angular phi from u and tau."""
+        r"""Give the angular phi from u and tau.
+
+        For $e = 0$,
+        $$ \phi - \phi_0 = 2\pi \frac{\tau}{T_\tau}\,; $$
+        For $e > 0$,
+        $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$
+        """
         u, tau = np.asarray(u), np.asarray(tau)
         if self.ecc == 0:
             phi = 2 * math.pi * tau / self.period_in_tau
