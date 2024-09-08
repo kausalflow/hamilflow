@@ -1000,9 +1000,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hamilflow.models.kepler_problem.model.Kepler2DIoM" class="md-nav__link">
+  <a href="#hamilflow.models.kepler_problem.model.Kepler2DFI" class="md-nav__link">
     <span class="md-ellipsis">
-      Kepler2DIoM
+      Kepler2DFI
     </span>
   </a>
   
@@ -1417,9 +1417,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hamilflow.models.kepler_problem.model.Kepler2DIoM" class="md-nav__link">
+  <a href="#hamilflow.models.kepler_problem.model.Kepler2DFI" class="md-nav__link">
     <span class="md-ellipsis">
-      Kepler2DIoM
+      Kepler2DFI
     </span>
   </a>
   
@@ -1519,13 +1519,13 @@
           </td>
         </tr>
         <tr class="doc-section-item">
-          <td><code>integrals_of_motion</code></td>
+          <td><code>first_integrals</code></td>
           <td>
                 <code><span title="typing.Mapping">Mapping</span>[str, float]</code>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>the integrals of motion for the system.</p>
+              <p>the first integrals for the system.</p>
             </div>
           </td>
           <td>
@@ -1537,8 +1537,7 @@
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 71</span>
-<span class="normal"> 72</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
 <span class="normal"> 73</span>
 <span class="normal"> 74</span>
 <span class="normal"> 75</span>
@@ -1745,28 +1744,38 @@
 <span class="normal">276</span>
 <span class="normal">277</span>
 <span class="normal">278</span>
-<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2D</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Kepler problem in two dimensional space.</span>
 
 <span class="sd">    :param system: the Kepler problem system specification</span>
-<span class="sd">    :param integrals_of_motion: the integrals of motion for the system.</span>
+<span class="sd">    :param first_integrals: the first integrals for the system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">system</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
-        <span class="n">integrals_of_motion</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
+        <span class="n">first_integrals</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">Kepler2DSystem</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
 
-        <span class="n">integrals_of_motion</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">integrals_of_motion</span><span class="p">)</span>
-        <span class="n">ene</span> <span class="o">=</span> <span class="n">integrals_of_motion</span><span class="p">[</span><span class="s2">&quot;ene&quot;</span><span class="p">]</span>
-        <span class="n">minimal_ene</span> <span class="o">=</span> <span class="n">Kepler2D</span><span class="o">.</span><span class="n">minimal_ene</span><span class="p">(</span><span class="n">integrals_of_motion</span><span class="p">[</span><span class="s2">&quot;angular_mom&quot;</span><span class="p">],</span> <span class="n">system</span><span class="p">)</span>
+        <span class="n">first_integrals</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">first_integrals</span><span class="p">)</span>
+        <span class="n">ene</span> <span class="o">=</span> <span class="n">first_integrals</span><span class="p">[</span><span class="s2">&quot;ene&quot;</span><span class="p">]</span>
+        <span class="n">minimal_ene</span> <span class="o">=</span> <span class="n">Kepler2D</span><span class="o">.</span><span class="n">minimal_ene</span><span class="p">(</span><span class="n">first_integrals</span><span class="p">[</span><span class="s2">&quot;angular_mom&quot;</span><span class="p">],</span> <span class="n">system</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ene</span> <span class="o">&lt;</span> <span class="n">minimal_ene</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Energy </span><span class="si">{</span><span class="n">ene</span><span class="si">}</span><span class="s2"> less than minimally allowed </span><span class="si">{</span><span class="n">minimal_ene</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">integrals_of_motion</span> <span class="o">=</span> <span class="n">Kepler2DIoM</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">integrals_of_motion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first_integrals</span> <span class="o">=</span> <span class="n">Kepler2DFI</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">first_integrals</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tau_of_u</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">tau_of_u_elliptic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span><span class="p">)</span>
@@ -1783,7 +1792,10 @@
         <span class="n">system</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
         <span class="n">geometries</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, bool | float]&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Self&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alternative initialiser from system and geometry specifications.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alternative initialiser from system and geometry specifications.</span>
+
+<span class="sd">        Given the eccentricity $e$ and the conic section parameter $p$,</span>
+<span class="sd">        $$l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.$$</span>
 
 <span class="sd">        :param system: the Kepler problem system specification</span>
 <span class="sd">        :param geometries: geometric specifications</span>
@@ -1796,20 +1808,22 @@
         <span class="n">ecc</span><span class="p">,</span> <span class="n">parameter</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">geometries</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span> <span class="p">[</span><span class="s2">&quot;ecc&quot;</span><span class="p">,</span> <span class="s2">&quot;parameter&quot;</span><span class="p">])</span>
         <span class="n">abs_angular_mom</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mass</span> <span class="o">*</span> <span class="n">parameter</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span>
         <span class="c1"># abs_minimal_ene = alpha / 2 / parameter: numerically unstable</span>
-        <span class="n">abs_minimal_ene</span> <span class="o">=</span> <span class="n">mass</span> <span class="o">*</span> <span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">abs_angular_mom</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">abs_minimal_ene</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">minimal_ene</span><span class="p">(</span><span class="n">abs_angular_mom</span><span class="p">,</span> <span class="n">system</span><span class="p">))</span>
         <span class="n">ene</span> <span class="o">=</span> <span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">abs_minimal_ene</span>
-        <span class="n">iom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">fi</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">ene</span><span class="o">=</span><span class="n">ene</span><span class="p">,</span>
             <span class="n">angular_mom</span><span class="o">=</span><span class="n">abs_angular_mom</span> <span class="k">if</span> <span class="n">positive_angular_mom</span> <span class="k">else</span> <span class="o">-</span><span class="n">abs_angular_mom</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">iom</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">fi</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">minimal_ene</span><span class="p">(</span>
         <span class="n">angular_mom</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">system</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Minimal possible energy from the system specification and an angular momentum.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Minimal possible energy from the system specification and an angular momentum.</span>
+
+<span class="sd">        $$ E_\text{min} = -\frac{m\alpha^2}{2l^2}\,. $$</span>
 
 <span class="sd">        :param angular_mom: angular momentum</span>
 <span class="sd">        :param system: system specification</span>
@@ -1820,38 +1834,39 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mass</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mass parameter from the system specification.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mass $m$ from the system specification.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">mass</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alpha parameter from the system specification.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alpha $\alpha$ from the system specification.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">alpha</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ene</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Energy of the Kepler problem.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrals_of_motion</span><span class="o">.</span><span class="n">ene</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Energy $E$ of the Kepler problem.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_integrals</span><span class="o">.</span><span class="n">ene</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">angular_mom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Angular momentum of the Kepler problem.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrals_of_motion</span><span class="o">.</span><span class="n">angular_mom</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Angular momentum $l$ of the Kepler problem.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_integrals</span><span class="o">.</span><span class="n">angular_mom</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">t0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;t0 of the Kepler problem.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrals_of_motion</span><span class="o">.</span><span class="n">t0</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;t0 $t_0$ of the Kepler problem.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_integrals</span><span class="o">.</span><span class="n">t0</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">phi0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;phi0 of the Kepler problem.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrals_of_motion</span><span class="o">.</span><span class="n">phi0</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;phi0 $\phi_0$ of the Kepler problem.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_integrals</span><span class="o">.</span><span class="n">phi0</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">period</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perior of the Kepler problem.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Period $T$ of the Kepler problem.</span>
 
+<span class="sd">        For $E &lt; 0$,</span>
 <span class="sd">        $$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ene</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
@@ -1894,12 +1909,15 @@
     <span class="k">def</span> <span class="nf">t_to_tau_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Scale factor from t to tau.</span>
 
-<span class="sd">        $$ \tau = \frac{\alpha^2 m}{|l|^3} t\,. $$</span>
+<span class="sd">        $$ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. $$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_mom</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Give the scaled time tau from t.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Give the scaled time tau from t.</span>
+
+<span class="sd">        $$ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. $$</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_to_tau_factor</span>
 
     <span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
@@ -1983,7 +2001,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Alpha parameter from the system specification.</p>
+      <p>Alpha <span class="arithmatex">\(\alpha\)</span> from the system specification.</p>
   </div>
 
 </div>
@@ -2004,7 +2022,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Angular momentum of the Kepler problem.</p>
+      <p>Angular momentum <span class="arithmatex">\(l\)</span> of the Kepler problem.</p>
   </div>
 
 </div>
@@ -2048,7 +2066,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Energy of the Kepler problem.</p>
+      <p>Energy <span class="arithmatex">\(E\)</span> of the Kepler problem.</p>
   </div>
 
 </div>
@@ -2069,7 +2087,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Mass parameter from the system specification.</p>
+      <p>Mass <span class="arithmatex">\(m\)</span> from the system specification.</p>
   </div>
 
 </div>
@@ -2114,8 +2132,9 @@
 
   <div class="doc doc-contents ">
   
-      <p>Perior of the Kepler problem.</p>
-<div class="arithmatex">\[ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. \]</div>
+      <p>Period <span class="arithmatex">\(T\)</span> of the Kepler problem.</p>
+<p>For <span class="arithmatex">\(E &lt; 0\)</span>,
+$$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$</p>
   </div>
 
 </div>
@@ -2159,7 +2178,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>phi0 of the Kepler problem.</p>
+      <p>phi0 <span class="arithmatex">\(\phi_0\)</span> of the Kepler problem.</p>
   </div>
 
 </div>
@@ -2180,7 +2199,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>t0 of the Kepler problem.</p>
+      <p>t0 <span class="arithmatex">\(t_0\)</span> of the Kepler problem.</p>
   </div>
 
 </div>
@@ -2202,7 +2221,7 @@
   <div class="doc doc-contents ">
   
       <p>Scale factor from t to tau.</p>
-<div class="arithmatex">\[ \tau = \frac{\alpha^2 m}{|l|^3} t\,. \]</div>
+<div class="arithmatex">\[ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. \]</div>
   </div>
 
 </div>
@@ -2226,14 +2245,14 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Give a DataFrame of tau, u, r and phi from t.&quot;&quot;&quot;</span>
     <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_of_tau</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span>
@@ -2265,6 +2284,8 @@
   <div class="doc doc-contents ">
   
       <p>Alternative initialiser from system and geometry specifications.</p>
+<p>Given the eccentricity <span class="arithmatex">\(e\)</span> and the conic section parameter <span class="arithmatex">\(p\)</span>,
+<span class="arithmatex">\(<span class="arithmatex">\(l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.\)</span>\)</span></p>
 
 
 
@@ -2312,8 +2333,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">103</span>
-<span class="normal">104</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
@@ -2337,13 +2357,20 @@
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_geometry</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">system</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
     <span class="n">geometries</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, bool | float]&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Self&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Alternative initialiser from system and geometry specifications.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alternative initialiser from system and geometry specifications.</span>
+
+<span class="sd">    Given the eccentricity $e$ and the conic section parameter $p$,</span>
+<span class="sd">    $$l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.$$</span>
 
 <span class="sd">    :param system: the Kepler problem system specification</span>
 <span class="sd">    :param geometries: geometric specifications</span>
@@ -2356,13 +2383,13 @@
     <span class="n">ecc</span><span class="p">,</span> <span class="n">parameter</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">geometries</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span> <span class="p">[</span><span class="s2">&quot;ecc&quot;</span><span class="p">,</span> <span class="s2">&quot;parameter&quot;</span><span class="p">])</span>
     <span class="n">abs_angular_mom</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mass</span> <span class="o">*</span> <span class="n">parameter</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span>
     <span class="c1"># abs_minimal_ene = alpha / 2 / parameter: numerically unstable</span>
-    <span class="n">abs_minimal_ene</span> <span class="o">=</span> <span class="n">mass</span> <span class="o">*</span> <span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">abs_angular_mom</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">abs_minimal_ene</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">minimal_ene</span><span class="p">(</span><span class="n">abs_angular_mom</span><span class="p">,</span> <span class="n">system</span><span class="p">))</span>
     <span class="n">ene</span> <span class="o">=</span> <span class="p">(</span><span class="n">ecc</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">abs_minimal_ene</span>
-    <span class="n">iom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fi</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">ene</span><span class="o">=</span><span class="n">ene</span><span class="p">,</span>
         <span class="n">angular_mom</span><span class="o">=</span><span class="n">abs_angular_mom</span> <span class="k">if</span> <span class="n">positive_angular_mom</span> <span class="k">else</span> <span class="o">-</span><span class="n">abs_angular_mom</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">iom</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">fi</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -2387,6 +2414,7 @@
   <div class="doc doc-contents ">
   
       <p>Minimal possible energy from the system specification and an angular momentum.</p>
+<div class="arithmatex">\[ E_\text{min} = -\frac{m\alpha^2}{2l^2}\,. \]</div>
 
 
 
@@ -2458,11 +2486,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
@@ -2470,12 +2494,20 @@
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">minimal_ene</span><span class="p">(</span>
     <span class="n">angular_mom</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">system</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, float]&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimal possible energy from the system specification and an angular momentum.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Minimal possible energy from the system specification and an angular momentum.</span>
+
+<span class="sd">    $$ E_\text{min} = -\frac{m\alpha^2}{2l^2}\,. $$</span>
 
 <span class="sd">    :param angular_mom: angular momentum</span>
 <span class="sd">    :param system: system specification</span>
@@ -2510,17 +2542,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
 <span class="normal">260</span>
 <span class="normal">261</span>
 <span class="normal">262</span>
@@ -2531,7 +2553,17 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 <span class="normal">267</span>
 <span class="normal">268</span>
 <span class="normal">269</span>
-<span class="normal">270</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">phi_of_u_tau</span><span class="p">(</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">phi_of_u_tau</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
     <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
@@ -2577,12 +2609,12 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">r_of_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">r_of_u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Give the radial r from u.</span>
 
 <span class="sd">    $$ r = \frac{p}{u+1}\,. $$</span>
@@ -2608,13 +2640,20 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
   <div class="doc doc-contents ">
   
       <p>Give the scaled time tau from t.</p>
+<div class="arithmatex">\[ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. \]</div>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Give the scaled time tau from t.&quot;&quot;&quot;</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Give the scaled time tau from t.</span>
+
+<span class="sd">    $$ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. $$</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_to_tau_factor</span>
 </code></pre></div></td></tr></table></div>
           </details>
@@ -2639,19 +2678,19 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">238</span>
 <span class="normal">239</span>
-<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;Collection[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Give the convenient radial inverse u from tau.&quot;&quot;&quot;</span>
     <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -2683,11 +2722,11 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 
 
 
-<h2 id="hamilflow.models.kepler_problem.model.Kepler2DIoM" class="doc doc-heading">
-          <code>Kepler2DIoM</code>
+<h2 id="hamilflow.models.kepler_problem.model.Kepler2DFI" class="doc doc-heading">
+          <code>Kepler2DFI</code>
 
 
-<a href="#hamilflow.models.kepler_problem.model.Kepler2DIoM" class="headerlink" title="Permanent link">¤</a></h2>
+<a href="#hamilflow.models.kepler_problem.model.Kepler2DFI" class="headerlink" title="Permanent link">¤</a></h2>
 
 
   <div class="doc doc-contents ">
@@ -2695,7 +2734,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
             Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
-      <p>The integrals of motion for a Kepler problem.</p>
+      <p>The first integrals for a Kepler problem.</p>
 
 
 
@@ -2710,7 +2749,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
     </thead>
     <tbody>
         <tr class="doc-section-item">
-          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DIoM.ene">ene</span></code></td>
+          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DFI.ene">ene</span></code></td>
           <td>
                 <code>float</code>
           </td>
@@ -2721,7 +2760,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
           </td>
         </tr>
         <tr class="doc-section-item">
-          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DIoM.angular_mom">angular_mom</span></code></td>
+          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DFI.angular_mom">angular_mom</span></code></td>
           <td>
                 <code>float</code>
           </td>
@@ -2732,7 +2771,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
           </td>
         </tr>
         <tr class="doc-section-item">
-          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DIoM.t0">t0</span></code></td>
+          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DFI.t0">t0</span></code></td>
           <td>
                 <code>float</code>
           </td>
@@ -2743,7 +2782,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
           </td>
         </tr>
         <tr class="doc-section-item">
-          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DIoM.phi0">phi0</span></code></td>
+          <td><code><span title="hamilflow.models.kepler_problem.model.Kepler2DFI.phi0">phi0</span></code></td>
           <td>
                 <code>float</code>
           </td>
@@ -2758,8 +2797,7 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/kepler_problem/model.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
-<span class="normal">49</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
@@ -2778,8 +2816,9 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DIoM</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The integrals of motion for a Kepler problem.</span>
+<span class="normal">68</span>
+<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DFI</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The first integrals for a Kepler problem.</span>
 
 <span class="sd">    :cvar ene: the energy $E$</span>
 <span class="sd">    :cvar angular_mom: the angular momentum $l$</span>
@@ -2844,7 +2883,8 @@ $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$</p>
 <div class="arithmatex">\[
 V(r) = - \frac{\alpha}{r}.
 \]</div>
-<p>For reference, if an object is orbiting our Sun, the constant <span class="arithmatex">\(\alpha = G M_{\odot} ~ 1.327×10^20 m^3/s^2\)</span> in SI,
+<p>For reference, if an object is orbiting our Sun, the constant
+<span class="arithmatex">\(\alpha = G M_{\odot} ~ 1.327×10^{20} \mathrm{m}^3/\mathrm{s}^2\)</span> in SI,
 which is also called 1 TCB, or 1 solar mass parameter. For computational stability, we recommend using
 TCB as the unit instead of the large SI values.</p>
 <div class="admonition note">
@@ -2914,7 +2954,8 @@ TCB as the unit instead of the large SI values.</p>
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
-<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">45</span>
+<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Kepler2DSystem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Definition of the Kepler problem.</span>
 
 <span class="sd">    Potential:</span>
@@ -2923,7 +2964,8 @@ TCB as the unit instead of the large SI values.</p>
 <span class="sd">    V(r) = - \frac{\alpha}{r}.</span>
 <span class="sd">    $$</span>
 
-<span class="sd">    For reference, if an object is orbiting our Sun, the constant $\alpha = G M_{\odot} ~ 1.327×10^20 m^3/s^2$ in SI,</span>
+<span class="sd">    For reference, if an object is orbiting our Sun, the constant</span>
+<span class="sd">    $\alpha = G M_{\odot} ~ 1.327×10^{20} \mathrm{m}^3/\mathrm{s}^2$ in SI,</span>
 <span class="sd">    which is also called 1 TCB, or 1 solar mass parameter. For computational stability, we recommend using</span>
 <span class="sd">    TCB as the unit instead of the large SI values.</span>
 
