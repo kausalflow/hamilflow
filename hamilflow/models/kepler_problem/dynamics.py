@@ -31,7 +31,7 @@ def tau_of_e_plus_u_elliptic(
     ecc: float,
     u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
-    r"""Expansion for tau of u in the ellpitic case at $u = -e+0$.
+    r"""Expansion for tau of u in the elliptic case at $u = -e+0$.
 
     The exact solution has a removable singularity at $u = -e$, hence this
     expansion helps with numerics.
@@ -51,7 +51,7 @@ def tau_of_e_minus_u_elliptic(
     ecc: float,
     u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
-    r"""Expansion for tau of u in the ellpitic case at $u = +e-0$.
+    r"""Expansion for tau of u in the elliptic case at $u = +e-0$.
 
     The exact solution has a removable singularity at $u = +e$, hence this
     expansion helps with numerics.
@@ -136,7 +136,7 @@ def tau_of_e_minus_u_hyperbolic(
     ecc: float,
     u: "npt.NDArray[np.float64]",
 ) -> "npt.NDArray[np.float64]":
-    r"""Expansion for tau of u in the ellpitic case at $u = +e-0$.
+    r"""Expansion for tau of u in the elliptic case at $u = +e-0$.
 
     The exact solution has a removable singularity at $u = +e$, hence this
     expansion helps with numerics.
@@ -199,10 +199,10 @@ def esolve_u_from_tau_parabolic(
 ) -> "npt.NDArray[np.float64]":
     r"""Calculate the convenient radial inverse u from tau in the parabolic case, using the exact solution.
 
-    Let $T = 1+9\tau^2$,
+    Let $\kappa = 1+9\tau^2$,
     $$ u = -1
-    + \left(\frac{3\tau}{T^\frac{3}{2}} + \frac{1}{T}\right)^\frac{1}{3}
-    + \left(\frac{1}{3\tau T^\frac{3}{2}+T^2}\right)^\frac{1}{3}\,. $$
+    + \left(\frac{3\tau}{\kappa^\frac{3}{2}} + \frac{1}{\kappa}\right)^\frac{1}{3}
+    + \left(\frac{1}{3\tau \kappa^\frac{3}{2}+\kappa^2}\right)^\frac{1}{3}\,. $$
 
     :param ecc: eccentricity, ecc = 0 (unchecked, unused)
     :param tau: scaled time
