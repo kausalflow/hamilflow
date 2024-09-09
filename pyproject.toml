@@ -76,7 +76,7 @@ select = ["ALL"]
 ignore = [
     "D107",  # undocumented-public-init: we document the class instead
     "E501",  # line-too-long: we use black instead
-    "PD", "SLF", "FBT", "ANN", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "SIM", "RUF", "RET"
+    "PD", "FBT", "ANN", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "SIM", "RUF", "RET"
 ]
 
 
@@ -86,6 +86,7 @@ ignore = [
 ]
 "tests/**/*.py" = [
     "S101",  # assert: Fine in tests
+    "SLF001"  # private-member-access: find in tests
 ]
 
 

@@ -98,11 +98,11 @@ class HarmonicOscillatorsChain:
         t: "Sequence[float] | npt.ArrayLike",
     ) -> "tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]":
         t = np.asarray(t).reshape(-1)
-        all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]
+        all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]  # noqa: SLF001
 
         if self.independent_csho_modes:
             independent_cshos = np.asarray(
-                [o._z(t) for o in self.independent_csho_modes],
+                [o._z(t) for o in self.independent_csho_modes],  # noqa: SLF001
             )
             all_travelling_waves.extend(
                 (
