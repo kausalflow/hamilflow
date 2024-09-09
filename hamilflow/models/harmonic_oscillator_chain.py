@@ -67,10 +67,10 @@ class HarmonicOscillatorsChain:
         phi: tuple[float, float] | None = None,
     ) -> ComplexSimpleHarmonicOscillator:
         return ComplexSimpleHarmonicOscillator(
-            dict(
-                omega=2 * self.omega * np.sin(np.pi * k / self.n_dof),
-            ),
-            dict(x0=amp) | (dict(phi=phi) if phi else {}),
+            {
+                "omega": 2 * self.omega * np.sin(np.pi * k / self.n_dof),
+            },
+            {"x0": amp} | ({"phi": phi} if phi else {}),
         )
 
     @cached_property
@@ -83,14 +83,14 @@ class HarmonicOscillatorsChain:
         | list[dict[str, dict[str, float | tuple[float, float]]]],
     ]:
         """Model params and initial conditions defined as a dictionary."""
-        return dict(
-            omega=self.omega,
-            n_dof=self.n_dof,
-            free_mode=self.free_mode.definition,
-            independent_csho_modes=[
+        return {
+            "omega": self.omega,
+            "n_dof": self.n_dof,
+            "free_mode": self.free_mode.definition,
+            "independent_csho_modes": [
                 rwm.definition for rwm in self.independent_csho_modes
             ],
-        )
+        }
 
     def _z(
         self,

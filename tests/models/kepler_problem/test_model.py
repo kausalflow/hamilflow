@@ -51,7 +51,11 @@ def geometries(
     parameter: float,
 ) -> dict[str, bool | float]:
     """Give geometric characteristics for initialising a KeplerSystem."""
-    return dict(positive_angular_mom=positive_angular_mom, ecc=ecc, parameter=parameter)
+    return {
+        "positive_angular_mom": positive_angular_mom,
+        "ecc": ecc,
+        "parameter": parameter,
+    }
 
 
 class Test2DSystem:
@@ -101,7 +105,10 @@ class TestKepler2D:
         kep = Kepler2D.from_geometry(system_kwargs, geometries)
         assert_equal(kep.ene, Kepler2D.minimal_ene(kep.angular_mom, system_kwargs))
         with pytest.raises(ValueError):
-            Kepler2D(system_kwargs, dict(ene=kep.ene - 1, angular_mom=kep.angular_mom))
+            Kepler2D(
+                system_kwargs,
+                {"ene": kep.ene - 1, "angular_mom": kep.angular_mom},
+            )
 
     def test_period_from_u(
         self,

@@ -49,7 +49,7 @@ class FreeParticle:
     @cached_property
     def definition(self) -> dict[str, dict[str, float | list[float]]]:
         """Model params and initial conditions defined as a dictionary."""
-        return dict(initial_condition=self.initial_condition.model_dump())
+        return {"initial_condition": self.initial_condition.model_dump()}
 
     def _x(self, t: "Sequence[float] |  npt.ArrayLike") -> "npt.NDArray[np.float64]":
         t = np.asarray(t)

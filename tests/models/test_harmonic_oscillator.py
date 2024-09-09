@@ -158,7 +158,7 @@ def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
 class TestComplexHarmonicOscillatorIC:
     """Tests for the class ComplexHarmonicOscillatorIC."""
 
-    @pytest.mark.parametrize("kwargs", [dict(x0=(1, 2), phi=(2, 3)), dict(x0=(1, 2))])
+    @pytest.mark.parametrize("kwargs", [{"x0": (1, 2), "phi": (2, 3)}, {"x0": (1, 2)}])
     def test_ic(self, kwargs: Mapping[str, tuple[int, int]]) -> None:
         """Test initialising ComplexSimpleHarmonicOscillatorIC."""
         assert ComplexSimpleHarmonicOscillatorIC(**kwargs)
@@ -170,8 +170,8 @@ class TestComplexHarmonicOscillator:
     def test_complex(self) -> None:
         """Test initialising ComplexSimpleHarmonicOscillator."""
         assert ComplexSimpleHarmonicOscillator(
-            dict(omega=3),
-            dict(x0=(1, 2), phi=(2, 3)),
+            {"omega": 3},
+            {"x0": (1, 2), "phi": (2, 3)},
         )
 
     @pytest.mark.parametrize("zeta", [0.5, 1.0, 1.5])
@@ -179,8 +179,8 @@ class TestComplexHarmonicOscillator:
         """Test raises from ComplexSimpleHarmonicOscillator upon illegal zeta."""
         with pytest.raises(ValueError):
             ComplexSimpleHarmonicOscillator(
-                dict(omega=3, zeta=zeta),
-                dict(x0=(2, 3), phi=(3, 4)),
+                {"omega": 3, "zeta": zeta},
+                {"x0": (2, 3), "phi": (3, 4)},
             )
 
     @pytest.fixture(params=(1, (1,), [1, 2], np.array([2, 3, 5, 7, 11])))
@@ -200,10 +200,10 @@ class TestComplexHarmonicOscillator:
     ) -> None:
         """Test the degenerate case where ComplexSimpleHarmonicOscillator reduces to SimpleHarmonicOscillator."""
         csho = ComplexSimpleHarmonicOscillator(
-            dict(omega=omega),
-            dict(x0=(x0, x0), phi=(phi, phi)),
+            {"omega": omega},
+            {"x0": (x0, x0), "phi": (phi, phi)},
         )
-        sho = SimpleHarmonicOscillator(dict(omega=omega), dict(x0=2 * x0, phi=phi))
+        sho = SimpleHarmonicOscillator({"omega": omega}, {"x0": 2 * x0, "phi": phi})
         z = np.asarray(csho._z(times))
         x = sho._x(times)
 

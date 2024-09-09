@@ -39,7 +39,7 @@ pattern_x = r"x\d+"
 # ## Fundamental right-moving wave
 
 # %%
-ics = [dict(x0=0, v0=0), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
+ics = [{"x0": 0, "v0": 0}, {"amp": (1, 0)}] + [{"amp": (0, 0)}] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
@@ -50,7 +50,7 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # ## Fundamental left-moving wave
 
 # %%
-ics = [dict(x0=0, v0=0), dict(amp=(0, 1))] + [dict(amp=(0, 0))] * 5
+ics = [{"x0": 0, "v0": 0}, {"amp": (0, 1)}] + [{"amp": (0, 0)}] * 5
 hoc = HarmonicOscillatorsChain(2 * math.pi, ics, True)
 
 df_res = hoc(t)
@@ -62,7 +62,7 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # Also known as the first harmonic.
 
 # %%
-ics = [dict(x0=0, v0=0), dict(amp=(0, 0)), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 4
+ics = [{"x0": 0, "v0": 0}, {"amp": (0, 0)}, {"amp": (1, 0)}] + [{"amp": (0, 0)}] * 4
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
@@ -73,7 +73,7 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # ## Fundamental stationary wave, odd dof
 
 # %%
-ics = [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5
+ics = [{"x0": 0, "v0": 0}, {"amp": (1, 1)}] + [{"amp": (0, 0)}] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, True)
 
 df_res = hoc(t)
@@ -86,7 +86,7 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # There are stationary nodes at $i = 3, 9$.
 
 # %%
-ics = [dict(x0=0, v0=0), dict(amp=(1, 1))] + [dict(amp=(0, 0))] * 5
+ics = [{"x0": 0, "v0": 0}, {"amp": (1, 1)}] + [{"amp": (0, 0)}] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, False)
 
 df_res = hoc(t)
@@ -98,7 +98,7 @@ px.imshow(df_x_wide, origin="lower", labels={"y": "t"})
 # ## Linearly moving chain and fundamental right-moving wave
 
 # %%
-ics = [dict(x0=0, v0=2), dict(amp=(1, 0))] + [dict(amp=(0, 0))] * 5
+ics = [{"x0": 0, "v0": 2}, {"amp": (1, 0)}] + [{"amp": (0, 0)}] * 5
 hoc = HarmonicOscillatorsChain(omega, ics, False)
 
 df_res = hoc(t)
