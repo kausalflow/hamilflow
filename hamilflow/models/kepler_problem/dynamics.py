@@ -158,7 +158,7 @@ def _approximate_at_termina(
     exact: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
     left: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
     right: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
-):
+) -> "npt.NDArray[np.float64]":
     u = np.asarray(u)
     u_s = u.reshape(-1)
     res = exact(ecc, u_s)

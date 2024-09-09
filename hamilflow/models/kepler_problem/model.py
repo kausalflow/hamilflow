@@ -2,7 +2,7 @@
 
 import math
 from functools import cached_property, partial
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
@@ -62,7 +62,7 @@ class Kepler2DIoM(BaseModel):
     # TODO process angular momentum = 0
     @field_validator("angular_mom")
     @classmethod
-    def _angular_mom_non_zero(cls, v: Any) -> float:
+    def _angular_mom_non_zero(cls, v: float) -> float:
         if v == 0:
             msg = "Only non-zero angular momenta are supported"
             raise NotImplementedError(msg)

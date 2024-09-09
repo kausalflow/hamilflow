@@ -1,6 +1,6 @@
 """Tests for the harmonic oscillator main module."""
 
-from collections.abc import Mapping, Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
@@ -14,6 +14,9 @@ from hamilflow.models.harmonic_oscillator import (
     HarmonicOscillatorSystem,
     SimpleHarmonicOscillator,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping, Sequence
 
 
 @pytest.fixture
@@ -64,7 +67,10 @@ def test_oscillator_damping_zeta(omega: int, zeta: float) -> None:
         ),
     ],
 )
-def test_simple_harmonic_oscillator(omega, expected):
+def test_simple_harmonic_oscillator(
+    omega: float,
+    expected: "Mapping[str, float]",
+) -> None:
     """Test SimpleHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = SimpleHarmonicOscillator(system={"omega": omega})
 
@@ -94,7 +100,11 @@ def test_simple_harmonic_oscillator(omega, expected):
         ),
     ],
 )
-def test_underdamped_harmonic_oscillator(omega, zeta, expected):
+def test_underdamped_harmonic_oscillator(
+    omega: float,
+    zeta: float,
+    expected: "Mapping[str, float]",
+) -> None:
     """Test under DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
@@ -124,7 +134,11 @@ def test_underdamped_harmonic_oscillator(omega, zeta, expected):
         ),
     ],
 )
-def test_overdamped_harmonic_oscillator(omega, zeta, expected):
+def test_overdamped_harmonic_oscillator(
+    omega: float,
+    zeta: float,
+    expected: "Mapping[str, float]",
+) -> None:
     """Test over DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
@@ -154,7 +168,11 @@ def test_overdamped_harmonic_oscillator(omega, zeta, expected):
         ),
     ],
 )
-def test_criticaldamped_harmonic_oscillator(omega, zeta, expected):
+def test_criticaldamped_harmonic_oscillator(
+    omega: float,
+    zeta: float,
+    expected: "Mapping[str, float]",
+) -> None:
     """Test critical DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
     ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
@@ -167,7 +185,7 @@ class TestComplexHarmonicOscillatorIC:
     """Tests for the class ComplexHarmonicOscillatorIC."""
 
     @pytest.mark.parametrize("kwargs", [{"x0": (1, 2), "phi": (2, 3)}, {"x0": (1, 2)}])
-    def test_ic(self, kwargs: Mapping[str, tuple[int, int]]) -> None:
+    def test_ic(self, kwargs: "Mapping[str, tuple[int, int]]") -> None:
         """Test initialising ComplexSimpleHarmonicOscillatorIC."""
         assert ComplexSimpleHarmonicOscillatorIC(**kwargs)
 
@@ -196,7 +214,7 @@ class TestComplexHarmonicOscillator:
             )
 
     @pytest.fixture(params=(1, (1,), [1, 2], np.array([2, 3, 5, 7, 11])))
-    def times(self, request: pytest.FixtureRequest) -> int | Sequence[int]:
+    def times(self, request: pytest.FixtureRequest) -> "int | Sequence[int]":
         """Give scalar time, Sequences of and numpy array of times."""
         return request.param
 
@@ -208,7 +226,7 @@ class TestComplexHarmonicOscillator:
         omega: int,
         x0: int,
         phi: int,
-        times: int | Sequence[int],
+        times: "int | Sequence[int]",
     ) -> None:
         """Test the degenerate case where ComplexSimpleHarmonicOscillator reduces to SimpleHarmonicOscillator."""
         csho = ComplexSimpleHarmonicOscillator(

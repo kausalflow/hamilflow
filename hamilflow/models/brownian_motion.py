@@ -153,7 +153,7 @@ class BrownianMotion:
         initial_condition: (
             Mapping[str, "Sequence[float] | npt.ArrayLike"] | None
         ) = None,
-    ):
+    ) -> None:
         initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)
         self.initial_condition = BrownianMotionIC.model_validate(initial_condition)
