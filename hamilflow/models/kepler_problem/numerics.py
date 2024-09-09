@@ -51,7 +51,8 @@ def nsolve_u_from_tau_newton(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult
         tau_of_u = tau_of_u_hyperbolic
         u0 = _u0_hyperbolic(ecc, tau)
     else:
-        raise ValueError(f"Expect ecc > 0, ecc != 1, got {ecc}")
+        msg = f"Expect ecc > 0, ecc != 1, got {ecc}"
+        raise ValueError(msg)
 
     def f(u: float, tau: "npt.NDArray[np.float64]") -> "npt.NDArray[np.float64]":
         return tau_of_u(ecc, u) - tau
@@ -78,7 +79,8 @@ def nsolve_u_from_tau_bisect(ecc: float, tau: "npt.ArrayLike") -> list[OptimizeR
     elif ecc > 1:
         tau_of_u = tau_of_u_hyperbolic
     else:
-        raise ValueError(f"Expect ecc > 0, ecc != 1, got {ecc}")
+        msg = f"Expect ecc > 0, ecc != 1, got {ecc}"
+        raise ValueError(msg)
 
     def f(u: float, tau: float) -> np.float64:
         return (
@@ -114,6 +116,8 @@ def u_of_tau(
             case "newton":
                 return nsolve_u_from_tau_newton(ecc, tau)[0]
             case _:
-                raise ValueError(f"Expect 'bisect' or 'newton', got {method}")
+                msg = f"Expect 'bisect' or 'newton', got {method}"
+                raise ValueError(msg)
     else:
-        raise ValueError(f"Expect ecc >= 0, got {ecc}")
+        msg = f"Expect ecc >= 0, got {ecc}"
+        raise ValueError(msg)

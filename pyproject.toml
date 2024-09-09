@@ -68,6 +68,7 @@ formats = "ipynb,py:percent"
 [tool.ruff]
 line-length = 88  # black default
 target-version = "py310"
+# unsafe-fixes = true
 
 
 [tool.ruff.lint]
@@ -75,7 +76,7 @@ select = ["ALL"]
 ignore = [
     "D107",  # undocumented-public-init: we document the class instead
     "E501",  # line-too-long: we use black instead
-    "FA", "PLR", "PD", "SLF", "PT", "FBT", "ANN", "EM", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "SIM", "RUF", "RET"
+    "FA", "PLR", "PD", "SLF", "PT", "FBT", "ANN", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "SIM", "RUF", "RET"
 ]
 
 

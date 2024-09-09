@@ -92,7 +92,8 @@ class TestTauOfU:
                 _tau_of_e_minus_u_hyperbolic,
             )
         else:
-            raise ValueError(f"Expect ecc >= 0, got {ecc}")
+            msg = f"Expect ecc >= 0, got {ecc}"
+            raise ValueError(msg)
 
     @pytest.mark.parametrize("epsilon", [1e-7])
     def test_expansion(

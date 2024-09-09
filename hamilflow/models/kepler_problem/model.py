@@ -64,7 +64,8 @@ class Kepler2DIoM(BaseModel):
     @classmethod
     def _angular_mom_non_zero(cls, v: Any) -> float:
         if v == 0:
-            raise NotImplementedError("Only non-zero angular momenta are supported")
+            msg = "Only non-zero angular momenta are supported"
+            raise NotImplementedError(msg)
         return v
 
 
@@ -198,8 +199,11 @@ class Kepler2D:
     def period_in_tau(self) -> float:
         """Period in the scaled time tau."""
         if self.ecc >= 1:
+            msg = (
+                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}"
+            )
             raise TypeError(
-                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}",
+                msg,
             )
         return 2 * math.pi / (1 - self.ecc**2) ** 1.5
 

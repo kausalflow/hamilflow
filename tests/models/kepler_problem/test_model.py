@@ -128,7 +128,8 @@ class TestKepler2D:
             with pytest.raises(TypeError, match=match):
                 _ = kep.period
         else:
-            raise ValueError(f"Expect ecc >= 0, got {ecc}")
+            msg = f"Expect ecc >= 0, got {ecc}"
+            raise ValueError(msg)
 
     def test_phi_of_u_tau_naive(
         self,

@@ -56,4 +56,5 @@ def tau_of_u(ecc: float) -> "Callable[[float, npt.ArrayLike], npt.ArrayLike]":
     elif ecc > 1:
         return tau_of_u_hyperbolic
     else:
-        raise ValueError(f"Expect ecc >= 0, got {ecc}")
+        msg = f"Expect ecc >= 0, got {ecc}"
+        raise ValueError(msg)
