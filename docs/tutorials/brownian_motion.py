@@ -86,10 +86,10 @@ df_2d = bm_2d.generate_from(n_steps=500)
     px.scatter(df_2d, x="x_0", y="x_1", color="t")
     .update_traces(
         mode="lines+markers",
-        marker=dict(
-            size=2.5,
-        ),
-        line=dict(width=1),
+        marker={
+            "size": 2.5,
+        },
+        line={"width": 1},
     )
     .update_yaxes(
         scaleanchor="x",

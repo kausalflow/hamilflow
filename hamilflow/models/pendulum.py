@@ -72,10 +72,10 @@ class Pendulum:
     @cached_property
     def definition(self) -> dict[str, dict[str, Any]]:
         """Model params and initial conditions defined as a dictionary."""
-        return dict(
-            system=self.system.model_dump(),
-            initial_condition=self.initial_condition.model_dump(),
-        )
+        return {
+            "system": self.system.model_dump(),
+            "initial_condition": self.initial_condition.model_dump(),
+        }
 
     @property
     def omega0(self) -> float:
@@ -159,4 +159,4 @@ class Pendulum:
         thetas = self.theta(t)
         us = self.u(t)
 
-        return pd.DataFrame(dict(t=t, x=thetas, u=us))
+        return pd.DataFrame({"t": t, "x": thetas, "u": us})

@@ -42,8 +42,8 @@ class TestFreeParticle:
     @pytest.mark.parametrize(
         ("x0", "v0", "expected"),
         [
-            (1, 2, dict(initial_condition=dict(x0=1, v0=2))),
-            ((1,), (2,), dict(initial_condition=dict(x0=(1,), v0=(2,)))),
+            (1, 2, {"initial_condition": {"x0": 1, "v0": 2}}),
+            ((1,), (2,), {"initial_condition": {"x0": (1,), "v0": (2,)}}),
         ],
     )
     def test_definition(
@@ -53,17 +53,19 @@ class TestFreeParticle:
         expected: Mapping[str, Mapping[str, int | Sequence[int]]],
     ) -> None:
         """Test the definition property."""
-        assert FreeParticle(initial_condition=dict(x0=x0, v0=v0)).definition == expected
+        assert (
+            FreeParticle(initial_condition={"x0": x0, "v0": v0}).definition == expected
+        )
 
     @pytest.mark.parametrize(
         ("x0", "v0", "t", "expected"),
         [
-            (1, 2, (3,), pd.DataFrame(dict(t=[3], x1=[7]))),
+            (1, 2, (3,), pd.DataFrame({"t": [3], "x1": [7]})),
             (
                 (1, 2),
                 (2, 3),
                 (3, 4),
-                pd.DataFrame(dict(t=(3, 4), x1=(7, 9), x2=(11, 14))),
+                pd.DataFrame({"t": (3, 4), "x1": (7, 9), "x2": (11, 14)}),
             ),
         ],
     )
@@ -76,6 +78,6 @@ class TestFreeParticle:
     ) -> None:
         """Test the __call__ interface."""
         assert_frame_equal(
-            FreeParticle(initial_condition=dict(x0=x0, v0=v0))(t).astype(float),
+            FreeParticle(initial_condition={"x0": x0, "v0": v0})(t).astype(float),
             expected.astype(float),
         )

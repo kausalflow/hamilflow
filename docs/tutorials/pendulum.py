@@ -64,7 +64,7 @@ px.line(
     x="t",
     y="x",
     title=rf"Simple Harmonic Oscillator ($\omega_0 = {omega0:.4f})$",
-    labels=dict(x=r"Angle $\theta(t)$", t=r"Time $t$"),
+    labels={"x": r"Angle $\theta(t)$", "t": r"Time $t$"},
 )
 
 # %% [markdown]

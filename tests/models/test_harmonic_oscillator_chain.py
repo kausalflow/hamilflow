@@ -58,7 +58,7 @@ class TestHarmonicOscillatorChain:
         odd_dof: bool,
     ) -> tuple[Iterable[Mapping[str, tuple[int, int]]], bool]:
         """Give legal wave-modes initial conditions, taking the odd_dof parameter into account."""
-        return wave_modes if odd_dof else chain(wave_modes, [dict(amp=(1, 1))]), odd_dof
+        return wave_modes if odd_dof else chain(wave_modes, [{"amp": (1, 1)}]), odd_dof
 
     @pytest.fixture(params=(0, 1, (0, 1)))
     def times(self, request: pytest.FixtureRequest) -> int | tuple[int]:

@@ -120,15 +120,17 @@ class Kepler2D:
         """
         mass, alpha = system["mass"], system["alpha"]
         positive_angular_mom = bool(geometries["positive_angular_mom"])
-        ecc, parameter = map(lambda k: float(geometries[k]), ["ecc", "parameter"])
+        ecc, parameter = (float(geometries[k]) for k in ["ecc", "parameter"])
         abs_angular_mom = math.sqrt(mass * parameter * alpha)
         # abs_minimal_ene = alpha / 2 / parameter: numerically unstable
         abs_minimal_ene = abs(cls.minimal_ene(abs_angular_mom, system))
         ene = (ecc**2 - 1) * abs_minimal_ene
-        fi = dict(
-            ene=ene,
-            angular_mom=abs_angular_mom if positive_angular_mom else -abs_angular_mom,
-        )
+        fi = {
+            "ene": ene,
+            "angular_mom": (
+                abs_angular_mom if positive_angular_mom else -abs_angular_mom
+            ),
+        }
         return cls(system, fi)
 
     @staticmethod
@@ -286,4 +288,4 @@ class Kepler2D:
         r = self.r_of_u(u)
         phi = self.phi_of_u_tau(u, tau)
 
-        return pd.DataFrame(dict(t=t, tau=tau, u=u, r=r, phi=phi))
+        return pd.DataFrame({"t": t, "tau": tau, "u": u, "r": r, "phi": phi})

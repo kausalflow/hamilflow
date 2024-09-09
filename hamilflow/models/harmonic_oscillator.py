@@ -360,10 +360,10 @@ class ComplexSimpleHarmonicOscillator:
         self,
     ) -> dict[str, dict[str, float | tuple[float, float]]]:
         """Model params and initial conditions defined as a dictionary."""
-        return dict(
-            system=self.system.model_dump(),
-            initial_condition=self.initial_condition.model_dump(),
-        )
+        return {
+            "system": self.system.model_dump(),
+            "initial_condition": self.initial_condition.model_dump(),
+        }
 
     def _z(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to complex simple harmonic oscillators.
