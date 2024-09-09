@@ -9,7 +9,7 @@ from numpy.testing import assert_array_almost_equal
 from hamilflow.maths.trigonometrics import acos_with_shift
 
 if TYPE_CHECKING:
-    from typing import Collection
+    from collections.abc import Collection
 
 
 class TestAcosWithShift:

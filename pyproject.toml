@@ -67,6 +67,7 @@ formats = "ipynb,py:percent"
 
 [tool.ruff]
 line-length = 88  # black default
+target-version = "py310"
 
 
 [tool.ruff.lint]

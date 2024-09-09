@@ -1,6 +1,7 @@
 """Typing."""
 
-from typing import Sequence, TypeVar
+from collections.abc import Sequence
+from typing import TypeVar
 
 from numpy.typing import ArrayLike
 

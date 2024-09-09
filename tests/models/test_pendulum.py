@@ -1,7 +1,7 @@
 """Tests for the pendulum main module."""
 
 import math
-from typing import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
@@ -9,6 +9,9 @@ from numpy import typing as npt
 from numpy.testing import assert_array_almost_equal
 
 from hamilflow.models.pendulum import Pendulum, PendulumIC, PendulumSystem
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 @pytest.fixture(params=[0.3, 0.6, 1.5])

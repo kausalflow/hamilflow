@@ -12,7 +12,7 @@ from hamilflow.models.kepler_problem.dynamics import (
 )
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
     from numpy import typing as npt
 

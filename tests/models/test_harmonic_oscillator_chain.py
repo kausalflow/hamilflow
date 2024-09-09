@@ -1,7 +1,7 @@
 """Tests for the harmonic oscillator chain main module."""
 
+from collections.abc import Iterable, Mapping, Sequence
 from itertools import chain, product
-from typing import Iterable, Mapping, Sequence
 
 import numpy as np
 import pytest
@@ -29,7 +29,7 @@ class TestHarmonicOscillatorChain:
     @pytest.fixture(params=((0, 0), (0, 1), (1, 0), (1, 1)))
     def free_mode(self, request: pytest.FixtureRequest) -> dict[str, int]:
         """Give initial conditions of the free mode of the system."""
-        return dict(zip(("x0", "v0"), request.param))
+        return dict(zip(("x0", "v0"), request.param, strict=False))
 
     @pytest.fixture(
         params=chain.from_iterable(

@@ -1,7 +1,8 @@
 """Main module for a free particle."""
 
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence, cast
+from typing import cast
 
 import numpy as np
 import pandas as pd

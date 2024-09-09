@@ -1,8 +1,9 @@
 """Main module for undamped and damped hamornic oscillators."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Literal, Mapping, Sequence
+from typing import Literal
 
 import numpy as np
 import pandas as pd

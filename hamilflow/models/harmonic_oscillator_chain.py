@@ -1,7 +1,8 @@
 """Main module for a harmonic oscillator chain."""
 
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence, cast
+from typing import cast
 
 import numpy as np
 import pandas as pd
@@ -141,7 +142,11 @@ class HarmonicOscillatorsChain:
                 "npt.NDArray[np.float64] | npt.NDArray[np.complex64]",
                 values,
             )
-            for name, xs in zip(("x", "y"), (original_xs, travelling_waves))
+            for name, xs in zip(
+                ("x", "y"),
+                (original_xs, travelling_waves),
+                strict=False,
+            )
             for i, values in enumerate(xs)  # type: ignore [arg-type]
         }
 

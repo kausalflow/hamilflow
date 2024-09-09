@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
-    from typing import Collection
+    from collections.abc import Collection
 
     from numpy import typing as npt
 

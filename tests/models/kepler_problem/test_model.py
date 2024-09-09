@@ -17,13 +17,13 @@ from hamilflow.models.kepler_problem import Kepler2DIoM, Kepler2DSystem
 from hamilflow.models.kepler_problem.model import Kepler2D
 
 if TYPE_CHECKING:
-    from typing import Collection, Mapping
+    from collections.abc import Collection, Mapping
 
 
 @pytest.fixture(params=[(1.0, 1.0), (1.0, 2.0), (2.0, 1.0), (2.0, 2.0)])
 def system_kwargs(request: pytest.FixtureRequest) -> dict[str, float]:
     """Keyword arguments initialising a KeplerSystem."""
-    return dict(zip(("alpha", "mass"), request.param))
+    return dict(zip(("alpha", "mass"), request.param, strict=False))
 
 
 @pytest.fixture(params=[1.0, 2.0])
@@ -143,7 +143,7 @@ class TestKepler2D:
             us, taus = (ecc, max(-1, -ecc)), (0, kep.period_in_tau / 2)
         else:
             us, taus = (ecc,), (0,)  # type: ignore [assignment]
-        for u, tau, phi in zip(us, taus, (0, math.pi)):
+        for u, tau, phi in zip(us, taus, (0, math.pi), strict=False):
             assert_equal(kep.phi_of_u_tau(u, tau), phi)
             assert_array_equal(kep.phi_of_u_tau([u], [tau]), [phi])
 

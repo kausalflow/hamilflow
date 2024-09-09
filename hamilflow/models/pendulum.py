@@ -1,8 +1,9 @@
 """Main module for a pendulum."""
 
 import math
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Any, Mapping, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -62,9 +63,9 @@ class Pendulum:
         system: float | Mapping[str, float],
         initial_condition: float | Mapping[str, float],
     ) -> None:
-        if isinstance(system, (float, int)):
+        if isinstance(system, float | int):
             system = {"omega0": system}
-        if isinstance(initial_condition, (float, int)):
+        if isinstance(initial_condition, float | int):
             initial_condition = {"theta0": initial_condition}
         self.system = PendulumSystem.model_validate(system)
         self.initial_condition = PendulumIC.model_validate(initial_condition)

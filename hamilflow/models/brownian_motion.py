@@ -1,7 +1,7 @@
 """Main module for Brownian motion."""
 
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence
 
 import numpy as np
 import pandas as pd
@@ -63,7 +63,7 @@ class BrownianMotionIC(BaseModel):
     @field_validator("x0")
     @classmethod
     def _check_x0_types(cls, v: float | Sequence[float]) -> float | Sequence[float]:
-        if not isinstance(v, (float, int, Sequence)):
+        if not isinstance(v, float | int | Sequence):
             # TODO I do not think this raise can be reached
             raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
 

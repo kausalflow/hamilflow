@@ -13,7 +13,7 @@ from .dynamics import tau_of_u_elliptic, tau_of_u_hyperbolic, tau_of_u_parabolic
 from .numerics import u_of_tau
 
 if TYPE_CHECKING:
-    from typing import Collection, Mapping
+    from collections.abc import Collection, Mapping
 
     from numpy import typing as npt
     from typing_extensions import Self

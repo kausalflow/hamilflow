@@ -22,7 +22,7 @@ from hamilflow.models.kepler_problem.dynamics import (
 )
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
     from numpy import typing as npt
 
@@ -110,7 +110,7 @@ class TestTauOfU:
             pytest.skip(f"Test applies to ecc > 0, ecc != 1, got {ecc}")
         factor = 1 - epsilon
         f, g_s = exact_and_approx_tau_s[0], exact_and_approx_tau_s[1:]
-        for u, g in zip((max(-1, -ecc) * factor, ecc * factor), g_s):
+        for u, g in zip((max(-1, -ecc) * factor, ecc * factor), g_s, strict=False):
             u_s = np.asarray(u)
             desired, actual = f(ecc, u_s), g(ecc, u_s)
             if not np.isinf(desired):
