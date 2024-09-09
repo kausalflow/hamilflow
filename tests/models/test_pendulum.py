@@ -38,7 +38,11 @@ class TestPendulumSystem:
     @pytest.mark.parametrize("omega0", [-1.0, 0])
     def test_omega0_range(self, omega0: float) -> None:
         """Test raises upon illegal omega0's."""
-        with pytest.raises(ValueError):
+        m = r"\d+ validation error for PendulumSystem\nomega0\n"
+        with pytest.raises(
+            ValueError,
+            match=m,
+        ):
             _ = PendulumSystem(omega0=omega0)
 
 
@@ -48,7 +52,11 @@ class TestPendulumIC:
     @pytest.mark.parametrize("theta0", [-2.0, 2.0])
     def test_theta0_range(self, theta0: float) -> None:
         """Test raises upon illegal theta0's."""
-        with pytest.raises(ValueError):
+        m = r"\d+ validation error for PendulumIC\ntheta0\n"
+        with pytest.raises(
+            ValueError,
+            match=m,
+        ):
             _ = PendulumIC(theta0=theta0)
 
     def test_k(self, theta0: float) -> None:

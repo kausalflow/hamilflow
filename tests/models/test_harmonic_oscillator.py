@@ -25,19 +25,27 @@ def omega() -> int:
 @pytest.mark.parametrize("zeta", [-0.5, -2.0])
 def test_system_damping_zeta(omega: int, zeta: float) -> None:
     """Test raises from HarmonicOscillatorSystem upon illegal zeta."""
-    with pytest.raises(ValueError):
+    m = r"\d+ validation error for HarmonicOscillatorSystem\nzeta\n "
+    with pytest.raises(
+        ValueError,
+        match=m,
+    ):
         HarmonicOscillatorSystem(omega=omega, zeta=zeta)
 
 
 @pytest.mark.parametrize("zeta", [-2.0, -0.5, 0.5, 1.0])
 def test_oscillator_damping_zeta(omega: int, zeta: float) -> None:
     """Test raises from SimpleHarmonicOscillator upon illegal zeta."""
-    with pytest.raises(ValueError):
+    if zeta < 0:
+        m = r"\d+ validation error for HarmonicOscillatorSystem\nzeta\n"
+    else:
+        m = r"System is not a Simple Harmonic Oscillator: omega="
+    with pytest.raises(ValueError, match=m):
         SimpleHarmonicOscillator(system={"omega": omega, "zeta": zeta})
 
 
 @pytest.mark.parametrize(
-    "omega,expected",
+    ("omega", "expected"),
     [
         (
             0.5,
@@ -66,7 +74,7 @@ def test_simple_harmonic_oscillator(omega, expected):
 
 
 @pytest.mark.parametrize(
-    "omega,zeta,expected",
+    ("omega", "zeta", "expected"),
     [
         (
             0.5,
@@ -96,7 +104,7 @@ def test_underdamped_harmonic_oscillator(omega, zeta, expected):
 
 
 @pytest.mark.parametrize(
-    "omega,zeta,expected",
+    ("omega", "zeta", "expected"),
     [
         (
             0.5,
@@ -126,7 +134,7 @@ def test_overdamped_harmonic_oscillator(omega, zeta, expected):
 
 
 @pytest.mark.parametrize(
-    "omega,zeta,expected",
+    ("omega", "zeta", "expected"),
     [
         (
             0.5,
@@ -177,7 +185,11 @@ class TestComplexHarmonicOscillator:
     @pytest.mark.parametrize("zeta", [0.5, 1.0, 1.5])
     def test_raise(self, zeta: float) -> None:
         """Test raises from ComplexSimpleHarmonicOscillator upon illegal zeta."""
-        with pytest.raises(ValueError):
+        m = r"System is not a Simple Harmonic Oscillator: omega="
+        with pytest.raises(
+            ValueError,
+            match=m,
+        ):
             ComplexSimpleHarmonicOscillator(
                 {"omega": 3, "zeta": zeta},
                 {"x0": (2, 3), "phi": (3, 4)},

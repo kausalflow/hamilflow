@@ -12,7 +12,7 @@ from hamilflow.models.brownian_motion import (
 
 
 @pytest.mark.parametrize(
-    "x0,expected",
+    ("x0", "expected"),
     [(0.1, np.array(0.1)), (1, np.array(1.0)), ([1, 2], np.array([1, 2]))],
 )
 def test_brownian_motion_ic(x0, expected):
@@ -23,7 +23,7 @@ def test_brownian_motion_ic(x0, expected):
 
 
 @pytest.mark.parametrize(
-    "sigma, delta_t, gaussian_scale",
+    ("sigma", "delta_t", "gaussian_scale"),
     [(1, 1, 1), (1, 2, 2), (2, 1, 4)],
 )
 def test_brownian_motion_system(sigma, delta_t, gaussian_scale):
@@ -34,7 +34,7 @@ def test_brownian_motion_system(sigma, delta_t, gaussian_scale):
 
 
 @pytest.mark.parametrize(
-    "sigma, delta_t",
+    ("sigma", "delta_t"),
     [
         (-1, 1),
         (1, -1),
@@ -42,12 +42,15 @@ def test_brownian_motion_system(sigma, delta_t, gaussian_scale):
 )
 def test_brownian_motion_system_failed_spec(sigma, delta_t):
     """Test raises upon illegal parameters for initialising a BrownianMotionSystem."""
-    with pytest.raises(ValueError):
+    m = r"\d+ validation error for BrownianMotionSystem\n{}\n".format(
+        "sigma" if sigma < 0 else "delta_t",
+    )
+    with pytest.raises(ValueError, match=m):
         BrownianMotionSystem(sigma=sigma, delta_t=delta_t)
 
 
 @pytest.mark.parametrize(
-    "sigma, x0, expected",
+    ("sigma", "x0", "expected"),
     [
         (
             1,
@@ -88,7 +91,7 @@ def test_brownian_motion_generate_from(sigma, x0, expected):
 
 
 @pytest.mark.parametrize(
-    "sigma, x0, t, expected",
+    ("sigma", "x0", "t", "expected"),
     [
         pytest.param(
             1,

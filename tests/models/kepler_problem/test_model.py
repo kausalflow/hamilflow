@@ -38,13 +38,13 @@ def positive_angular_mom(request: pytest.FixtureRequest) -> bool:
     return request.param
 
 
-@pytest.fixture()
+@pytest.fixture
 def kepler_system(system_kwargs: "Mapping[str, float]") -> Kepler2DSystem:
     """Give a Kepler system from the keyword argument."""
     return Kepler2DSystem(**system_kwargs)
 
 
-@pytest.fixture()
+@pytest.fixture
 def geometries(
     positive_angular_mom: bool,
     ecc: float,
@@ -104,7 +104,7 @@ class TestKepler2D:
         """Test the value of minimal energy, and that decresing this energy raises an exception."""
         kep = Kepler2D.from_geometry(system_kwargs, geometries)
         assert_equal(kep.ene, Kepler2D.minimal_ene(kep.angular_mom, system_kwargs))
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=r"Energy "):
             Kepler2D(
                 system_kwargs,
                 {"ene": kep.ene - 1, "angular_mom": kep.angular_mom},

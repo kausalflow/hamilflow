@@ -66,7 +66,7 @@ class TestTauOfU:
         integrals = np.array([ret[0] for ret in rets])
         assert_allclose(integrals, np.asarray(tau_of_u(ecc, u_s)))
 
-    @pytest.fixture()
+    @pytest.fixture
     def exact_and_approx_tau_s(
         self,
         ecc: float,
