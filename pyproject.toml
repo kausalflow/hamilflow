@@ -77,7 +77,7 @@ ignore = [
     "D107",  # undocumented-public-init: we document the class instead
     "E501",  # line-too-long: we use black instead
     "TID252",  # relative-imports
-    "PD", "FBT", "ARG", "FIX", "TD", "INP", "SIM", "RET"
+    "PD", "FBT", "ARG", "FIX", "TD", "SIM", "RET"
 ]
 
 
@@ -85,10 +85,11 @@ ignore = [
 "docs/**/*.py" = [
     "D100",  # undocumented-public-module: we keep tutorials clean and do not include doc strings
     "ERA001",  # commented-out-code: text cells
+    "INP001",  # implicit-namespace-package: tutorials are not packages
 ]
 "tests/**/*.py" = [
     "S101",  # assert: Fine in tests
-    "SLF001"  # private-member-access: find in tests
+    "SLF001",  # private-member-access: find in tests
 ]
 
 
