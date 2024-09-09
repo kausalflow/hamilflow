@@ -76,7 +76,7 @@ class TestTauOfU:
         The exact solutions have removable singularities at the boundary of domain,
         hence approximate solutions are needed.
         """
-        if ecc == 1 or ecc == 0:
+        if ecc in {0.0, 1.0}:
             c = "Parabolic" if ecc else "Circular"
             pytest.skip(f"{c} case is exact")
         elif 0 < ecc < 1:
@@ -107,7 +107,7 @@ class TestTauOfU:
         The exact solutions have removable singularities at the boundary of domain,
         hence approximate solutions are needed.
         """
-        if ecc == 0.0 or ecc == 1.0:
+        if ecc in {0.0, 1.0}:
             pytest.skip(f"Test applies to ecc > 0, ecc != 1, got {ecc}")
         factor = 1 - epsilon
         f, g_s = exact_and_approx_tau_s[0], exact_and_approx_tau_s[1:]

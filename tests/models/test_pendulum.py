@@ -110,4 +110,4 @@ class TestPendulum:
         p = Pendulum(omega0, theta0)
 
         df = p.generate_from(n_periods=1, n_samples_per_period=10)
-        assert len(df) == 10
+        assert len(df) == 10  # noqa: PLR2004

@@ -76,7 +76,7 @@ select = ["ALL"]
 ignore = [
     "D107",  # undocumented-public-init: we document the class instead
     "E501",  # line-too-long: we use black instead
-    "PLR", "PD", "SLF", "FBT", "ANN", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "SIM", "RUF", "RET"
+    "PD", "SLF", "FBT", "ANN", "TRY", "ARG", "FIX", "TD", "TID", "ERA", "INP", "SIM", "RUF", "RET"
 ]
 
 
