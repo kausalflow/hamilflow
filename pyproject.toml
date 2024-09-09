@@ -77,7 +77,7 @@ ignore = [
     "D107",  # undocumented-public-init: we document the class instead
     "E501",  # line-too-long: we use black instead
     "TID252",  # relative-imports
-    "PD", "FBT", "ARG", "FIX", "TD", "SIM", "RET"
+    "PD", "FBT", "ARG", "FIX", "TD", "RET"
 ]
 
 
