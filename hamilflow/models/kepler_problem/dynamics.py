@@ -54,7 +54,10 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64
     )
 
 
-def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+def tau_of_u_parabolic(
+    ecc: float,  # noqa: ARG001
+    u: "npt.ArrayLike",
+) -> "npt.NDArray[np.float64]":
     """Calculate the scaled time tau from u in the parabolic case.
 
     :param ecc: eccentricity, ecc == 1 (unchecked, unused)
@@ -134,7 +137,7 @@ def tau_of_u_prime2(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]"
 
 
 def esolve_u_from_tau_parabolic(
-    ecc: float,
+    ecc: float,  # noqa: ARG001
     tau: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
     """Calculate the convenient radial inverse u from tau in the parabolic case, using the exact solution.

@@ -79,7 +79,7 @@ ignore = [
     "TID252",  # relative-imports
     "PD901",  # pandas-df-variable-name
     "FBT",
-    "ARG", "FIX", "TD", "RET"
+    "FIX", "TD", "RET"
 ]
 
 

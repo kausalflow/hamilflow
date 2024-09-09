@@ -57,10 +57,16 @@ def nsolve_u_from_tau_newton(ecc: float, tau: "npt.ArrayLike") -> OptimizeResult
     def f(u: float, tau: "npt.NDArray[np.float64]") -> "npt.NDArray[np.float64]":
         return tau_of_u(ecc, u) - tau
 
-    def fprime(u: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    def fprime(
+        u: float,
+        tau: "npt.ArrayLike",  # noqa: ARG001
+    ) -> "npt.NDArray[np.float64]":
         return tau_of_u_prime(ecc, u)
 
-    def fprime2(u: float, tau: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+    def fprime2(
+        u: float,
+        tau: "npt.ArrayLike",  # noqa: ARG001
+    ) -> "npt.NDArray[np.float64]":
         return tau_of_u_prime2(ecc, u)
 
     return newton(f, u0, fprime, (tau,), fprime2=fprime2, full_output=True, disp=False)
