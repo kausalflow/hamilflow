@@ -1419,10 +1419,10 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="n">phi</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplexSimpleHarmonicOscillator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ComplexSimpleHarmonicOscillator</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">omega</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">),</span>
-            <span class="p">),</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">amp</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">)</span> <span class="k">if</span> <span class="n">phi</span> <span class="k">else</span> <span class="p">{}),</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;omega&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">),</span>
+            <span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;x0&quot;</span><span class="p">:</span> <span class="n">amp</span><span class="p">}</span> <span class="o">|</span> <span class="p">({</span><span class="s2">&quot;phi&quot;</span><span class="p">:</span> <span class="n">phi</span><span class="p">}</span> <span class="k">if</span> <span class="n">phi</span> <span class="k">else</span> <span class="p">{}),</span>
         <span class="p">)</span>
 
     <span class="nd">@cached_property</span>
@@ -1435,14 +1435,14 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]],</span>
     <span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Model params and initial conditions defined as a dictionary.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">omega</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">omega</span><span class="p">,</span>
-            <span class="n">n_dof</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span>
-            <span class="n">free_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">free_mode</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
-            <span class="n">independent_csho_modes</span><span class="o">=</span><span class="p">[</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;omega&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega</span><span class="p">,</span>
+            <span class="s2">&quot;n_dof&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">,</span>
+            <span class="s2">&quot;free_mode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_mode</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
+            <span class="s2">&quot;independent_csho_modes&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="n">rwm</span><span class="o">.</span><span class="n">definition</span> <span class="k">for</span> <span class="n">rwm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span>
             <span class="p">],</span>
-        <span class="p">)</span>
+        <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">_z</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
