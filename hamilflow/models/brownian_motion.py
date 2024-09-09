@@ -66,7 +66,7 @@ class BrownianMotionIC(BaseModel):
         if not isinstance(v, float | int | Sequence):
             # TODO I do not think this raise can be reached
             msg = f"Value of x0 should be int/float/list of int/float: {v=}"
-            raise ValueError(msg)
+            raise TypeError(msg)
 
         return v
 
