@@ -13,7 +13,7 @@ from numpy.testing import (
     assert_equal,
 )
 
-from hamilflow.models.kepler_problem import Kepler2DIoM, Kepler2DSystem
+from hamilflow.models.kepler_problem import Kepler2DFI, Kepler2DSystem
 from hamilflow.models.kepler_problem.model import Kepler2D
 
 if TYPE_CHECKING:
@@ -72,14 +72,14 @@ class Test2DSystem:
             Kepler2DSystem(alpha=alpha, mass=mass)
 
 
-class Test2DIoM:
-    """Tests for the class Kepler2DIoM."""
+class Test2DFI:
+    """Tests for the class Kepler2DFI."""
 
     def test_raise(self) -> None:
         """Test raises upon an invalid angular momentum."""
         match = "Only non-zero angular momenta are supported"
         with pytest.raises(NotImplementedError, match=match):
-            Kepler2DIoM(ene=1, angular_mom=0)
+            Kepler2DFI(ene=1, angular_mom=0)
 
 
 class TestKepler2D:
