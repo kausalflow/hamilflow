@@ -9,7 +9,7 @@ from numpy.testing import assert_array_almost_equal
 from hamilflow.models.kepler_problem.numerics import u_of_tau
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
     from numpy import typing as npt
 

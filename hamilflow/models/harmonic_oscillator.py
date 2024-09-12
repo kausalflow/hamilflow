@@ -1,8 +1,9 @@
 """Main module for undamped and damped hamornic oscillators."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Literal, Mapping, Sequence
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -51,7 +52,8 @@ class HarmonicOscillatorSystem(BaseModel):
     @classmethod
     def _check_zeta_non_negative(cls, v: float) -> float:
         if v < 0:
-            raise ValueError(f"Value of zeta should be positive: {v=}")
+            msg = f"Value of zeta should be positive: {v=}"
+            raise ValueError(msg)
 
         return v
 
@@ -157,8 +159,9 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
     ) -> None:
         super().__init__(system, initial_condition)
         if self.system.type != "simple":
+            msg = f"System is not a Simple Harmonic Oscillator: {self.system}"
             raise ValueError(
-                f"System is not a Simple Harmonic Oscillator: {self.system}",
+                msg,
             )
 
     def _x(self, t: "Sequence[float] | npt.ArrayLike") -> np.ndarray:
@@ -229,9 +232,12 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
     ) -> None:
         super().__init__(system, initial_condition)
         if self.system.type == "simple":
-            raise ValueError(
+            msg = (
                 f"System is not a Damped Harmonic Oscillator: {self.system}\n"
-                f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`.",
+                f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`."
+            )
+            raise ValueError(
+                msg,
             )
 
     def _x_under_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
@@ -316,8 +322,9 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         elif self.system.type == "critical_damped":
             x = self._x_critical_damped(t)
         else:
+            msg = f"System type is not damped harmonic oscillator: {self.system.type}"
             raise ValueError(
-                f"System type is not damped harmonic oscillator: {self.system.type}",
+                msg,
             )
 
         return x
@@ -351,8 +358,9 @@ class ComplexSimpleHarmonicOscillator:
             initial_condition,
         )
         if self.system.type != "simple":
+            msg = f"System is not a Simple Harmonic Oscillator: {self.system}"
             raise ValueError(
-                f"System is not a Simple Harmonic Oscillator: {self.system}",
+                msg,
             )
 
     @cached_property

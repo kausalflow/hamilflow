@@ -2,7 +2,7 @@
 
 import math
 from functools import cached_property, partial
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
@@ -13,7 +13,7 @@ from .dynamics import tau_of_u_elliptic, tau_of_u_hyperbolic, tau_of_u_parabolic
 from .numerics import u_of_tau
 
 if TYPE_CHECKING:
-    from typing import Collection, Mapping
+    from collections.abc import Collection, Mapping
 
     from numpy import typing as npt
     from typing_extensions import Self
@@ -29,7 +29,7 @@ class Kepler2DSystem(BaseModel):
     $$
 
     For reference, if an object is orbiting our Sun, the constant
-    $\alpha = G M_{\odot} ~ 1.327×10^{20} \mathrm{m}^3/\mathrm{s}^2$ in SI,
+    $\alpha = G M_{\odot} ~ 1.327 \times 10^{20} \mathrm{m}^3/\mathrm{s}^2$ in SI,
     which is also called 1 TCB, or 1 solar mass parameter. For computational stability, we recommend using
     TCB as the unit instead of the large SI values.
 
@@ -63,9 +63,10 @@ class Kepler2DFI(BaseModel):
     # TODO process angular momentum = 0
     @field_validator("angular_mom")
     @classmethod
-    def _angular_mom_non_zero(cls, v: Any) -> float:
+    def _angular_mom_non_zero(cls, v: float) -> float:
         if v == 0:
-            raise NotImplementedError("Only non-zero angular momenta are supported")
+            msg = "Only non-zero angular momenta are supported"
+            raise NotImplementedError(msg)
         return v
 
 
@@ -217,8 +218,11 @@ class Kepler2D:
         $$ T_\tau = \frac{2\pi}{(1-e^2)^\frac{3}{2}}\,. $$
         """
         if self.ecc >= 1:
+            msg = (
+                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}"
+            )
             raise TypeError(
-                f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}",
+                msg,
             )
         return 2 * math.pi / (1 - self.ecc**2) ** 1.5
 

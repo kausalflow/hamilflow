@@ -22,7 +22,7 @@ from hamilflow.models.kepler_problem.dynamics import (
 )
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
     from numpy import typing as npt
 
@@ -66,7 +66,7 @@ class TestTauOfU:
         integrals = np.array([ret[0] for ret in rets])
         assert_allclose(integrals, np.asarray(tau_of_u(ecc, u_s)))
 
-    @pytest.fixture()
+    @pytest.fixture
     def exact_and_approx_tau_s(
         self,
         ecc: float,
@@ -76,7 +76,7 @@ class TestTauOfU:
         The exact solutions have removable singularities at the boundary of domain,
         hence approximate solutions are needed.
         """
-        if ecc == 1 or ecc == 0:
+        if ecc in {0.0, 1.0}:
             c = "Parabolic" if ecc else "Circular"
             pytest.skip(f"{c} case is exact")
         elif 0 < ecc < 1:
@@ -92,7 +92,8 @@ class TestTauOfU:
                 tau_of_e_minus_u_hyperbolic,
             )
         else:
-            raise ValueError(f"Expect ecc >= 0, got {ecc}")
+            msg = f"Expect ecc >= 0, got {ecc}"
+            raise ValueError(msg)
 
     @pytest.mark.parametrize("epsilon", [3e-7])
     def test_expansion(
@@ -106,11 +107,11 @@ class TestTauOfU:
         The exact solutions have removable singularities at the boundary of domain,
         hence approximate solutions are needed.
         """
-        if ecc == 0.0 or ecc == 1.0:
+        if ecc in {0.0, 1.0}:
             pytest.skip(f"Test applies to ecc > 0, ecc != 1, got {ecc}")
         factor = 1 - epsilon
         f, g_s = exact_and_approx_tau_s[0], exact_and_approx_tau_s[1:]
-        for u, g in zip((max(-1, -ecc) * factor, ecc * factor), g_s):
+        for u, g in zip((max(-1, -ecc) * factor, ecc * factor), g_s, strict=False):
             u_s = np.asarray(u)
             desired, actual = f(ecc, u_s), g(ecc, u_s)
             if not np.isinf(desired):

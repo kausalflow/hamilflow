@@ -1,7 +1,7 @@
 """Tests for the harmonic oscillator chain main module."""
 
+from collections.abc import Iterable, Mapping, Sequence
 from itertools import chain, product
-from typing import Iterable, Mapping, Sequence
 
 import numpy as np
 import pytest
@@ -29,7 +29,7 @@ class TestHarmonicOscillatorChain:
     @pytest.fixture(params=((0, 0), (0, 1), (1, 0), (1, 1)))
     def free_mode(self, request: pytest.FixtureRequest) -> dict[str, int]:
         """Give initial conditions of the free mode of the system."""
-        return dict(zip(("x0", "v0"), request.param))
+        return dict(zip(("x0", "v0"), request.param, strict=False))
 
     @pytest.fixture(
         params=chain.from_iterable(
@@ -51,7 +51,7 @@ class TestHarmonicOscillatorChain:
         """Give whether the system has an odd number of DoF."""
         return request.param
 
-    @pytest.fixture()
+    @pytest.fixture
     def legal_wave_modes_and_odd_def(
         self,
         wave_modes: Iterable[Mapping[str, tuple[int, int]]],
@@ -78,7 +78,7 @@ class TestHarmonicOscillatorChain:
         wave_modes, odd_dof = legal_wave_modes_and_odd_def
         assert HarmonicOscillatorsChain(omega, [free_mode, *wave_modes], odd_dof)
 
-    @pytest.fixture()
+    @pytest.fixture
     def hoc_and_zs(
         self,
         omega: int,
@@ -119,5 +119,10 @@ class TestHarmonicOscillatorChain:
     ) -> None:
         """Test raises when odd_dof is false but the standing-wave mode is not real."""
         ics = [free_mode, *([wave_mode] if wave_mode else [])]
-        with pytest.raises(ValueError):
+        m = r"For even degrees of freedom, "
+        if wave_mode:
+            m += "k == N // 2 must have equal positive and negative amplitudes."
+        else:
+            m += "at least 1 travelling wave is needed"
+        with pytest.raises(ValueError, match=m):
             HarmonicOscillatorsChain(omega, ics, False)

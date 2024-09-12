@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
     from numpy import typing as npt
 
@@ -81,7 +81,10 @@ def tau_of_u_elliptic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64
     )
 
 
-def tau_of_u_parabolic(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]":
+def tau_of_u_parabolic(
+    ecc: float,  # noqa: ARG001
+    u: "npt.ArrayLike",
+) -> "npt.NDArray[np.float64]":
     r"""Calculate the scaled time tau from u in the parabolic case.
 
     For $-1 < u \le 1$,
@@ -194,7 +197,7 @@ def tau_of_u_prime2(ecc: float, u: "npt.ArrayLike") -> "npt.NDArray[np.float64]"
 
 
 def esolve_u_from_tau_parabolic(
-    ecc: float,
+    ecc: float,  # noqa: ARG001
     tau: "npt.ArrayLike",
 ) -> "npt.NDArray[np.float64]":
     r"""Calculate the convenient radial inverse u from tau in the parabolic case, using the exact solution.
@@ -223,7 +226,7 @@ def _approximate_at_termina(
     exact: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
     left: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
     right: "Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]",
-):
+) -> "npt.NDArray[np.float64]":
     u = np.asarray(u)
     u_s = u.reshape(-1)
     res = exact(ecc, u_s)

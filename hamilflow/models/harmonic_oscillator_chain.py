@@ -1,7 +1,8 @@
 """Main module for a harmonic oscillator chain."""
 
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence, cast
+from typing import cast
 
 import numpy as np
 import pandas as pd
@@ -97,11 +98,11 @@ class HarmonicOscillatorsChain:
         t: "Sequence[float] | npt.ArrayLike",
     ) -> "tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]":
         t = np.asarray(t).reshape(-1)
-        all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]
+        all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]  # noqa: SLF001
 
         if self.independent_csho_modes:
             independent_cshos = np.asarray(
-                [o._z(t) for o in self.independent_csho_modes],
+                [o._z(t) for o in self.independent_csho_modes],  # noqa: SLF001
             )
             all_travelling_waves.extend(
                 (
@@ -141,7 +142,11 @@ class HarmonicOscillatorsChain:
                 "npt.NDArray[np.float64] | npt.NDArray[np.complex64]",
                 values,
             )
-            for name, xs in zip(("x", "y"), (original_xs, travelling_waves))
+            for name, xs in zip(
+                ("x", "y"),
+                (original_xs, travelling_waves),
+                strict=False,
+            )
             for i, values in enumerate(xs)  # type: ignore [arg-type]
         }
 

@@ -1,7 +1,7 @@
 """Tests for the pendulum main module."""
 
 import math
-from typing import Sequence
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
@@ -9,6 +9,9 @@ from numpy import typing as npt
 from numpy.testing import assert_array_almost_equal
 
 from hamilflow.models.pendulum import Pendulum, PendulumIC, PendulumSystem
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 @pytest.fixture(params=[0.3, 0.6, 1.5])
@@ -35,7 +38,11 @@ class TestPendulumSystem:
     @pytest.mark.parametrize("omega0", [-1.0, 0])
     def test_omega0_range(self, omega0: float) -> None:
         """Test raises upon illegal omega0's."""
-        with pytest.raises(ValueError):
+        m = r"\d+ validation error for PendulumSystem\nomega0\n"
+        with pytest.raises(
+            ValueError,
+            match=m,
+        ):
             _ = PendulumSystem(omega0=omega0)
 
 
@@ -45,7 +52,11 @@ class TestPendulumIC:
     @pytest.mark.parametrize("theta0", [-2.0, 2.0])
     def test_theta0_range(self, theta0: float) -> None:
         """Test raises upon illegal theta0's."""
-        with pytest.raises(ValueError):
+        m = r"\d+ validation error for PendulumIC\ntheta0\n"
+        with pytest.raises(
+            ValueError,
+            match=m,
+        ):
             _ = PendulumIC(theta0=theta0)
 
     def test_k(self, theta0: float) -> None:
@@ -99,4 +110,4 @@ class TestPendulum:
         p = Pendulum(omega0, theta0)
 
         df = p.generate_from(n_periods=1, n_samples_per_period=10)
-        assert len(df) == 10
+        assert len(df) == 10  # noqa: PLR2004

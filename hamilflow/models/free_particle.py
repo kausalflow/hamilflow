@@ -1,7 +1,8 @@
 """Main module for a free particle."""
 
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence, cast
+from typing import cast
 
 import numpy as np
 import pandas as pd
@@ -27,9 +28,11 @@ class FreeParticleIC(BaseModel):
     @model_validator(mode="after")
     def _check_dimensions_match(self) -> Self:
         if (x0_seq := isinstance(self.x0, Sequence)) != isinstance(self.v0, Sequence):
-            raise TypeError("x0 and v0 need both to be scalars or Sequences")
+            msg = "x0 and v0 need both to be scalars or Sequences"
+            raise TypeError(msg)
         elif x0_seq and len(cast(Sequence, self.x0)) != len(cast(Sequence, self.v0)):
-            raise ValueError("Sequences x0 and v0 need to have the same length")
+            msg = "Sequences x0 and v0 need to have the same length"
+            raise ValueError(msg)
 
         return self
 

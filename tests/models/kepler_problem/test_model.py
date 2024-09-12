@@ -17,13 +17,13 @@ from hamilflow.models.kepler_problem import Kepler2DFI, Kepler2DSystem
 from hamilflow.models.kepler_problem.model import Kepler2D
 
 if TYPE_CHECKING:
-    from typing import Collection, Mapping
+    from collections.abc import Collection, Mapping
 
 
 @pytest.fixture(params=[(1.0, 1.0), (1.0, 2.0), (2.0, 1.0), (2.0, 2.0)])
 def system_kwargs(request: pytest.FixtureRequest) -> dict[str, float]:
     """Keyword arguments initialising a KeplerSystem."""
-    return dict(zip(("alpha", "mass"), request.param))
+    return dict(zip(("alpha", "mass"), request.param, strict=False))
 
 
 @pytest.fixture(params=[1.0, 2.0])
@@ -38,13 +38,13 @@ def positive_angular_mom(request: pytest.FixtureRequest) -> bool:
     return request.param
 
 
-@pytest.fixture()
+@pytest.fixture
 def kepler_system(system_kwargs: "Mapping[str, float]") -> Kepler2DSystem:
     """Give a Kepler system from the keyword argument."""
     return Kepler2DSystem(**system_kwargs)
 
 
-@pytest.fixture()
+@pytest.fixture
 def geometries(
     positive_angular_mom: bool,
     ecc: float,
@@ -104,7 +104,7 @@ class TestKepler2D:
         """Test the value of minimal energy, and that decresing this energy raises an exception."""
         kep = Kepler2D.from_geometry(system_kwargs, geometries)
         assert_equal(kep.ene, Kepler2D.minimal_ene(kep.angular_mom, system_kwargs))
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=r"Energy "):
             Kepler2D(
                 system_kwargs,
                 {"ene": kep.ene - 1, "angular_mom": kep.angular_mom},
@@ -128,7 +128,8 @@ class TestKepler2D:
             with pytest.raises(TypeError, match=match):
                 _ = kep.period
         else:
-            raise ValueError(f"Expect ecc >= 0, got {ecc}")
+            msg = f"Expect ecc >= 0, got {ecc}"
+            raise ValueError(msg)
 
     def test_phi_of_u_tau_naive(
         self,
@@ -143,7 +144,7 @@ class TestKepler2D:
             us, taus = (ecc, max(-1, -ecc)), (0, kep.period_in_tau / 2)
         else:
             us, taus = (ecc,), (0,)  # type: ignore [assignment]
-        for u, tau, phi in zip(us, taus, (0, math.pi)):
+        for u, tau, phi in zip(us, taus, (0, math.pi), strict=False):
             assert_equal(kep.phi_of_u_tau(u, tau), phi)
             assert_array_equal(kep.phi_of_u_tau([u], [tau]), [phi])
 
