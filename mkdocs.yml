@@ -92,6 +92,11 @@ nav:
       - "Harmonic Oscillator": references/models/harmonic_oscillator.md
       - "Brownian Motion": references/models/brownian_motion.md
       - "Pendulum": references/models/pendulum.md
-      - "Kepler Problem": references/models/kepler_problem.md
+      - Kepler Problem:
+        - Model: references/models/kepler_problem/model.md
+        - Dynamics: references/models/kepler_problem/dynamics.md
+        - Numerics: references/models/kepler_problem/numerics.md
       - "Harmonic Oscillator Chain": references/models/harmonic_oscillator_chain.md
+    - Mathematics:
+      - Trigonometrics: references/maths/trigonometrics.md
   - "Changelog": changelog.md

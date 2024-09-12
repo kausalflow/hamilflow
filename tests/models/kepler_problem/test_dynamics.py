@@ -12,12 +12,12 @@ from numpy.testing import (
 from scipy.integrate import quad
 
 from hamilflow.models.kepler_problem.dynamics import (
-    _tau_of_1_plus_u_hyperbolic,
-    _tau_of_e_minus_u_elliptic,
-    _tau_of_e_minus_u_hyperbolic,
-    _tau_of_e_plus_u_elliptic,
-    _tau_of_u_exact_elliptic,
-    _tau_of_u_exact_hyperbolic,
+    tau_of_1_plus_u_hyperbolic,
+    tau_of_e_minus_u_elliptic,
+    tau_of_e_minus_u_hyperbolic,
+    tau_of_e_plus_u_elliptic,
+    tau_of_u_exact_elliptic,
+    tau_of_u_exact_hyperbolic,
     tau_of_u_prime,
 )
 
@@ -70,7 +70,7 @@ class TestTauOfU:
     def exact_and_approx_tau_s(
         self,
         ecc: float,
-    ) -> "tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]":
+    ) -> """tuple[Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]], Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]]""":
         """Give approximate and exact solutions for the elliptic and hyperbolic cases.
 
         The exact solutions have removable singularities at the boundary of domain,
@@ -81,20 +81,20 @@ class TestTauOfU:
             pytest.skip(f"{c} case is exact")
         elif 0 < ecc < 1:
             return (
-                _tau_of_u_exact_elliptic,
-                _tau_of_e_plus_u_elliptic,
-                _tau_of_e_minus_u_elliptic,
+                tau_of_u_exact_elliptic,
+                tau_of_e_plus_u_elliptic,
+                tau_of_e_minus_u_elliptic,
             )
         elif ecc > 1:
             return (
-                _tau_of_u_exact_hyperbolic,
-                _tau_of_1_plus_u_hyperbolic,
-                _tau_of_e_minus_u_hyperbolic,
+                tau_of_u_exact_hyperbolic,
+                tau_of_1_plus_u_hyperbolic,
+                tau_of_e_minus_u_hyperbolic,
             )
         else:
             raise ValueError(f"Expect ecc >= 0, got {ecc}")
 
-    @pytest.mark.parametrize("epsilon", [1e-7])
+    @pytest.mark.parametrize("epsilon", [3e-7])
     def test_expansion(
         self,
         ecc: float,

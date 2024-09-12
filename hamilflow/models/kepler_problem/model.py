@@ -28,7 +28,8 @@ class Kepler2DSystem(BaseModel):
     V(r) = - \frac{\alpha}{r}.
     $$
 
-    For reference, if an object is orbiting our Sun, the constant $\alpha = G M_{\odot} ~ 1.327×10^20 m^3/s^2$ in SI,
+    For reference, if an object is orbiting our Sun, the constant
+    $\alpha = G M_{\odot} ~ 1.327×10^{20} \mathrm{m}^3/\mathrm{s}^2$ in SI,
     which is also called 1 TCB, or 1 solar mass parameter. For computational stability, we recommend using
     TCB as the unit instead of the large SI values.
 
@@ -45,13 +46,13 @@ class Kepler2DSystem(BaseModel):
     mass: float = Field(gt=0, default=1.0)
 
 
-class Kepler2DIoM(BaseModel):
-    """The integrals of motion for a Kepler problem.
+class Kepler2DFI(BaseModel):
+    r"""The first integrals for a Kepler problem.
 
-    :cvar ene: the energy
-    :cvar angular_mom: the angular momentum
-    :cvar t0: the time at which the radial position is closest to 0, default to 0
-    :cvar phi0: the angle at which the radial position is closest to 0, default to 0
+    :cvar ene: the energy $E$
+    :cvar angular_mom: the angular momentum $l$
+    :cvar t0: the time $t_0$ at which the radial position is closest to 0, defaults to 0
+    :cvar phi0: the angle $\phi_0$ at which the radial position is closest to 0, defaults to 0
     """
 
     ene: float = Field()
@@ -72,24 +73,24 @@ class Kepler2D:
     """Kepler problem in two dimensional space.
 
     :param system: the Kepler problem system specification
-    :param integrals_of_motion: the integrals of motion for the system.
+    :param first_integrals: the first integrals for the system.
     """
 
     def __init__(
         self,
         system: "Mapping[str, float]",
-        integrals_of_motion: "Mapping[str, float]",
+        first_integrals: "Mapping[str, float]",
     ) -> None:
         self.system = Kepler2DSystem.model_validate(system)
 
-        integrals_of_motion = dict(integrals_of_motion)
-        ene = integrals_of_motion["ene"]
-        minimal_ene = Kepler2D.minimal_ene(integrals_of_motion["angular_mom"], system)
+        first_integrals = dict(first_integrals)
+        ene = first_integrals["ene"]
+        minimal_ene = Kepler2D.minimal_ene(first_integrals["angular_mom"], system)
         if ene < minimal_ene:
             msg = f"Energy {ene} less than minimally allowed {minimal_ene}"
             raise ValueError(msg)
 
-        self.integrals_of_motion = Kepler2DIoM.model_validate(integrals_of_motion)
+        self.first_integrals = Kepler2DFI.model_validate(first_integrals)
 
         if 0 <= self.ecc < 1:
             self.tau_of_u = partial(tau_of_u_elliptic, self.ecc)
@@ -106,7 +107,10 @@ class Kepler2D:
         system: "Mapping[str, float]",
         geometries: "Mapping[str, bool | float]",
     ) -> "Self":
-        """Alternative initialiser from system and geometry specifications.
+        r"""Alternative initialiser from system and geometry specifications.
+
+        Given the eccentricity $e$ and the conic section parameter $p$,
+        $$l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.$$
 
         :param system: the Kepler problem system specification
         :param geometries: geometric specifications
@@ -119,22 +123,24 @@ class Kepler2D:
         ecc, parameter = (float(geometries[k]) for k in ["ecc", "parameter"])
         abs_angular_mom = math.sqrt(mass * parameter * alpha)
         # abs_minimal_ene = alpha / 2 / parameter: numerically unstable
-        abs_minimal_ene = mass * alpha**2 / 2 / abs_angular_mom**2
+        abs_minimal_ene = abs(cls.minimal_ene(abs_angular_mom, system))
         ene = (ecc**2 - 1) * abs_minimal_ene
-        iom = {
+        fi = {
             "ene": ene,
             "angular_mom": (
                 abs_angular_mom if positive_angular_mom else -abs_angular_mom
             ),
         }
-        return cls(system, iom)
+        return cls(system, fi)
 
     @staticmethod
     def minimal_ene(
         angular_mom: float,
         system: "Mapping[str, float]",
     ) -> float:
-        """Minimal possible energy from the system specification and an angular momentum.
+        r"""Minimal possible energy from the system specification and an angular momentum.
+
+        $$ E_\text{min} = -\frac{m\alpha^2}{2l^2}\,. $$
 
         :param angular_mom: angular momentum
         :param system: system specification
@@ -145,37 +151,41 @@ class Kepler2D:
 
     @property
     def mass(self) -> float:
-        """Mass parameter from the system specification."""
+        """Mass $m$ from the system specification."""
         return self.system.mass
 
     @property
     def alpha(self) -> float:
-        """Alpha parameter from the system specification."""
+        r"""Alpha $\alpha$ from the system specification."""
         return self.system.alpha
 
     @property
     def ene(self) -> float:
-        """Energy of the Kepler problem."""
-        return self.integrals_of_motion.ene
+        """Energy $E$ of the Kepler problem."""
+        return self.first_integrals.ene
 
     @property
     def angular_mom(self) -> float:
-        """Angular momentum of the Kepler problem."""
-        return self.integrals_of_motion.angular_mom
+        """Angular momentum $l$ of the Kepler problem."""
+        return self.first_integrals.angular_mom
 
     @property
     def t0(self) -> float:
-        """t0 of the Kepler problem."""
-        return self.integrals_of_motion.t0
+        r"""t0 $t_0$ of the Kepler problem."""
+        return self.first_integrals.t0
 
     @property
     def phi0(self) -> float:
-        """phi0 of the Kepler problem."""
-        return self.integrals_of_motion.phi0
+        r"""phi0 $\phi_0$ of the Kepler problem."""
+        return self.first_integrals.phi0
 
     @cached_property
     def period(self) -> float:
-        """Perior of the Kepler problem."""
+        r"""Period $T$ of the Kepler problem.
+
+        For $E < 0$,
+        $$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$
+        """
         if self.ene >= 0:
             msg = f"Only systems with energy < 0 have a period, got {self.ene}"
             raise TypeError(msg)
@@ -184,19 +194,28 @@ class Kepler2D:
     # FIXME is it called parameter in English?
     @cached_property
     def parameter(self) -> float:
-        """Conic section parameter of the Kepler problem."""
+        r"""Conic section parameter of the Kepler problem.
+
+        $$ p = \frac{l^2}{\alpha m}\,. $$
+        """
         return self.angular_mom**2 / self.mass / self.alpha
 
     @cached_property
     def ecc(self) -> float:
-        """Sonic section eccentricity of the Kepler problem."""
+        r"""Conic section eccentricity of the Kepler problem.
+
+        $$ e = \sqrt{1 + \frac{2El}{\alpha^2 m}}\,. $$
+        """
         return math.sqrt(
             1 + 2 * self.ene * self.angular_mom**2 / self.mass / self.alpha**2,
         )
 
     @cached_property
     def period_in_tau(self) -> float:
-        """Period in the scaled time tau."""
+        r"""Period in the scaled time tau.
+
+        $$ T_\tau = \frac{2\pi}{(1-e^2)^\frac{3}{2}}\,. $$
+        """
         if self.ecc >= 1:
             raise TypeError(
                 f"Only systems with 0 <= eccentricity < 1 have a period, got {self.ecc}",
@@ -205,11 +224,17 @@ class Kepler2D:
 
     @property
     def t_to_tau_factor(self) -> float:
-        """Scale factor from t to tau."""
+        r"""Scale factor from t to tau.
+
+        $$ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. $$
+        """
         return abs(self.mass * self.alpha**2 / self.angular_mom**3)
 
     def tau(self, t: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
-        """Give the scaled time tau from t."""
+        r"""Give the scaled time tau from t.
+
+        $$ \tau = \frac{\alpha^2 m}{|l|^3} (t-t_0)\,. $$
+        """
         return (np.asarray(t) - self.t0) * self.t_to_tau_factor
 
     def u_of_tau(self, tau: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
@@ -227,7 +252,10 @@ class Kepler2D:
             return u_of_tau(self.ecc, tau)  # type: ignore [arg-type]
 
     def r_of_u(self, u: "Collection[float] | npt.ArrayLike") -> "npt.ArrayLike":
-        """Give the radial r from u."""
+        r"""Give the radial r from u.
+
+        $$ r = \frac{p}{u+1}\,. $$
+        """
         return self.parameter / (np.asarray(u) + 1)
 
     def phi_of_u_tau(
@@ -235,7 +263,13 @@ class Kepler2D:
         u: "Collection[float] | npt.ArrayLike",
         tau: "Collection[float] | npt.ArrayLike",
     ) -> "npt.ArrayLike":
-        """Give the angular phi from u and tau."""
+        r"""Give the angular phi from u and tau.
+
+        For $e = 0$,
+        $$ \phi - \phi_0 = 2\pi \frac{\tau}{T_\tau}\,; $$
+        For $e > 0$,
+        $$ \cos(\phi - \phi_0) = \frac{u}{e}\,. $$
+        """
         u, tau = np.asarray(u), np.asarray(tau)
         if self.ecc == 0:
             phi = 2 * math.pi * tau / self.period_in_tau
