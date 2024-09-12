@@ -1201,7 +1201,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <tr class="doc-section-item">
           <td><code>initial_conditions</code></td>
           <td>
-                <code><span title="typing.Sequence">Sequence</span>[<span title="typing.Mapping">Mapping</span>[str, float | tuple[float, float]]]</code>
+                <code><span title="collections.abc.Sequence">Sequence</span>[<span title="collections.abc.Mapping">Mapping</span>[str, float | tuple[float, float]]]</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -1231,8 +1231,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator_chain.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 15</span>
-<span class="normal"> 16</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
 <span class="normal"> 19</span>
@@ -1364,7 +1363,12 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorsChain</span><span class="p">:</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HarmonicOscillatorsChain</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a coupled harmonic oscillator chain with periodic boundary condition.</span>
 
 <span class="sd">    A one-dimensional circle of $N$ interacting harmonic oscillators can be described by the Lagrangian action</span>
@@ -1449,11 +1453,11 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]&quot;</span><span class="p">:</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">all_travelling_waves</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">free_mode</span><span class="o">.</span><span class="n">_x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">all_travelling_waves</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">free_mode</span><span class="o">.</span><span class="n">_x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># noqa: SLF001</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span><span class="p">:</span>
             <span class="n">independent_cshos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">_z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">_z</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_csho_modes</span><span class="p">],</span>  <span class="c1"># noqa: SLF001</span>
             <span class="p">)</span>
             <span class="n">all_travelling_waves</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                 <span class="p">(</span>
@@ -1493,7 +1497,11 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
                 <span class="s2">&quot;npt.NDArray[np.float64] | npt.NDArray[np.complex64]&quot;</span><span class="p">,</span>
                 <span class="n">values</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">xs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">xs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">),</span>
+                <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]</span>
         <span class="p">}</span>
 
@@ -1567,7 +1575,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
         <tr class="doc-section-item">
           <td><code>t</code></td>
           <td>
-                <code><span title="typing.Sequence">Sequence</span>[float] | <span title="numpy.typing.ArrayLike">ArrayLike</span></code>
+                <code><span title="collections.abc.Sequence">Sequence</span>[float] | <span title="numpy.typing.ArrayLike">ArrayLike</span></code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -1583,8 +1591,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator_chain.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
-<span class="normal">131</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
@@ -1601,7 +1608,12 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate time series data for the harmonic oscillator chain.</span>
 
 <span class="sd">    Returns float(s) representing the displacement at the given time(s).</span>
@@ -1615,7 +1627,11 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
             <span class="s2">&quot;npt.NDArray[np.float64] | npt.NDArray[np.complex64]&quot;</span><span class="p">,</span>
             <span class="n">values</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">xs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">xs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">original_xs</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">),</span>
+            <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>  <span class="c1"># type: ignore [arg-type]</span>
     <span class="p">}</span>
 

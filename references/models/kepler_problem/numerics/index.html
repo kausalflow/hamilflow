@@ -1225,14 +1225,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/numerics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
@@ -1245,7 +1238,15 @@
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span>
-<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">nsolve_u_from_tau_bisect</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">OptimizeResult</span><span class="p">]:</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">nsolve_u_from_tau_bisect</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">OptimizeResult</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the convenient radial inverse u from tau in the elliptic or parabolic case, using the bisect method.</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt; 0, ecc != 1</span>
@@ -1258,7 +1259,8 @@
     <span class="k">elif</span> <span class="n">ecc</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">tau_of_u</span> <span class="o">=</span> <span class="n">tau_of_u_hyperbolic</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expect ecc &gt; 0, ecc != 1, got </span><span class="si">{</span><span class="n">ecc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expect ecc &gt; 0, ecc != 1, got </span><span class="si">{</span><span class="n">ecc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -1408,7 +1410,14 @@
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">nsolve_u_from_tau_newton</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizeResult</span><span class="p">:</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">nsolve_u_from_tau_newton</span><span class="p">(</span><span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizeResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the convenient radial inverse u from tau in the elliptic or parabolic case, using the Newton method.</span>
 
 <span class="sd">    :param ecc: eccentricity, ecc &gt; 0, ecc != 1</span>
@@ -1424,15 +1433,22 @@
         <span class="n">tau_of_u</span> <span class="o">=</span> <span class="n">tau_of_u_hyperbolic</span>
         <span class="n">u0</span> <span class="o">=</span> <span class="n">_u0_hyperbolic</span><span class="p">(</span><span class="n">ecc</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expect ecc &gt; 0, ecc != 1, got </span><span class="si">{</span><span class="n">ecc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expect ecc &gt; 0, ecc != 1, got </span><span class="si">{</span><span class="n">ecc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tau_of_u</span><span class="p">(</span><span class="n">ecc</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="o">-</span> <span class="n">tau</span>
 
-    <span class="k">def</span> <span class="nf">fprime</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">fprime</span><span class="p">(</span>
+        <span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tau_of_u_prime</span><span class="p">(</span><span class="n">ecc</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fprime2</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">fprime2</span><span class="p">(</span>
+        <span class="n">u</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;npt.NDArray[np.float64]&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tau_of_u_prime2</span><span class="p">(</span><span class="n">ecc</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">u0</span><span class="p">,</span> <span class="n">fprime</span><span class="p">,</span> <span class="p">(</span><span class="n">tau</span><span class="p">,),</span> <span class="n">fprime2</span><span class="o">=</span><span class="n">fprime2</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">disp</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1575,15 +1591,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/kepler_problem/numerics.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
@@ -1603,7 +1611,17 @@
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
-<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">u_of_tau</span><span class="p">(</span>
     <span class="n">ecc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">tau</span><span class="p">:</span> <span class="s2">&quot;npt.ArrayLike&quot;</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;bisect&quot;</span><span class="p">,</span> <span class="s2">&quot;newton&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;bisect&quot;</span><span class="p">,</span>
@@ -1629,9 +1647,11 @@
             <span class="k">case</span> <span class="s2">&quot;newton&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">nsolve_u_from_tau_newton</span><span class="p">(</span><span class="n">ecc</span><span class="p">,</span> <span class="n">tau</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expect &#39;bisect&#39; or &#39;newton&#39;, got </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expect &#39;bisect&#39; or &#39;newton&#39;, got </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expect ecc &gt;= 0, got </span><span class="si">{</span><span class="n">ecc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expect ecc &gt;= 0, got </span><span class="si">{</span><span class="n">ecc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
