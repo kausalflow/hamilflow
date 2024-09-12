@@ -29,7 +29,7 @@ class Kepler2DSystem(BaseModel):
     $$
 
     For reference, if an object is orbiting our Sun, the constant
-    $\alpha = G M_{\odot} ~ 1.327×10^{20} \mathrm{m}^3/\mathrm{s}^2$ in SI,
+    $\alpha = G M_{\odot} ~ 1.327 \times 10^{20} \mathrm{m}^3/\mathrm{s}^2$ in SI,
     which is also called 1 TCB, or 1 solar mass parameter. For computational stability, we recommend using
     TCB as the unit instead of the large SI values.
 
