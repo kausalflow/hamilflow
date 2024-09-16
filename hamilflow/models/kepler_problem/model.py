@@ -110,14 +110,14 @@ class Kepler2D:
     ) -> "Self":
         r"""Alternative initialiser from system and geometry specifications.
 
-        Given the eccentricity $e$ and the conic section parameter $p$,
+        Given the eccentricity $e$ and the conic section semi-latus rectum $p$,
         $$l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.$$
 
         :param system: the Kepler problem system specification
         :param geometries: geometric specifications
             `positive_angular_mom`: whether the angular momentum is positive
             `ecc`: eccentricity of the conic section
-            `parameter`: parameter of the conic section
+            `parameter`: semi-latus rectum of the conic section
         """
         mass, alpha = system["mass"], system["alpha"]
         positive_angular_mom = bool(geometries["positive_angular_mom"])
@@ -195,7 +195,7 @@ class Kepler2D:
     # FIXME is it called parameter in English?
     @cached_property
     def parameter(self) -> float:
-        r"""Conic section parameter of the Kepler problem.
+        r"""Conic section semi-latus rectum of the Kepler problem.
 
         $$ p = \frac{l^2}{\alpha m}\,. $$
         """

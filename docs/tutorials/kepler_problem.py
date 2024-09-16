@@ -22,13 +22,56 @@
 # ## Usage
 
 # %%
+import numpy as np
+import plotly.express as px
 
+from hamilflow.models.kepler_problem import Kepler2D
+
+# %% [markdown]
+# To make it easy to use the Kepler system, we implemented an interface `Kepler2D.from_geometry` to specify the configuration using the geometry of the orbit. The geometry of the orbit requires three parameters:
+#
+# - `positive_angular_mom`: whether the angular momentum is positive
+# - `ecc`: the eccentricity of the orbit
+# - `parameter`: the semi-latus rectum of the orbits, for circular orbits, this is the radius
 
 # %%
-# system = {"alpha": 1.0, "mass": 1.0}
-# ic = {"r_0": 1.0, "phi_0": 0.0, "drdt_0": 0.0, "dphidt_0": 0.1}
+system = {
+    "alpha": 1.0,
+    "mass": 1.0,
+}
 
-# t = np.linspace(0, 1, 11)
+k2d = Kepler2D.from_geometry(
+    system=system,
+    geometries={
+        "positive_angular_mom": True,
+        "ecc": 0,
+        "parameter": 1.0,
+    },
+)
+
+# %%
+t = np.linspace(0, 10, 101)
+
+# %%
+df_p_1 = k2d(t=t)
+df_p_1  # noqa: B018
+
+# %%
+fig = px.line_polar(
+    df_p_1.assign(phi_degree=df_p_1.phi / (2 * np.pi) * 360),
+    r="r",
+    theta="phi_degree",
+)
+
+fig.update_layout(
+    polar={
+        "angularaxis_thetaunit": "radians",
+    },
+)
+
+fig.show()
+
+# %%
 
 # %% [markdown]
 # ## Formalism
