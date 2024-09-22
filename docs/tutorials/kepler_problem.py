@@ -90,31 +90,43 @@ fig = visualize_orbit(df_p_1)
 fig.show()
 
 # %% [markdown]
-# We also plot out the ellipse and hyperbolic orbits.
+# We also plot out the ellipse, hyperbolic, parabolic orbits.
 
 # %%
-k2d_0p1 = Kepler2D.from_geometry(
-    system=system,
-    geometries={
-        "positive_angular_mom": True,
-        "ecc": 0.5,
-        "parameter": 1.0,
-    },
-)
-
-visualize_orbit(k2d_0p1(t=t)).show()
+visualize_orbit(
+    Kepler2D.from_geometry(
+        system=system,
+        geometries={
+            "positive_angular_mom": True,
+            "ecc": 0.5,
+            "parameter": 1.0,
+        },
+    )(t=t),
+).show()
 
 # %%
-k2d_0p1 = Kepler2D.from_geometry(
-    system=system,
-    geometries={
-        "positive_angular_mom": True,
-        "ecc": 1,
-        "parameter": 1.0,
-    },
-)
+visualize_orbit(
+    Kepler2D.from_geometry(
+        system=system,
+        geometries={
+            "positive_angular_mom": True,
+            "ecc": 1,
+            "parameter": 1.0,
+        },
+    )(t=t),
+).show()
 
-visualize_orbit(k2d_0p1(t=t)).show()
+# %%
+visualize_orbit(
+    Kepler2D.from_geometry(
+        system=system,
+        geometries={
+            "positive_angular_mom": True,
+            "ecc": 2,
+            "parameter": 1.0,
+        },
+    )(t=np.linspace(-5, 5, 101)),
+).show()
 
 # %% [markdown]
 # ## Formalism
