@@ -15,7 +15,7 @@
 # %% [markdown]
 # # Kepler Orbits
 #
-# In this tutorial, we generate data for kepler problems.
+# In this tutorial we will generate data for the Kepler problem.
 #
 
 # %% [markdown]
