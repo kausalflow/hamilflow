@@ -71,14 +71,31 @@ def visualize_orbit(dataframe: pd.DataFrame) -> go.Figure:
 
     :param dataframe: dataframe containing the trajectory data
     """
-    fig = px.line_polar(
-        dataframe.assign(
-            phi_degree=dataframe.phi / (2 * np.pi) * 360,
-        ),
+    df_chart = dataframe.assign(
+        phi_degree=dataframe.phi / (2 * np.pi) * 360,
+    )
+    range_r = 0, df_chart.r.max() * 1.1
+    fig = px.scatter_polar(
+        df_chart,
         r="r",
         theta="phi_degree",
         hover_data=["t", "r", "phi"],
+        text="t",
         start_angle=0,
+        animation_frame="t",
+        color_discrete_sequence=["red"],
+        range_r=range_r,
+    )
+
+    trajectory_traces = list(
+        px.line_polar(
+            df_chart,
+            r="r",
+            theta="phi_degree",
+            hover_data=["t", "r", "phi"],
+            start_angle=0,
+            range_r=range_r,
+        ).select_traces(),
     )
 
     fig.update_layout(
@@ -87,12 +104,13 @@ def visualize_orbit(dataframe: pd.DataFrame) -> go.Figure:
         },
     )
 
+    fig.add_traces(trajectory_traces)
+
     return fig
 
 
 # %%
 fig = visualize_orbit(df_p_1)
-
 fig.show()
 
 # %% [markdown]
