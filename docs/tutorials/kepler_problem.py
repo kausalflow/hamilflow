@@ -78,6 +78,7 @@ def visualize_orbit(dataframe: pd.DataFrame) -> go.Figure:
         r="r",
         theta="phi_degree",
         hover_data=["t", "r", "phi"],
+        start_angle=0,
     )
 
     fig.update_layout(
