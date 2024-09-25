@@ -507,7 +507,7 @@
         
   
   <span class="md-ellipsis">
-    Motion in a Central Field
+    Kepler Problem
   </span>
   
 
@@ -1799,14 +1799,14 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Self&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alternative initialiser from system and geometry specifications.</span>
 
-<span class="sd">        Given the eccentricity $e$ and the conic section parameter $p$,</span>
+<span class="sd">        Given the eccentricity $e$ and the conic section semi-latus rectum $p$,</span>
 <span class="sd">        $$l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.$$</span>
 
 <span class="sd">        :param system: the Kepler problem system specification</span>
 <span class="sd">        :param geometries: geometric specifications</span>
 <span class="sd">            `positive_angular_mom`: whether the angular momentum is positive</span>
 <span class="sd">            `ecc`: eccentricity of the conic section</span>
-<span class="sd">            `parameter`: parameter of the conic section</span>
+<span class="sd">            `parameter`: semi-latus rectum of the conic section</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mass</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">],</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span>
         <span class="n">positive_angular_mom</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">geometries</span><span class="p">[</span><span class="s2">&quot;positive_angular_mom&quot;</span><span class="p">])</span>
@@ -1884,7 +1884,7 @@
     <span class="c1"># FIXME is it called parameter in English?</span>
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Conic section parameter of the Kepler problem.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Conic section semi-latus rectum of the Kepler problem.</span>
 
 <span class="sd">        $$ p = \frac{l^2}{\alpha m}\,. $$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2119,7 +2119,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Conic section parameter of the Kepler problem.</p>
+      <p>Conic section semi-latus rectum of the Kepler problem.</p>
 <div class="arithmatex">\[ p = \frac{l^2}{\alpha m}\,. \]</div>
   </div>
 
@@ -2294,7 +2294,7 @@ $$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$</p>
   <div class="doc doc-contents ">
   
       <p>Alternative initialiser from system and geometry specifications.</p>
-<p>Given the eccentricity <span class="arithmatex">\(e\)</span> and the conic section parameter <span class="arithmatex">\(p\)</span>,
+<p>Given the eccentricity <span class="arithmatex">\(e\)</span> and the conic section semi-latus rectum <span class="arithmatex">\(p\)</span>,
 <span class="arithmatex">\(<span class="arithmatex">\(l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.\)</span>\)</span></p>
 
 
@@ -2331,7 +2331,7 @@ $$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$</p>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>geometric specifications <code>positive_angular_mom</code>: whether the angular momentum is positive <code>ecc</code>: eccentricity of the conic section <code>parameter</code>: parameter of the conic section</p>
+              <p>geometric specifications <code>positive_angular_mom</code>: whether the angular momentum is positive <code>ecc</code>: eccentricity of the conic section <code>parameter</code>: semi-latus rectum of the conic section</p>
             </div>
           </td>
           <td>
@@ -2381,14 +2381,14 @@ $$ T = \pi \alpha \sqrt{-\frac{m}{2E^3}}\,. $$</p>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Self&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Alternative initialiser from system and geometry specifications.</span>
 
-<span class="sd">    Given the eccentricity $e$ and the conic section parameter $p$,</span>
+<span class="sd">    Given the eccentricity $e$ and the conic section semi-latus rectum $p$,</span>
 <span class="sd">    $$l = \pm \sqrt{mp}\,,\quad E = (e^2-1) \left|E_\text{min}\right|\,.$$</span>
 
 <span class="sd">    :param system: the Kepler problem system specification</span>
 <span class="sd">    :param geometries: geometric specifications</span>
 <span class="sd">        `positive_angular_mom`: whether the angular momentum is positive</span>
 <span class="sd">        `ecc`: eccentricity of the conic section</span>
-<span class="sd">        `parameter`: parameter of the conic section</span>
+<span class="sd">        `parameter`: semi-latus rectum of the conic section</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mass</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">],</span> <span class="n">system</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">]</span>
     <span class="n">positive_angular_mom</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">geometries</span><span class="p">[</span><span class="s2">&quot;positive_angular_mom&quot;</span><span class="p">])</span>
