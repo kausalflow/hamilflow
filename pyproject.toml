@@ -44,8 +44,6 @@ plotly = "^5.23.0"
 [tool.poetry.group.dev.dependencies]
 commitizen = "*"
 pre-commit = "*"
-mypy = "^1.19.1"
-pandas-stubs = "^2.3.3.251219"
 
 
 [tool.commitizen]
