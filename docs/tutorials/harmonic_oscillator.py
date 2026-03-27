@@ -91,11 +91,13 @@ dho_systems = {
 dfs_dho = []
 
 for s_name, s in dho_systems.items():
-
     dfs_dho.append(
         DampedHarmonicOscillator(system=s)(
-            n_periods=n_periods, n_samples_per_period=n_samples_per_period
-        ).assign(system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})")
+            n_periods=n_periods,
+            n_samples_per_period=n_samples_per_period,
+        ).assign(
+            system=rf"{s_name} (omega = {s.get('omega')}, zeta = {s.get('zeta')})",
+        ),
     )
 
 fig = px.line(
@@ -103,7 +105,7 @@ fig = px.line(
     x="t",
     y="x",
     color="system",
-    title=rf"Damped Harmonic Oscillator",
+    title=r"Damped Harmonic Oscillator",
     labels={
         "x": r"Displacement $x(t)$",
         "t": r"$t$",

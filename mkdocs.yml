@@ -84,6 +84,7 @@ nav:
     - "Complex Harmonic Oscillator": tutorials/complex_harmonic_oscillator.py
     - "Brownian Motion": tutorials/brownian_motion.py
     - "Pendulum": tutorials/pendulum.py
+    - "Kepler Problem": tutorials/kepler_problem.py
     - "Harmonic Oscillator Chain": tutorials/harmonic_oscillator_chain.py
   - References:
     - "Introduction": references/index.md
@@ -91,5 +92,11 @@ nav:
       - "Harmonic Oscillator": references/models/harmonic_oscillator.md
       - "Brownian Motion": references/models/brownian_motion.md
       - "Pendulum": references/models/pendulum.md
+      - Kepler Problem:
+        - Model: references/models/kepler_problem/model.md
+        - Dynamics: references/models/kepler_problem/dynamics.md
+        - Numerics: references/models/kepler_problem/numerics.md
       - "Harmonic Oscillator Chain": references/models/harmonic_oscillator_chain.md
+    - Mathematics:
+      - Trigonometrics: references/maths/trigonometrics.md
   - "Changelog": changelog.md

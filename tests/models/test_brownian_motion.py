@@ -1,3 +1,7 @@
+"""Tests for the Brownian motion main module."""
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -8,41 +12,55 @@ from hamilflow.models.brownian_motion import (
     BrownianMotionSystem,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Mapping, Sequence
+
+    from numpy import typing as npt
+
 
 @pytest.mark.parametrize(
-    "x0,expected",
+    ("x0", "expected"),
     [(0.1, np.array(0.1)), (1, np.array(1.0)), ([1, 2], np.array([1, 2]))],
 )
-def test_brownian_motion_ic(x0, expected):
-
+def test_brownian_motion_ic(
+    x0: "float | int | Sequence[int]",
+    expected: "npt.ArrayLike",
+) -> None:
+    """Test BrownianMotionIC."""
     brownian_motion_ic = BrownianMotionIC(x0=x0)
 
     np.testing.assert_equal(brownian_motion_ic.x0, expected)
 
 
 @pytest.mark.parametrize(
-    "sigma, delta_t, gaussian_scale", [(1, 1, 1), (1, 2, 2), (2, 1, 4)]
+    ("sigma", "delta_t", "gaussian_scale"),
+    [(1, 1, 1), (1, 2, 2), (2, 1, 4)],
 )
-def test_brownian_motion_system(sigma, delta_t, gaussian_scale):
+def test_brownian_motion_system(sigma: int, delta_t: int, gaussian_scale: int) -> None:
+    """Test BrownianMotionSystem."""
     bms = BrownianMotionSystem(sigma=sigma, delta_t=delta_t)
 
     assert bms.gaussian_scale == gaussian_scale
 
 
 @pytest.mark.parametrize(
-    "sigma, delta_t",
+    ("sigma", "delta_t"),
     [
         (-1, 1),
         (1, -1),
     ],
 )
-def test_brownian_motion_system_failed_spec(sigma, delta_t):
-    with pytest.raises(ValueError):
+def test_brownian_motion_system_failed_spec(sigma: int, delta_t: int) -> None:
+    """Test raises upon illegal parameters for initialising a BrownianMotionSystem."""
+    m = r"\d+ validation error for BrownianMotionSystem\n{}\n".format(
+        "sigma" if sigma < 0 else "delta_t",
+    )
+    with pytest.raises(ValueError, match=m):
         BrownianMotionSystem(sigma=sigma, delta_t=delta_t)
 
 
 @pytest.mark.parametrize(
-    "sigma, x0, expected",
+    ("sigma", "x0", "expected"),
     [
         (
             1,
@@ -63,8 +81,12 @@ def test_brownian_motion_system_failed_spec(sigma, delta_t):
         ),
     ],
 )
-def test_brownian_motion_generate_from(sigma, x0, expected):
-
+def test_brownian_motion_generate_from(
+    sigma: int,
+    x0: "int | Sequence[int]",
+    expected: "Mapping[str, Sequence[float]]",
+) -> None:
+    """Test BrownianMotion values from generate_from, comparing with calculation results of the author."""
     system = {
         "sigma": sigma,
         "delta_t": 1,
@@ -83,7 +105,7 @@ def test_brownian_motion_generate_from(sigma, x0, expected):
 
 
 @pytest.mark.parametrize(
-    "sigma, x0, t, expected",
+    ("sigma", "x0", "t", "expected"),
     [
         pytest.param(
             1,
@@ -118,8 +140,13 @@ def test_brownian_motion_generate_from(sigma, x0, expected):
         ),
     ],
 )
-def test_brownian_motion(sigma, x0, t, expected):
-
+def test_brownian_motion(
+    sigma: int,
+    x0: "int | Sequence[int]",
+    t: "float | Sequence[float]",
+    expected: "Mapping[str, Sequence[float]]",
+) -> None:
+    """Test BrownianMotion values from __call__, comparing with calculation results of the author."""
     system = {
         "sigma": sigma,
         "delta_t": 1,

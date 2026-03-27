@@ -1,10 +1,13 @@
+"""Main module for a pendulum."""
+
 import math
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from pydantic import BaseModel, Field, computed_field
 from scipy.special import ellipj, ellipk
 
@@ -60,23 +63,24 @@ class Pendulum:
         system: float | Mapping[str, float],
         initial_condition: float | Mapping[str, float],
     ) -> None:
-        if isinstance(system, (float, int)):
+        if isinstance(system, float | int):
             system = {"omega0": system}
-        if isinstance(initial_condition, (float, int)):
+        if isinstance(initial_condition, float | int):
             initial_condition = {"theta0": initial_condition}
         self.system = PendulumSystem.model_validate(system)
         self.initial_condition = PendulumIC.model_validate(initial_condition)
 
     @cached_property
-    def definition(self) -> dict[str, float]:
+    def definition(self) -> dict[str, dict[str, Any]]:
         """Model params and initial conditions defined as a dictionary."""
-        return dict(
-            system=self.system.model_dump(),
-            initial_condition=self.initial_condition.model_dump(),
-        )
+        return {
+            "system": self.system.model_dump(),
+            "initial_condition": self.initial_condition.model_dump(),
+        }
 
     @property
     def omega0(self) -> float:
+        """Original angular frequency of the system."""
         return self.system.omega0
 
     @property
@@ -105,12 +109,14 @@ class Pendulum:
         """
         return 4 * ellipk(self._math_m) / self.omega0
 
-    def _math_u(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
-        return self.omega0 * np.array(t, copy=False)
+    def _math_u(
+        self,
+        t: "Sequence[float] | npt.ArrayLike",
+    ) -> "npt.NDArray[np.float64]":
+        return self.omega0 * np.asarray(t)
 
-    def u(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
-        r"""The convenient generalised coordinate $u$,
-        $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
+    def u(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
+        r"""Give the convenient generalised coordinate $u$, $\sin u \coloneqq \frac{\sin\frac{\theta}{2}}{\sin\frac{\theta_0}{2}}$.
 
         :param t: time
         :return: $u(t) = \mathrm{am}\!\big(\omega_0 t + K(k^2), k^2\big)$, where
@@ -121,7 +127,7 @@ class Pendulum:
 
         return ph
 
-    def theta(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray[float]:
+    def theta(self, t: "Sequence[float] | npt.ArrayLike") -> "npt.NDArray[np.float64]":
         r"""Angle $\theta$.
 
         :param t: time
@@ -133,7 +139,7 @@ class Pendulum:
         return 2 * np.arcsin(cn / dn * self._k)
 
     def generate_from(self, n_periods: int, n_samples_per_period: int) -> pd.DataFrame:
-        """generate the time sequence from more interpretable params
+        """Generate the time sequence from more interpretable params.
 
         :param n_periods: number of periods to include
         :param n_samples_per_period: number of samples in each period
@@ -145,7 +151,7 @@ class Pendulum:
         return self(time_steps)
 
     def __call__(self, t: TypeTime) -> pd.DataFrame:
-        """generate the variables of the pendulum in time together with the time steps
+        """Generate the variables of the pendulum in time together with the time steps.
 
         :param t: time steps
         :return: values of the variables
@@ -154,4 +160,4 @@ class Pendulum:
         thetas = self.theta(t)
         us = self.u(t)
 
-        return pd.DataFrame(dict(t=t, x=thetas, u=us))
+        return pd.DataFrame({"t": t, "x": thetas, "u": us})

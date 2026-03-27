@@ -1,9 +1,12 @@
+"""Main module for a harmonic oscillator chain."""
+
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Mapping, Sequence, cast
+from typing import cast
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from scipy.fft import ifft
 
 from .free_particle import FreeParticle
@@ -11,8 +14,7 @@ from .harmonic_oscillator import ComplexSimpleHarmonicOscillator
 
 
 class HarmonicOscillatorsChain:
-    r"""Generate time series data for a coupled harmonic oscillator chain
-    with periodic boundary condition.
+    r"""Generate time series data for a coupled harmonic oscillator chain with periodic boundary condition.
 
     A one-dimensional circle of $N$ interacting harmonic oscillators can be described by the Lagrangian action
     $$S_L[x_i] = \int_{t_0}^{t_1}\mathbb{d} t \left\{ \sum_{i=0}^{N-1} \frac{1}{2}m \dot x_i^2 - \frac{1}{2}m\omega^2\left(x_i - x_{i+1}\right)^2 \right\}\,,$$
@@ -66,10 +68,10 @@ class HarmonicOscillatorsChain:
         phi: tuple[float, float] | None = None,
     ) -> ComplexSimpleHarmonicOscillator:
         return ComplexSimpleHarmonicOscillator(
-            dict(
-                omega=2 * self.omega * np.sin(np.pi * k / self.n_dof),
-            ),
-            dict(x0=amp) | (dict(phi=phi) if phi else {}),
+            {
+                "omega": 2 * self.omega * np.sin(np.pi * k / self.n_dof),
+            },
+            {"x0": amp} | ({"phi": phi} if phi else {}),
         )
 
     @cached_property
@@ -81,34 +83,37 @@ class HarmonicOscillatorsChain:
         | dict[str, dict[str, float | list[float]]]
         | list[dict[str, dict[str, float | tuple[float, float]]]],
     ]:
-        """model params and initial conditions defined as a dictionary."""
-        return dict(
-            omega=self.omega,
-            n_dof=self.n_dof,
-            free_mode=self.free_mode.definition,
-            independent_csho_modes=[
+        """Model params and initial conditions defined as a dictionary."""
+        return {
+            "omega": self.omega,
+            "n_dof": self.n_dof,
+            "free_mode": self.free_mode.definition,
+            "independent_csho_modes": [
                 rwm.definition for rwm in self.independent_csho_modes
             ],
-        )
+        }
 
     def _z(
-        self, t: "Sequence[float] | ArrayLike[float]"
-    ) -> tuple[np.ndarray, np.ndarray]:
-        t = np.array(t, copy=False).reshape(-1)
-        all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]
+        self,
+        t: "Sequence[float] | npt.ArrayLike",
+    ) -> "tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]":
+        t = np.asarray(t).reshape(-1)
+        all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]  # noqa: SLF001
 
         if self.independent_csho_modes:
-            independent_cshos = np.array(
-                [o._z(t) for o in self.independent_csho_modes], copy=False
+            independent_cshos = np.asarray(
+                [o._z(t) for o in self.independent_csho_modes],  # noqa: SLF001
             )
             all_travelling_waves.extend(
-                (independent_cshos, independent_cshos[::-1].conj())
-                if self.odd_dof
-                else (
-                    independent_cshos[:-1],
-                    independent_cshos[[-1]],
-                    independent_cshos[-2::-1].conj(),
-                )
+                (
+                    (independent_cshos, independent_cshos[::-1].conj())
+                    if self.odd_dof
+                    else (
+                        independent_cshos[:-1],
+                        independent_cshos[[-1]],
+                        independent_cshos[-2::-1].conj(),
+                    )
+                ),
             )
 
         travelling_waves = np.concatenate(all_travelling_waves)
@@ -116,24 +121,33 @@ class HarmonicOscillatorsChain:
         return original_zs, travelling_waves
 
     def _x(
-        self, t: "Sequence[float] | ArrayLike[float]"
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self,
+        t: "Sequence[float] | npt.ArrayLike",
+    ) -> "tuple[npt.NDArray[np.float64], npt.NDArray[np.complex64]]":
         original_xs, travelling_waves = self._z(t)
 
         return np.real(original_xs), travelling_waves
 
-    def __call__(self, t: "Sequence[float] | ArrayLike[float]") -> pd.DataFrame:
+    def __call__(self, t: "Sequence[float] | npt.ArrayLike") -> pd.DataFrame:
         """Generate time series data for the harmonic oscillator chain.
 
         Returns float(s) representing the displacement at the given time(s).
 
         :param t: time.
         """
+        t = np.asarray(t)
         original_xs, travelling_waves = self._x(t)
-        data = {
-            f"{name}{i}": values
-            for name, xs in zip(("x", "y"), (original_xs, travelling_waves))
-            for i, values in enumerate(xs)
+        data = {  # type: ignore [var-annotated]
+            f"{name}{i}": cast(
+                "npt.NDArray[np.float64] | npt.NDArray[np.complex64]",
+                values,
+            )
+            for name, xs in zip(
+                ("x", "y"),
+                (original_xs, travelling_waves),
+                strict=False,
+            )
+            for i, values in enumerate(xs)  # type: ignore [arg-type]
         }
 
         return pd.DataFrame(data, index=t)

@@ -31,33 +31,43 @@ from hamilflow.models.harmonic_oscillator import ComplexSimpleHarmonicOscillator
 
 # %%
 t = np.linspace(0, 3, 257)
-system_specs = dict(omega=2 * math.pi)
+system_specs = {"omega": 2 * math.pi}
 
 # %% [markdown]
 # ## Positive-frequency, circular-polarised mode
 # Also known as the left-rotating mode.
 
 # %%
-csho = ComplexSimpleHarmonicOscillator(system_specs, initial_condition=dict(x0=(1, 0)))
+csho = ComplexSimpleHarmonicOscillator(system_specs, initial_condition={"x0": (1, 0)})
 
 df = csho(t)
 
 arr_z = df["z"].to_numpy(copy=False)
 
-px.line_3d(x=arr_z.real, y=arr_z.imag, z=t, labels=dict(x="real", y="imag", z="time"))
+px.line_3d(
+    x=arr_z.real,
+    y=arr_z.imag,
+    z=t,
+    labels={"x": "real", "y": "imag", "z": "time"},
+)
 
 # %% [markdown]
 # ## Negative-frequency, circular-polarised mode
 # Also known as the right-rotating mode.
 
 # %%
-csho = ComplexSimpleHarmonicOscillator(system_specs, initial_condition=dict(x0=(0, 1)))
+csho = ComplexSimpleHarmonicOscillator(system_specs, initial_condition={"x0": (0, 1)})
 
 df = csho(t)
 
 arr_z = df["z"].to_numpy(copy=False)
 
-px.line_3d(x=arr_z.real, y=arr_z.imag, z=t, labels=dict(x="real", y="imag", z="time"))
+px.line_3d(
+    x=arr_z.real,
+    y=arr_z.imag,
+    z=t,
+    labels={"x": "real", "y": "imag", "z": "time"},
+)
 
 # %% [markdown]
 # ## Positive-frequency, elliptic-polarised mode
@@ -65,14 +75,19 @@ px.line_3d(x=arr_z.real, y=arr_z.imag, z=t, labels=dict(x="real", y="imag", z="t
 # %%
 csho = ComplexSimpleHarmonicOscillator(
     system_specs,
-    initial_condition=dict(x0=(math.cos(math.pi / 12), math.sin(math.pi / 12))),
+    initial_condition={"x0": (math.cos(math.pi / 12), math.sin(math.pi / 12))},
 )
 
 df = csho(t)
 
 arr_z = df["z"].to_numpy(copy=False)
 
-px.line_3d(x=arr_z.real, y=arr_z.imag, z=t, labels=dict(x="real", y="imag", z="time"))
+px.line_3d(
+    x=arr_z.real,
+    y=arr_z.imag,
+    z=t,
+    labels={"x": "real", "y": "imag", "z": "time"},
+)
 
 # %% [markdown]
 # # End of Notebook

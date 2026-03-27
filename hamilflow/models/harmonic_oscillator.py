@@ -1,15 +1,18 @@
+"""Main module for undamped and damped hamornic oscillators."""
+
 from abc import ABC, abstractmethod
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Literal, Mapping, Sequence
+from typing import Literal
 
 import numpy as np
 import pandas as pd
-from numpy.typing import ArrayLike
+from numpy import typing as npt
 from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class HarmonicOscillatorSystem(BaseModel):
-    """The params for the harmonic oscillator
+    """The params for the harmonic oscillator.
 
     :cvar omega: angular frequency of the harmonic oscillator
     :cvar zeta: damping ratio
@@ -21,13 +24,13 @@ class HarmonicOscillatorSystem(BaseModel):
     @computed_field  # type: ignore[misc]
     @cached_property
     def period(self) -> float:
-        """period of the oscillator"""
+        """Period of the oscillator."""
         return 2 * np.pi / self.omega
 
     @computed_field  # type: ignore[misc]
     @cached_property
     def frequency(self) -> float:
-        """frequency of the oscillator"""
+        """Frequency of the oscillator."""
         return 1 / self.period
 
     @computed_field  # type: ignore[misc]
@@ -35,7 +38,7 @@ class HarmonicOscillatorSystem(BaseModel):
     def type(
         self,
     ) -> Literal["simple", "under_damped", "critical_damped", "over_damped"]:
-        """which type of harmonic oscillators"""
+        """Which type of harmonic oscillators."""
         if self.zeta == 0:
             return "simple"
         elif self.zeta < 1:
@@ -47,15 +50,16 @@ class HarmonicOscillatorSystem(BaseModel):
 
     @field_validator("zeta")
     @classmethod
-    def check_zeta_non_negative(cls, v: float) -> float:
+    def _check_zeta_non_negative(cls, v: float) -> float:
         if v < 0:
-            raise ValueError(f"Value of zeta should be positive: {v=}")
+            msg = f"Value of zeta should be positive: {v=}"
+            raise ValueError(msg)
 
         return v
 
 
 class HarmonicOscillatorIC(BaseModel):
-    """The initial condition for a harmonic oscillator
+    """The initial condition for a harmonic oscillator.
 
     :cvar x0: the initial displacement
     :cvar v0: the initial velocity
@@ -68,8 +72,7 @@ class HarmonicOscillatorIC(BaseModel):
 
 
 class HarmonicOscillatorBase(ABC):
-    r"""Base class to generate time series data
-    for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
+    r"""Base class to generate time series data for a [harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
     :param system: all the params that defines the harmonic oscillator.
     :param initial_condition: the initial condition of the harmonic oscillator.
@@ -86,14 +89,14 @@ class HarmonicOscillatorBase(ABC):
 
     @cached_property
     def definition(self) -> dict[str, dict[str, float]]:
-        """model params and initial conditions defined as a dictionary."""
+        """Model params and initial conditions defined as a dictionary."""
         return {
             "system": self.system.model_dump(),
             "initial_condition": self.initial_condition.model_dump(),
         }
 
     @abstractmethod
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to simple harmonic oscillators."""
         ...
 
@@ -114,9 +117,7 @@ class HarmonicOscillatorBase(ABC):
 
 
 class SimpleHarmonicOscillator(HarmonicOscillatorBase):
-    r"""Generate time series data for a
-    [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
-
+    r"""Generate time series data for a [simple harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).
 
     In a one dimensional world, a mass $m$, driven by a force $F=-kx$, is described as
 
@@ -158,19 +159,20 @@ class SimpleHarmonicOscillator(HarmonicOscillatorBase):
     ) -> None:
         super().__init__(system, initial_condition)
         if self.system.type != "simple":
+            msg = f"System is not a Simple Harmonic Oscillator: {self.system}"
             raise ValueError(
-                f"System is not a Simple Harmonic Oscillator: {self.system}"
+                msg,
             )
 
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> np.ndarray:
-        r"""Solution to simple harmonic oscillators:
+    def _x(self, t: "Sequence[float] | npt.ArrayLike") -> np.ndarray:
+        r"""Solution to simple harmonic oscillators.
 
         $$
         x(t) = x_0 \cos(\omega t + \phi).
         $$
         """
         return self.initial_condition.x0 * np.cos(
-            self.system.omega * np.array(t, copy=False) + self.initial_condition.phi
+            self.system.omega * np.asarray(t) + self.initial_condition.phi,
         )
 
 
@@ -230,13 +232,16 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
     ) -> None:
         super().__init__(system, initial_condition)
         if self.system.type == "simple":
-            raise ValueError(
+            msg = (
                 f"System is not a Damped Harmonic Oscillator: {self.system}\n"
                 f"This is a simple harmonic oscillator, use `SimpleHarmonicOscillator`."
             )
+            raise ValueError(
+                msg,
+            )
 
-    def _x_under_damped(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
-        r"""Solution to under damped harmonic oscillators:
+    def _x_under_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
+        r"""Solution to under damped harmonic oscillators.
 
         $$
         x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
@@ -249,6 +254,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Omega = \omega\sqrt{ 1 - \zeta^2}.
         $$
         """
+        t = np.asarray(t)
         omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
         return (
             self.initial_condition.x0 * np.cos(omega_damp * t)
@@ -260,8 +266,8 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             * np.sin(omega_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-    def _x_critical_damped(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
-        r"""Solution to critical damped harmonic oscillators:
+    def _x_critical_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
+        r"""Solution to critical damped harmonic oscillators.
 
         $$
         x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
@@ -274,12 +280,13 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Omega = \omega\sqrt{ 1 - \zeta^2}.
         $$
         """
+        t = np.asarray(t)
         return self.initial_condition.x0 * np.exp(
-            -self.system.zeta * self.system.omega * t
+            -self.system.zeta * self.system.omega * t,
         )
 
-    def _x_over_damped(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
-        r"""Solution to over harmonic oscillators:
+    def _x_over_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
+        r"""Solution to over harmonic oscillators.
 
         $$
         x(t) = \left( x_0 \cosh(\Gamma t) + \frac{\zeta \omega x_0 + v_0}{\Gamma} \sinh(\Gamma t) \right)
@@ -292,6 +299,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         \Gamma = \omega\sqrt{ \zeta^2 - 1 }.
         $$
         """
+        t = np.asarray(t)
         gamma_damp = self.system.omega * np.sqrt(self.system.zeta - 1)
 
         return (
@@ -304,9 +312,9 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
             * np.sinh(gamma_damp * t)
         ) * np.exp(-self.system.zeta * self.system.omega * t)
 
-    def _x(self, t: "Sequence[float] | ArrayLike[float]") -> ArrayLike:
+    def _x(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to damped harmonic oscillators."""
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         if self.system.type == "under_damped":
             x = self._x_under_damped(t)
         elif self.system.type == "over_damped":
@@ -314,15 +322,16 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         elif self.system.type == "critical_damped":
             x = self._x_critical_damped(t)
         else:
+            msg = f"System type is not damped harmonic oscillator: {self.system.type}"
             raise ValueError(
-                "System type is not damped harmonic oscillator: {self.system.type}"
+                msg,
             )
 
         return x
 
 
 class ComplexSimpleHarmonicOscillatorIC(BaseModel):
-    """The initial condition for a complex harmonic oscillator
+    """The initial condition for a complex harmonic oscillator.
 
     :cvar x0: the initial displacements
     :cvar phi: initial phases
@@ -346,49 +355,45 @@ class ComplexSimpleHarmonicOscillator:
     ) -> None:
         self.system = HarmonicOscillatorSystem.model_validate(system)
         self.initial_condition = ComplexSimpleHarmonicOscillatorIC.model_validate(
-            initial_condition
+            initial_condition,
         )
         if self.system.type != "simple":
+            msg = f"System is not a Simple Harmonic Oscillator: {self.system}"
             raise ValueError(
-                f"System is not a Simple Harmonic Oscillator: {self.system}"
+                msg,
             )
 
     @cached_property
     def definition(
         self,
     ) -> dict[str, dict[str, float | tuple[float, float]]]:
-        """model params and initial conditions defined as a dictionary."""
+        """Model params and initial conditions defined as a dictionary."""
+        return {
+            "system": self.system.model_dump(),
+            "initial_condition": self.initial_condition.model_dump(),
+        }
 
-        return dict(
-            system=self.system.model_dump(),
-            initial_condition=self.initial_condition.model_dump(),
-        )
-
-    def _z(
-        self, t: "Sequence[float] | ArrayLike[float] | ArrayLike[float]"
-    ) -> ArrayLike:
-        r"""Solution to complex simple harmonic oscillators:
+    def _z(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
+        r"""Solution to complex simple harmonic oscillators.
 
         $$
         x(t) = x_+ \exp(-\mathbb{i} (\omega t + \phi_+)) + x_- \exp(+\mathbb{i} (\omega t + \phi_-)).
         $$
         """
-        t = np.array(t, copy=False)
+        t = np.asarray(t)
         omega = self.system.omega
         x0, phi = self.initial_condition.x0, self.initial_condition.phi
         phases = -omega * t - phi[0], omega * t + phi[1]
         return x0[0] * np.exp(1j * phases[0]) + x0[1] * np.exp(1j * phases[1])
 
-    def __call__(
-        self, t: "Sequence[float] | ArrayLike[float] | ArrayLike[float]"
-    ) -> pd.DataFrame:
+    def __call__(self, t: "Sequence[float] | npt.ArrayLike") -> pd.DataFrame:
         """Generate time series data for the harmonic oscillator.
 
         Returns a list of floats representing the displacement at each time.
 
         :param t: time(s).
         """
-        t = t if isinstance(t, (Sequence, np.ndarray)) else [t]
+        t = np.asarray(t)
         data = self._z(t)
 
         return pd.DataFrame({"t": t, "z": data})
