@@ -1262,7 +1262,7 @@
 <a id="hamilflow.models.sir"></a>
   <div class="doc doc-contents first">
   
-      <p>Main module for Brownian motion.</p>
+      <p>Main module for SIR model in epidemiology.</p>
 
   
 
@@ -1333,7 +1333,7 @@ N = S(t) + I(t) + R(t).
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The parameters of the SIR system, including <code>beta</code> and <code>gamma</code>.</p>
+              <p>The parameters of the SIR system, including <code>beta</code> and <code>alpha</code>.</p>
             </div>
           </td>
           <td>
@@ -1500,7 +1500,7 @@ N = S(t) + I(t) + R(t).
 <span class="sd">    - $\beta$ is the transmission rate (probability of infection per contact per unit time).</span>
 <span class="sd">    - $\alpha$ is the recovery rate (rate at which infected individuals recover per unit time).</span>
 
-<span class="sd">    :param system: The parameters of the SIR system, including `beta` and `gamma`.</span>
+<span class="sd">    :param system: The parameters of the SIR system, including `beta` and `alpha`.</span>
 <span class="sd">    :param initial_condition: The initial state of the population, including `S0`, `I0`, and `R0`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1566,20 +1566,20 @@ N = S(t) + I(t) + R(t).
         <span class="p">]</span>
 
         <span class="k">for</span> <span class="n">t_i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t_i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span>
-                    <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="n">susceptible</span><span class="p">,</span>
-                    <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="n">infected</span><span class="p">,</span>
-                    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="n">recovered</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">)</span>
-
             <span class="n">delta_s</span><span class="p">,</span> <span class="n">delta_i</span><span class="p">,</span> <span class="n">delta_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">susceptible</span><span class="p">,</span> <span class="n">infected</span><span class="p">)</span>
 
             <span class="n">susceptible</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">susceptible</span> <span class="o">+</span> <span class="n">delta_s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="n">infected</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">infected</span> <span class="o">+</span> <span class="n">delta_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="n">recovered</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">recovered</span> <span class="o">+</span> <span class="n">delta_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t_i</span><span class="p">,</span>
+                    <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="n">susceptible</span><span class="p">,</span>
+                    <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="n">infected</span><span class="p">,</span>
+                    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="n">recovered</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1683,20 +1683,20 @@ N = S(t) + I(t) + R(t).
     <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">t_i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t_i</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">delta_t</span><span class="p">,</span>
-                <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="n">susceptible</span><span class="p">,</span>
-                <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="n">infected</span><span class="p">,</span>
-                <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="n">recovered</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">)</span>
-
         <span class="n">delta_s</span><span class="p">,</span> <span class="n">delta_i</span><span class="p">,</span> <span class="n">delta_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">susceptible</span><span class="p">,</span> <span class="n">infected</span><span class="p">)</span>
 
         <span class="n">susceptible</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">susceptible</span> <span class="o">+</span> <span class="n">delta_s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">infected</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">infected</span> <span class="o">+</span> <span class="n">delta_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">recovered</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">recovered</span> <span class="o">+</span> <span class="n">delta_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t_i</span><span class="p">,</span>
+                <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="n">susceptible</span><span class="p">,</span>
+                <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="n">infected</span><span class="p">,</span>
+                <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="n">recovered</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
