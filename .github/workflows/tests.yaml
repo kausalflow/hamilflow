@@ -20,13 +20,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5.1.0
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Setup Poetry
-        uses: abatilo/actions-poetry@v3.0.0
+        uses: abatilo/actions-poetry@v4
         with:
           poetry-version: 1.8.3
       - name: Install Packages
@@ -35,7 +35,7 @@ jobs:
         run: |
           poetry run pytest --cache-clear --junitxml=pytest.xml --cov=hamilflow tests/ > pytest-coverage.txt
       - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@v1.1.51
+        uses: MishaKav/pytest-coverage-comment@v1.7.1
         with:
           pytest-coverage-path: ./pytest-coverage.txt
           junitxml-path: ./pytest.xml
