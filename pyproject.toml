@@ -75,6 +75,8 @@ target-version = "py310"
 select = ["ALL"]
 ignore = [
     "D107",  # undocumented-public-init: we document the class instead
+    "D203",  # one-blank-line-before-class: we use D211 instead
+    "D213",  # multi-line-summary-second-line: we use D212 instead
     "E501",  # line-too-long: we use black instead
     "TID252",  # relative-imports
     "PD901",  # pandas-df-variable-name
