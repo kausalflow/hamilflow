@@ -24,18 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.6
-      - uses: actions/setup-python@v5.1.0
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.12"
-      - name: Setup Poetry
-        uses: abatilo/actions-poetry@v3.0.0
-        with:
-          poetry-version: 1.8.3
-      - name: Install Packages
-        run: poetry install --with docs,tutorial
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
       - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
       - name: Build Docs
-        run: poetry run mkdocs build
+        run: uv run mkdocs build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.6.1
         with:
