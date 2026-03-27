@@ -90,6 +90,7 @@ nav:
     - "Pendulum": tutorials/pendulum.py
     - "Kepler Problem": tutorials/kepler_problem.py
     - "Harmonic Oscillator Chain": tutorials/harmonic_oscillator_chain.py
+    - "SIR": tutorials/sir.py
   - References:
     - "Introduction": references/index.md
     - "Models":
