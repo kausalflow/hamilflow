@@ -1,80 +1,73 @@
-[tool.poetry]
+[project]
 name = "hamilflow"
 version = "0.1.0"
 description = "Dataset of simple physical systems."
-authors = ["LM <hi@leima.is>", "cmp0xff <cmp0xff@gmail.com>"]
-license = "MIT"
+authors = [
+    { name = "LM", email = "hi@leima.is" },
+    { name = "cmp0xff", email = "cmp0xff@gmail.com" }
+]
+license = { text = "MIT" }
 readme = "README.md"
-packages = [{include = "hamilflow"}]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "pandas[computation]>=2.2.2",
+    "pydantic>=2.8.2",
+    "numpy>=2.1.0",
+    "scipy>=1.14.1",
+    "loguru>=0.7.2",
+]
 
-
-[tool.poetry.dependencies]
-python = ">=3.10,<3.13"
-
-# data
-pandas = {version = "^2.2.2", extras = ["computation"]}
-pydantic = "^2.8.2"
-
-# numerics
-numpy = "^2.1.0"
-scipy = "^1.14.1"
-
-# logging
-loguru = "^0.7.2"
-
-[tool.poetry.group.test.dependencies]
-pytest = "*"
-pytest-cov = "*"
-pytest-xdist = "*"
-
-
-[tool.poetry.group.docs.dependencies]
-mkdocs-material = "^9.5.31"
-mkdocs-autorefs = "^1.0.1"
-mkdocstrings = {version = "^0.25.2", extras = ["python"]}
-mkdocs-jupyter = "^0.24.8"
-mkdocs = "^1.6.0"
-jupytext = "^1.16.4"
-
-
-[tool.poetry.group.tutorial.dependencies]
-plotly = "^5.23.0"
-
-
-[tool.poetry.group.dev.dependencies]
-commitizen = "*"
-pre-commit = "*"
-
+[dependency-groups]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+]
+docs = [
+    "mkdocs-material>=9.5.31",
+    "mkdocs-autorefs>=1.0.1",
+    "mkdocstrings[python]>=0.25.2",
+    "mkdocs-jupyter>=0.24.8",
+    "mkdocs>=1.6.0",
+    "jupytext>=1.16.4",
+]
+tutorial = [
+    "plotly>=5.23.0",
+]
+dev = [
+    "commitizen",
+    "pre-commit",
+]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
 tag_format = "$version"
 version_scheme = "pep440"
-version_provider = "poetry"
+version_provider = "pep440"
 update_changelog_on_bump = true
 major_version_zero = true
 changelog_file = "docs/changelog.md"
 
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["hamilflow"]
 
 [tool.jupytext]
 formats = "ipynb,py:percent"
 
-
 [tool.ruff]
 line-length = 88  # black default
 target-version = "py310"
-# unsafe-fixes = true
-
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "D107",  # undocumented-public-init: we document the class instead
+    "D203",  # one-blank-line-before-class: we use D211 instead
+    "D213",  # multi-line-summary-second-line: we use D212 instead
     "E501",  # line-too-long: we use black instead
     "TID252",  # relative-imports
     "PD901",  # pandas-df-variable-name
@@ -82,8 +75,8 @@ ignore = [
     "FIX",
     "TD",
     "RET",
+    "D205",
 ]
-
 
 [tool.ruff.lint.per-file-ignores]
 "docs/**/*.py" = [
@@ -94,20 +87,25 @@ ignore = [
 "tests/**/*.py" = [
     "S101",  # assert: Fine in tests
     "SLF001",  # private-member-access: find in tests
+    "D104",  # missing-module-docstring
+    "INP001",  # implicit-namespace-package: tutorials are not packages
+    "D101",  # missing-class-docstring
+    "D102",  # missing-method-docstring
+    "D103",  # missing-function-docstring
+    "D100",  # missing-module-docstring
+    "ARG002",  # unused-method-argument
+    "ANN201",  # missing-return-type-annotation
+    "PLR2004",  # magic-value
 ]
-
 
 [tool.ruff.lint.isort]
 known-first-party = ["hamilflow"]
 
-
 [tool.black]
 line-length = 88  # black default
 
-
 [tool.mypy]
 plugins = ["numpy.typing.mypy_plugin"]
-
 
 [[tool.mypy.overrides]]
 module = ["plotly.*", "scipy.*"]
