@@ -66,6 +66,8 @@ target-version = "py310"
 select = ["ALL"]
 ignore = [
     "D107",  # undocumented-public-init: we document the class instead
+    "D203",  # one-blank-line-before-class: we use D211 instead
+    "D213",  # multi-line-summary-second-line: we use D212 instead
     "E501",  # line-too-long: we use black instead
     "TID252",  # relative-imports
     "PD901",  # pandas-df-variable-name
@@ -73,6 +75,7 @@ ignore = [
     "FIX",
     "TD",
     "RET",
+    "D205",
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -84,6 +87,15 @@ ignore = [
 "tests/**/*.py" = [
     "S101",  # assert: Fine in tests
     "SLF001",  # private-member-access: find in tests
+    "D104",  # missing-module-docstring
+    "INP001",  # implicit-namespace-package: tutorials are not packages
+    "D101",  # missing-class-docstring
+    "D102",  # missing-method-docstring
+    "D103",  # missing-function-docstring
+    "D100",  # missing-module-docstring
+    "ARG002",  # unused-method-argument
+    "ANN201",  # missing-return-type-annotation
+    "PLR2004",  # magic-value
 ]
 
 [tool.ruff.lint.isort]
