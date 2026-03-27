@@ -1,4 +1,4 @@
-"""Main module for Brownian motion."""
+"""Main module for SIR model in epidemiology."""
 
 from collections.abc import Mapping
 from functools import cached_property
@@ -85,7 +85,7 @@ class SIR:
     - $\beta$ is the transmission rate (probability of infection per contact per unit time).
     - $\alpha$ is the recovery rate (rate at which infected individuals recover per unit time).
 
-    :param system: The parameters of the SIR system, including `beta` and `gamma`.
+    :param system: The parameters of the SIR system, including `beta` and `alpha`.
     :param initial_condition: The initial state of the population, including `S0`, `I0`, and `R0`.
     """
 
@@ -151,19 +151,19 @@ class SIR:
         ]
 
         for t_i in np.array(t):
-            results.append(
-                {
-                    "t": t_i * self.system.delta_t,
-                    "S": susceptible,
-                    "I": infected,
-                    "R": recovered,
-                },
-            )
-
             delta_s, delta_i, delta_r = self._step(susceptible, infected)
 
             susceptible = max(susceptible + delta_s, 0)
             infected = max(infected + delta_i, 0)
             recovered = max(recovered + delta_r, 0)
+
+            results.append(
+                {
+                    "t": t_i,
+                    "S": susceptible,
+                    "I": infected,
+                    "R": recovered,
+                },
+            )
 
         return pd.DataFrame(results)
