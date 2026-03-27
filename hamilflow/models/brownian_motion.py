@@ -1,14 +1,19 @@
+"""Main module for Brownian motion."""
+
+from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
 import scipy as sp
+from numpy import typing as npt
 from pydantic import BaseModel, Field, computed_field, field_validator
+
+from hamilflow.models.utils.typing import TypeTime
 
 
 class BrownianMotionSystem(BaseModel):
-    r"""Definition of the Brownian Motion system
+    r"""Definition of the Brownian Motion system.
 
     For consistency, we always use
     $\mathbf x$ for displacement, and
@@ -21,8 +26,8 @@ class BrownianMotionSystem(BaseModel):
     \end{align}
     $$
 
-    References:
-
+    References
+    ----------
     1. Brownian motion and random walks. [cited 13 Mar 2024].
         Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html
     2. Contributors to Wikimedia projects. Brownian motion.
@@ -32,42 +37,43 @@ class BrownianMotionSystem(BaseModel):
     :cvar sigma: base standard deviation
         to be used to compute the variance
     :cvar delta_t: time granunality of the motion
+
     """
 
-    sigma: float = Field(ge=0)
-    delta_t: float = Field(ge=0, default=1.0)
+    sigma: float = Field(ge=0.0)
+    delta_t: float = Field(ge=0.0, default=1.0)
 
     @computed_field  # type: ignore[misc]
     @cached_property
     def gaussian_scale(self) -> float:
-        """The scale (standard deviation) of the Gaussian term
-        in Brownian motion
-        """
+        """The scale (standard deviation) of the Gaussian term in Brownian motion."""
         return self.sigma**2 * self.delta_t
 
 
 class BrownianMotionIC(BaseModel):
-    """The initial condition for a Brownian motion
+    """The initial condition for a Brownian motion.
 
     :cvar x0: initial displacement of the particle,
         the diminsion of this initial condition determines
         the dimension of the model too.
     """
 
-    x0: Union[float, int, List[Union[float, int]]] = 1.0
+    x0: float | Sequence[float] = Field(default=1.0)
 
     @field_validator("x0")
     @classmethod
-    def check_x0_types(cls, v: Union[float, int, list]) -> np.ndarray:
-        if not isinstance(v, (float, int, list)):
-            raise ValueError(f"Value of x0 should be int/float/list of int/float: {v=}")
+    def _check_x0_types(cls, v: float | Sequence[float]) -> float | Sequence[float]:
+        if not isinstance(v, float | int | Sequence):
+            # TODO I do not think this raise can be reached
+            msg = f"Value of x0 should be int/float/list of int/float: {v=}"
+            raise TypeError(msg)
 
-        return np.asarray(v)
+        return v
 
 
 class BrownianMotion:
-    r"""Brownian motion describes motion of small particles
-    with stochastic forces applied to them.
+    r"""Brownian motion describes motion of small particles with stochastic forces applied to them.
+
     The math of Brownian motion can be modeled
     with Wiener process.
 
@@ -82,8 +88,8 @@ class BrownianMotion:
     \end{align}
     $$
 
-    References:
-
+    References
+    ----------
     1. Brownian motion and random walks. [cited 13 Mar 2024].
         Available: https://web.mit.edu/8.334/www/grades/projects/projects17/OscarMickelin/brownian.html
     2. Contributors to Wikimedia projects. Brownian motion.
@@ -138,27 +144,31 @@ class BrownianMotion:
 
     :param system: the Brownian motion system definition
     :param initial_condition: the initial condition for the simulation
+
     """
 
     def __init__(
         self,
-        system: Dict[str, float],
-        initial_condition: Optional[Dict[str, float]] = {},
-    ):
+        system: Mapping[str, float],
+        initial_condition: (
+            Mapping[str, "Sequence[float] | npt.ArrayLike"] | None
+        ) = None,
+    ) -> None:
+        initial_condition = initial_condition or {}
         self.system = BrownianMotionSystem.model_validate(system)
         self.initial_condition = BrownianMotionIC.model_validate(initial_condition)
 
     @property
     def dim(self) -> int:
-        """Dimension of the Brownian motion"""
-        return self.initial_condition.x0.size
+        """Dimension of the Brownian motion."""
+        return np.asarray(self.initial_condition.x0).size
 
     @property
-    def _axis_names(self) -> List[str]:
-        return [f"y_{i}" for i in range(self.dim)]
+    def _axis_names(self) -> list[str]:
+        return [f"x_{i}" for i in range(self.dim)]
 
-    def _trajectory(self, n_new_steps: int, seed: int) -> np.ndarray:
-        """The trajectory of the particle.
+    def _trajectory(self, n_new_steps: int, seed: int) -> "npt.NDArray[np.float64]":
+        """Give the trajectory of the particle.
 
         We first compute the delta displacement in each step.
         With the displacement at each step, we perform a cumsum
@@ -174,24 +184,35 @@ class BrownianMotion:
         )
 
         step_history = np.concatenate(
-            (np.expand_dims(self.initial_condition.x0, axis=0), step_history)
+            (np.expand_dims(self.initial_condition.x0, axis=0), step_history),
         )
 
         trajectory = np.cumsum(step_history, axis=0)
 
         return trajectory
 
-    def __call__(self, n_steps: int, seed: int = 42) -> pd.DataFrame:
-        """Simulate the coordinates of the particle
+    def generate_from(self, n_steps: int, seed: int = 42) -> pd.DataFrame:
+        """Generate data from a set of interpretable params for this model.
 
         :param n_steps: total number of steps to be simulated, including the inital step.
         :param seed: random generator seed for the stochastic process.
             Use it to reproduce results.
         """
+        time_steps = np.arange(0, n_steps) * self.system.delta_t
+
+        return self(t=time_steps, seed=seed)
+
+    def __call__(self, t: TypeTime, seed: int = 42) -> pd.DataFrame:
+        """Simulate the coordinates of the particle.
+
+        :param t: the time sequence to be used to generate data, 1-D array like
+        :param seed: random generator seed for the stochastic process.
+            Use it to reproduce results.
+        """
+        n_steps = np.array(t).size
         trajectory = self._trajectory(n_new_steps=n_steps - 1, seed=seed)
 
         df = pd.DataFrame(trajectory, columns=self._axis_names)
-
-        df["t"] = np.arange(0, n_steps) * self.system.delta_t
+        df["t"] = t
 
         return df

@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: .venv
 #     language: python
@@ -46,7 +46,10 @@ pen = Pendulum(system=omega0, initial_condition=theta0)
 # ## Data
 
 # %%
-df_pen = pen(n_periods=n_periods, n_samples_per_period=n_samples_per_period)
+df_pen = pen.generate_from(
+    n_periods=n_periods,
+    n_samples_per_period=n_samples_per_period,
+)
 df_pen.head()
 
 # %%
@@ -60,8 +63,8 @@ px.line(
     df_pen,
     x="t",
     y="x",
-    title=r"Simple Harmonic Oscillator ($\omega_0 = {:.4f})$".format(omega0),
-    labels=dict(x=r"Angle $\theta(t)$", t=r"Time $t$"),
+    title=rf"Simple Harmonic Oscillator ($\omega_0 = {omega0:.4f})$",
+    labels={"x": r"Angle $\theta(t)$", "t": r"Time $t$"},
 )
 
 # %% [markdown]
