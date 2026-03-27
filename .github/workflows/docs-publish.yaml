@@ -21,6 +21,7 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
+          python-version: "3.12"
       - name: Install dependencies
         run: uv sync --group docs --group tutorial
       - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
