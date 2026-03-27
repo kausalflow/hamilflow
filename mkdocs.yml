@@ -71,6 +71,10 @@ plugins:
       allow_errors: false
       include_requirejs: true
 
+watch:
+  - docs
+  - hamilflow
+
 extra_javascript:
   - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
@@ -86,6 +90,7 @@ nav:
     - "Pendulum": tutorials/pendulum.py
     - "Kepler Problem": tutorials/kepler_problem.py
     - "Harmonic Oscillator Chain": tutorials/harmonic_oscillator_chain.py
+    - "SIR": tutorials/sir.py
   - References:
     - "Introduction": references/index.md
     - "Models":
@@ -97,6 +102,7 @@ nav:
         - Dynamics: references/models/kepler_problem/dynamics.md
         - Numerics: references/models/kepler_problem/numerics.md
       - "Harmonic Oscillator Chain": references/models/harmonic_oscillator_chain.md
+      - "SIR": references/models/sir.md
     - Mathematics:
       - Trigonometrics: references/maths/trigonometrics.md
   - "Changelog": changelog.md
