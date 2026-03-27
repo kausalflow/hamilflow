@@ -15,40 +15,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.6
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5.1.0
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Setup Poetry
-        uses: abatilo/actions-poetry@v3.0.0
-        with:
-          poetry-version: 1.8.3
-      - name: Install Packages
-        run: poetry install --with docs,tutorial
-      - name: Build coverage file
-        run: |
-          poetry run pytest
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.6
-        with:
-          fetch-depth: 0
-      - name: Set up Python
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: "3.12"
-      - name: Setup Poetry
-        uses: abatilo/actions-poetry@v3.0.0
-        with:
-          poetry-version: 1.8.3
+          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |
-          poetry --version
-          poetry install
+        run: uv sync --all-groups
+      - name: Run tests
+        run: uv run pytest
+
+  publish:
+    needs: tests
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+          python-version: "3.12"
+      - name: Install dependencies
+        run: uv sync --all-groups
       - name: Build and publish
         env:
-          PYPI_USERNAME: __token__
-          PYPI_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+          UV_PUBLISH_USERNAME: __token__
+          UV_PUBLISH_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         run: |
-          poetry publish --build -u $PYPI_USERNAME -p $PYPI_PASSWORD
+          uv build
+          uv publish
