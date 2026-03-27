@@ -10,6 +10,13 @@ packages = [{include = "hamilflow"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
+numpy = "^1.26.3"
+pandas = "^2.2.2"
+pydantic = "^2.6.1"
+loguru = "^0.7.2"
+matplotlib = "^3.8.3"
+scipy = "^1.12.0"
+click = "^8.1.7"
 
 # data
 pandas = {version = "^2.2.2", extras = ["computation"]}
@@ -45,6 +52,8 @@ plotly = "^5.23.0"
 commitizen = "*"
 pre-commit = "*"
 
+[tool.poetry.scripts]
+hamilflow = "hamilflow.cli:hamilflow"
 
 [tool.commitizen]
 name = "cz_conventional_commits"

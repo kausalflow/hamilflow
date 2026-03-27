@@ -13,6 +13,12 @@ repos:
     # Ruff version.
     rev: v0.6.4
     hooks:
+      - id: mypy
+        args: [--no-strict-optional, --ignore-missing-imports]
+        files: ^(hamilflow/|tests/)
+        additional_dependencies: [types-PyYAML]
+  - repo: https://github.com/ambv/black
+    rev: 24.4.2
       # Run the linter.
       - id: ruff
         args:

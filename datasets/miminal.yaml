@@ -1,0 +1,11 @@
+version: 0.1.0
+models:
+  brownian_motion:
+    definition:
+      system:
+        sigma: 1
+        delta_t: 1
+      initial_condition:
+        x0: 0
+    args:
+      n_steps: 100
