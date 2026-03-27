@@ -28,7 +28,7 @@ from hamilflow.models.sir import SIR
 # %%
 sir_1 = SIR(
     system={
-        "beta": 0.03,
+        "beta": 0.3,
         "alpha": 0.1,
         "delta_t": 0.1,
     },
@@ -51,5 +51,8 @@ px.line(
     x="t",
     y=["S", "I", "R"],
 )
+
+# %%
+sir_1._step(999, 1)  # noqa: SLF001
 
 # %%
