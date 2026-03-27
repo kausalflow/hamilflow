@@ -16,7 +16,7 @@ Always follow these rules when developing in the `hamilflow` repository.
 - **pre-commit**: run pre-commit to check the code style and formatting.
 
 ## Python Style & Standards
-- **Formater/Linter**: Follow Ruff/Black defaults (line-length = 88).
+- **Formatter/Linter**: Follow Ruff/Black defaults (line-length = 88).
 - **Imports**:
   - Grouping: Standard library, third-party, first-party (`hamilflow`).
   - Style: Use `from x.y import z` for first-party modules.
