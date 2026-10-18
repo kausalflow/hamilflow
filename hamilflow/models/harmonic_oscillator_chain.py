@@ -118,7 +118,7 @@ class HarmonicOscillatorsChain:
 
         travelling_waves = np.concatenate(all_travelling_waves)
         original_zs = ifft(travelling_waves, axis=0, norm="ortho")
-        return original_zs, travelling_waves
+        return original_zs, cast("npt.NDArray[np.complex64]", travelling_waves)
 
     def _x(
         self,

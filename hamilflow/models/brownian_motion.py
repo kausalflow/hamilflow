@@ -213,6 +213,6 @@ class BrownianMotion:
         trajectory = self._trajectory(n_new_steps=n_steps - 1, seed=seed)
 
         df = pd.DataFrame(trajectory, columns=self._axis_names)
-        df["t"] = t
+        df["t"] = np.asarray(t)
 
         return df

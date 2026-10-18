@@ -65,6 +65,7 @@ class FreeParticle:
 
         :param t: time(s).
         """
+        t = np.asarray(t)
         data = self._x(t)
         columns = [f"x{i+1}" for i in range(data.shape[1])]
 
