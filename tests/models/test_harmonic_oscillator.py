@@ -81,7 +81,7 @@ def test_simple_harmonic_oscillator(
 
 
 @pytest.mark.parametrize("omega", [0.5, 2.0])
-@pytest.mark.parametrize("zeta", [0.2, 0.5, 1.0, 1.5, 3.0])
+@pytest.mark.parametrize("zeta", [0.2, 0.5, 1.0, 1 + 1e-9, 1.5, 3.0, 50.0])
 @pytest.mark.parametrize(("x0", "v0"), [(1.0, 0.0), (0.0, 1.0), (-0.5, 2.0)])
 def test_damped_harmonic_oscillator_solves_ode(
     omega: float,
@@ -101,6 +101,7 @@ def test_damped_harmonic_oscillator_solves_ode(
         (t[0], t[-1]),
         [x0, v0],
         t_eval=t,
+        method="LSODA",
         rtol=1e-10,
         atol=1e-12,
     )
