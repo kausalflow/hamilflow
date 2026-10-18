@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from numpy.testing import assert_array_equal
+from scipy.integrate import solve_ivp
 
 from hamilflow.models.harmonic_oscillator import (
     ComplexSimpleHarmonicOscillator,
@@ -79,106 +80,32 @@ def test_simple_harmonic_oscillator(
     pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
 
 
-@pytest.mark.parametrize(
-    ("omega", "zeta", "expected"),
-    [
-        (
-            0.5,
-            0.5,
-            [
-                {"t": 0.0, "x": 1.0},
-                {"t": 1.2566370614359172, "x": 0.8814807646720196},
-                {"t": 2.5132741228718345, "x": 0.6291724461162962},
-                {"t": 3.7699111843077517, "x": 0.35960997861868876},
-                {"t": 5.026548245743669, "x": 0.1386644177513349},
-                {"t": 6.283185307179586, "x": -0.008951254750058093},
-                {"t": 7.5398223686155035, "x": -0.08578239268073515},
-                {"t": 8.79645943005142, "x": -0.10837036278920763},
-                {"t": 10.053096491487338, "x": -0.09717507559642745},
-                {"t": 11.309733552923255, "x": -0.07035823865195263},
-            ],
-        ),
-    ],
-)
-def test_underdamped_harmonic_oscillator(
+@pytest.mark.parametrize("omega", [0.5, 2.0])
+@pytest.mark.parametrize("zeta", [0.2, 0.5, 1.0, 1.5, 3.0])
+@pytest.mark.parametrize(("x0", "v0"), [(1.0, 0.0), (0.0, 1.0), (-0.5, 2.0)])
+def test_damped_harmonic_oscillator_solves_ode(
     omega: float,
     zeta: float,
-    expected: "Mapping[str, float]",
+    x0: float,
+    v0: float,
 ) -> None:
-    """Test under DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
-    ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
+    """Test DampedHarmonicOscillator against a numerical solution of its equation of motion."""
+    ho = DampedHarmonicOscillator(
+        system={"omega": omega, "zeta": zeta},
+        initial_condition={"x0": x0, "v0": v0},
+    )
+    t = np.linspace(0, 3 * ho.system.period, 31)
 
-    df = ho(n_periods=1, n_samples_per_period=10)
+    sol = solve_ivp(
+        lambda _, y: [y[1], -2 * zeta * omega * y[1] - omega**2 * y[0]],
+        (t[0], t[-1]),
+        [x0, v0],
+        t_eval=t,
+        rtol=1e-10,
+        atol=1e-12,
+    )
 
-    pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
-
-
-@pytest.mark.parametrize(
-    ("omega", "zeta", "expected"),
-    [
-        (
-            0.5,
-            1.5,
-            [
-                {"t": 0.0, "x": 1.0},
-                {"t": 1.2566370614359172, "x": 0.8082046531458691},
-                {"t": 2.5132741228718345, "x": 0.5412092834154191},
-                {"t": 3.7699111843077517, "x": 0.34137898430328123},
-                {"t": 5.026548245743669, "x": 0.21056158643886722},
-                {"t": 6.283185307179586, "x": 0.12872550838026245},
-                {"t": 7.5398223686155035, "x": 0.07841286437267142},
-                {"t": 8.79645943005142, "x": 0.04769482134764518},
-                {"t": 10.053096491487338, "x": 0.028992995409657336},
-                {"t": 11.309733552923255, "x": 0.017620056330381287},
-            ],
-        ),
-    ],
-)
-def test_overdamped_harmonic_oscillator(
-    omega: float,
-    zeta: float,
-    expected: "Mapping[str, float]",
-) -> None:
-    """Test over DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
-    ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
-
-    df = ho(n_periods=1, n_samples_per_period=10)
-
-    pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
-
-
-@pytest.mark.parametrize(
-    ("omega", "zeta", "expected"),
-    [
-        (
-            0.5,
-            1.0,
-            [
-                {"t": 0.0, "x": 1.0},
-                {"t": 1.2566370614359172, "x": 0.5334880910911033},
-                {"t": 2.5132741228718345, "x": 0.2846095433360293},
-                {"t": 3.7699111843077517, "x": 0.1518358019806489},
-                {"t": 5.026548245743669, "x": 0.08100259215794314},
-                {"t": 6.283185307179586, "x": 0.04321391826377226},
-                {"t": 7.5398223686155035, "x": 0.023054110763106823},
-                {"t": 8.79645943005142, "x": 0.012299093542812717},
-                {"t": 10.053096491487338, "x": 0.006561419936306071},
-                {"t": 11.309733552923255, "x": 0.003500439396667034},
-            ],
-        ),
-    ],
-)
-def test_criticaldamped_harmonic_oscillator(
-    omega: float,
-    zeta: float,
-    expected: "Mapping[str, float]",
-) -> None:
-    """Test critical DampedHarmonicOscillator from periods and the number of samples, comparing with caculations of the author."""
-    ho = DampedHarmonicOscillator(system={"omega": omega, "zeta": zeta})
-
-    df = ho(n_periods=1, n_samples_per_period=10)
-
-    pd.testing.assert_frame_equal(df, pd.DataFrame(expected))
+    np.testing.assert_allclose(np.asarray(ho._x(t)), sol.y[0], atol=1e-8)
 
 
 class TestComplexHarmonicOscillatorIC:

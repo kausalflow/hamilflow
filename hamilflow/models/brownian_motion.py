@@ -47,7 +47,7 @@ class BrownianMotionSystem(BaseModel):
     @cached_property
     def gaussian_scale(self) -> float:
         """The scale (standard deviation) of the Gaussian term in Brownian motion."""
-        return self.sigma**2 * self.delta_t
+        return self.sigma * np.sqrt(self.delta_t)
 
 
 class BrownianMotionIC(BaseModel):
