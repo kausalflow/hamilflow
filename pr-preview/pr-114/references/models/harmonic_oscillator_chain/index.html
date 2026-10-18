@@ -1473,7 +1473,7 @@ where <span class="arithmatex">\(x_N \coloneqq x_0\)</span>.</p>
 
         <span class="n">travelling_waves</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">all_travelling_waves</span><span class="p">)</span>
         <span class="n">original_zs</span> <span class="o">=</span> <span class="n">ifft</span><span class="p">(</span><span class="n">travelling_waves</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;ortho&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">original_zs</span><span class="p">,</span> <span class="n">travelling_waves</span>
+        <span class="k">return</span> <span class="n">original_zs</span><span class="p">,</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;npt.NDArray[np.complex64]&quot;</span><span class="p">,</span> <span class="n">travelling_waves</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
