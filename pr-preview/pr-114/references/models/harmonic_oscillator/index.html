@@ -1433,8 +1433,7 @@
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">337</span>
-<span class="normal">338</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">338</span>
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
@@ -1488,7 +1487,8 @@
 <span class="normal">389</span>
 <span class="normal">390</span>
 <span class="normal">391</span>
-<span class="normal">392</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ComplexSimpleHarmonicOscillator</span><span class="p">:</span>
+<span class="normal">392</span>
+<span class="normal">393</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ComplexSimpleHarmonicOscillator</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a complex simple harmonic oscillator.</span>
 
 <span class="sd">    :param system: all the params that defines the complex harmonic oscillator.</span>
@@ -1629,8 +1629,7 @@
 
           <details class="quote">
             <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">382</span>
-<span class="normal">383</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">383</span>
 <span class="normal">384</span>
 <span class="normal">385</span>
 <span class="normal">386</span>
@@ -1639,7 +1638,8 @@
 <span class="normal">389</span>
 <span class="normal">390</span>
 <span class="normal">391</span>
-<span class="normal">392</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal">392</span>
+<span class="normal">393</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate time series data for the harmonic oscillator.</span>
 
 <span class="sd">    Returns a list of floats representing the displacement at each time.</span>
@@ -1722,15 +1722,15 @@
 
             <details class="quote">
               <summary>Source code in <code>hamilflow/models/harmonic_oscillator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">326</span>
-<span class="normal">327</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">327</span>
 <span class="normal">328</span>
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span>
-<span class="normal">334</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ComplexSimpleHarmonicOscillatorIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">334</span>
+<span class="normal">335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ComplexSimpleHarmonicOscillatorIC</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The initial condition for a complex harmonic oscillator.</span>
 
 <span class="sd">    :cvar x0: the initial displacements</span>
@@ -2008,7 +2008,8 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 <span class="normal">320</span>
 <span class="normal">321</span>
 <span class="normal">322</span>
-<span class="normal">323</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DampedHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
+<span class="normal">323</span>
+<span class="normal">324</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DampedHarmonicOscillator</span><span class="p">(</span><span class="n">HarmonicOscillatorBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate time series data for a [damped harmonic oscillator](https://en.wikipedia.org/wiki/Harmonic_oscillator).</span>
 
 <span class="sd">    The equation for a general un-driven harmonic oscillator is[^wiki_ho][^libretext_ho]</span>
@@ -2125,17 +2126,18 @@ x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\O
 <span class="sd">        $$</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">zeta_omega</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">zeta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span>
         <span class="n">gamma_damp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">zeta</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">v0</span>
 
+        <span class="c1"># Factor out the slow mode exp((Gamma - zeta omega) t) so that</span>
+        <span class="c1"># cosh and sinh never overflow for large zeta, and use expm1 for</span>
+        <span class="c1"># sinh(Gamma t) / Gamma to stay accurate close to critical damping.</span>
+        <span class="n">decay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gamma_damp</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">sinh_over_gamma</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gamma_damp</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">gamma_damp</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cosh</span><span class="p">(</span><span class="n">gamma_damp</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
-            <span class="o">+</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">zeta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">x0</span>
-                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_condition</span><span class="o">.</span><span class="n">v0</span>
-            <span class="p">)</span>
-            <span class="o">/</span> <span class="n">gamma_damp</span>
-            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">(</span><span class="n">gamma_damp</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
-        <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">zeta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">omega</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+            <span class="n">x0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">decay</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">zeta_omega</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">v0</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinh_over_gamma</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">gamma_damp</span> <span class="o">-</span> <span class="n">zeta_omega</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;Sequence[float] | npt.ArrayLike&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Solution to damped harmonic oscillators.&quot;&quot;&quot;</span>
