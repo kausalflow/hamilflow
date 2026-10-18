@@ -110,6 +110,18 @@ class TestHarmonicOscillatorChain:
         hoc, original_zs, _ = hoc_and_zs
         assert original_zs.shape[0] == hoc.n_dof
 
+    def test_shape_and_dtype(
+        self,
+        hoc_and_zs: tuple[HarmonicOscillatorsChain, np.ndarray, np.ndarray],
+        times: int | Sequence[int],
+    ) -> None:
+        """Test the solutions are 2-dim, (degrees of freedom, time steps), and complex128."""
+        hoc, original_zs, travelling_waves = hoc_and_zs
+        expected_shape = (hoc.n_dof, np.size(times))
+        assert original_zs.shape == expected_shape
+        assert travelling_waves.shape == expected_shape
+        assert original_zs.dtype == np.complex128
+
     @pytest.mark.parametrize("wave_mode", [None, *_possible_wave_modes[1:]])
     def test_raise(
         self,

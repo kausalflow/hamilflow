@@ -255,7 +255,7 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         $$
         """
         t = np.asarray(t)
-        omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta)
+        omega_damp = self.system.omega * np.sqrt(1 - self.system.zeta**2)
         return (
             self.initial_condition.x0 * np.cos(omega_damp * t)
             + (
@@ -270,20 +270,13 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         r"""Solution to critical damped harmonic oscillators.
 
         $$
-        x(t) = \left( x_0 \cos(\Omega t) + \frac{\zeta \omega x_0 + v_0}{\Omega} \sin(\Omega t) \right)
-        e^{-\zeta \omega t},
-        $$
-
-        where
-
-        $$
-        \Omega = \omega\sqrt{ 1 - \zeta^2}.
+        x(t) = \left( x_0 + (\omega x_0 + v_0) t \right) e^{-\omega t}.
         $$
         """
         t = np.asarray(t)
-        return self.initial_condition.x0 * np.exp(
-            -self.system.zeta * self.system.omega * t,
-        )
+        omega = self.system.omega
+        x0, v0 = self.initial_condition.x0, self.initial_condition.v0
+        return (x0 + (omega * x0 + v0) * t) * np.exp(-omega * t)
 
     def _x_over_damped(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to over harmonic oscillators.
@@ -300,17 +293,18 @@ class DampedHarmonicOscillator(HarmonicOscillatorBase):
         $$
         """
         t = np.asarray(t)
-        gamma_damp = self.system.omega * np.sqrt(self.system.zeta - 1)
+        zeta_omega = self.system.zeta * self.system.omega
+        gamma_damp = self.system.omega * np.sqrt(self.system.zeta**2 - 1)
+        x0, v0 = self.initial_condition.x0, self.initial_condition.v0
 
+        # Factor out the slow mode exp((Gamma - zeta omega) t) so that
+        # cosh and sinh never overflow for large zeta, and use expm1 for
+        # sinh(Gamma t) / Gamma to stay accurate close to critical damping.
+        decay = np.exp(-2 * gamma_damp * t)
+        sinh_over_gamma = -np.expm1(-2 * gamma_damp * t) / (2 * gamma_damp)
         return (
-            self.initial_condition.x0 * np.cosh(gamma_damp * t)
-            + (
-                self.system.zeta * self.system.omega * self.initial_condition.x0
-                + self.initial_condition.v0
-            )
-            / gamma_damp
-            * np.sinh(gamma_damp * t)
-        ) * np.exp(-self.system.zeta * self.system.omega * t)
+            x0 * (1 + decay) / 2 + (zeta_omega * x0 + v0) * sinh_over_gamma
+        ) * np.exp((gamma_damp - zeta_omega) * t)
 
     def _x(self, t: "Sequence[float] | npt.ArrayLike") -> npt.ArrayLike:
         r"""Solution to damped harmonic oscillators."""

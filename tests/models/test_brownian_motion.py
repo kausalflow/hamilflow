@@ -34,13 +34,27 @@ def test_brownian_motion_ic(
 
 @pytest.mark.parametrize(
     ("sigma", "delta_t", "gaussian_scale"),
-    [(1, 1, 1), (1, 2, 2), (2, 1, 4)],
+    [(1, 1, 1), (1, 4, 2), (2, 1, 2), (3, 0.25, 1.5)],
 )
-def test_brownian_motion_system(sigma: int, delta_t: int, gaussian_scale: int) -> None:
+def test_brownian_motion_system(
+    sigma: float,
+    delta_t: float,
+    gaussian_scale: float,
+) -> None:
     """Test BrownianMotionSystem."""
     bms = BrownianMotionSystem(sigma=sigma, delta_t=delta_t)
 
-    assert bms.gaussian_scale == gaussian_scale
+    assert bms.gaussian_scale == pytest.approx(gaussian_scale)
+
+
+@pytest.mark.parametrize(("sigma", "delta_t"), [(2.0, 1.0), (1.0, 4.0), (0.5, 0.01)])
+def test_brownian_motion_step_std(sigma: float, delta_t: float) -> None:
+    """Test the steps of BrownianMotion have standard deviation sigma * sqrt(delta_t)."""
+    bm = BrownianMotion(system={"sigma": sigma, "delta_t": delta_t})
+
+    steps = np.diff(bm.generate_from(n_steps=100_001)["x_0"])
+
+    assert steps.std() == pytest.approx(sigma * np.sqrt(delta_t), rel=0.01)
 
 
 @pytest.mark.parametrize(

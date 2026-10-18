@@ -47,7 +47,7 @@ class BrownianMotionSystem(BaseModel):
     @cached_property
     def gaussian_scale(self) -> float:
         """The scale (standard deviation) of the Gaussian term in Brownian motion."""
-        return self.sigma**2 * self.delta_t
+        return self.sigma * np.sqrt(self.delta_t)
 
 
 class BrownianMotionIC(BaseModel):
@@ -213,6 +213,6 @@ class BrownianMotion:
         trajectory = self._trajectory(n_new_steps=n_steps - 1, seed=seed)
 
         df = pd.DataFrame(trajectory, columns=self._axis_names)
-        df["t"] = t
+        df["t"] = np.asarray(t)
 
         return df

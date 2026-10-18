@@ -2,7 +2,7 @@
 
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import cast
+from typing import TypeAlias, TypeVar, cast
 
 import numpy as np
 import pandas as pd
@@ -11,6 +11,10 @@ from scipy.fft import ifft
 
 from .free_particle import FreeParticle
 from .harmonic_oscillator import ComplexSimpleHarmonicOscillator
+
+_ScalarT = TypeVar("_ScalarT", bound=np.generic)
+# Arrays of shape (degrees of freedom, time steps)
+_Array2D: TypeAlias = np.ndarray[tuple[int, int], np.dtype[_ScalarT]]
 
 
 class HarmonicOscillatorsChain:
@@ -96,7 +100,7 @@ class HarmonicOscillatorsChain:
     def _z(
         self,
         t: "Sequence[float] | npt.ArrayLike",
-    ) -> "tuple[npt.NDArray[np.complex64], npt.NDArray[np.complex64]]":
+    ) -> "tuple[_Array2D[np.complex128], _Array2D[np.complex128]]":
         t = np.asarray(t).reshape(-1)
         all_travelling_waves = [self.free_mode._x(t).reshape(1, -1)]  # noqa: SLF001
 
@@ -118,12 +122,12 @@ class HarmonicOscillatorsChain:
 
         travelling_waves = np.concatenate(all_travelling_waves)
         original_zs = ifft(travelling_waves, axis=0, norm="ortho")
-        return original_zs, travelling_waves
+        return original_zs, cast("_Array2D[np.complex128]", travelling_waves)
 
     def _x(
         self,
         t: "Sequence[float] | npt.ArrayLike",
-    ) -> "tuple[npt.NDArray[np.float64], npt.NDArray[np.complex64]]":
+    ) -> "tuple[_Array2D[np.float64], _Array2D[np.complex128]]":
         original_xs, travelling_waves = self._z(t)
 
         return np.real(original_xs), travelling_waves
@@ -139,7 +143,7 @@ class HarmonicOscillatorsChain:
         original_xs, travelling_waves = self._x(t)
         data = {  # type: ignore [var-annotated]
             f"{name}{i}": cast(
-                "npt.NDArray[np.float64] | npt.NDArray[np.complex64]",
+                "npt.NDArray[np.float64] | npt.NDArray[np.complex128]",
                 values,
             )
             for name, xs in zip(
